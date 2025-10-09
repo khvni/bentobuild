@@ -9,8 +9,7 @@ interface HeroBlockProps {
 }
 
 export default function HeroBlock({ block }: HeroBlockProps) {
-  const { updateBlock, selectedBlockId, selectBlock } = useBuilderStore();
-  const isSelected = selectedBlockId === block.id;
+  const { updateBlock } = useBuilderStore();
 
   const handleContentChange = (field: keyof HeroBlockType['content'], value: string) => {
     updateBlock(block.id, {
@@ -22,10 +21,7 @@ export default function HeroBlock({ block }: HeroBlockProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`relative p-8 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg cursor-pointer transition-all ${
-        isSelected ? 'ring-4 ring-yellow-400' : 'hover:shadow-lg'
-      }`}
-      onClick={() => selectBlock(block.id)}
+      className="relative p-8 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg"
     >
       <div className="max-w-3xl mx-auto text-center">
         <input
@@ -34,7 +30,6 @@ export default function HeroBlock({ block }: HeroBlockProps) {
           value={block.content.heading}
           onChange={(e) => handleContentChange('heading', e.target.value)}
           placeholder="Hero Heading"
-          onClick={(e) => e.stopPropagation()}
         />
         <input
           type="text"
@@ -42,7 +37,6 @@ export default function HeroBlock({ block }: HeroBlockProps) {
           value={block.content.subheading}
           onChange={(e) => handleContentChange('subheading', e.target.value)}
           placeholder="Hero Subheading"
-          onClick={(e) => e.stopPropagation()}
         />
         <div className="flex gap-4 justify-center items-center">
           <input
@@ -51,7 +45,6 @@ export default function HeroBlock({ block }: HeroBlockProps) {
             value={block.content.ctaText}
             onChange={(e) => handleContentChange('ctaText', e.target.value)}
             placeholder="CTA Text"
-            onClick={(e) => e.stopPropagation()}
           />
           <input
             type="text"
@@ -59,7 +52,6 @@ export default function HeroBlock({ block }: HeroBlockProps) {
             value={block.content.ctaLink}
             onChange={(e) => handleContentChange('ctaLink', e.target.value)}
             placeholder="CTA Link"
-            onClick={(e) => e.stopPropagation()}
           />
         </div>
       </div>

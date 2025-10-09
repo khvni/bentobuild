@@ -13,49 +13,10 @@ import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
-  useSortable,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { useBuilderStore } from '@/store/useBuilderStore';
-import { Block } from '@/types/block.types';
-import HeroBlock from '@/components/blocks/HeroBlock';
-import TextBlock from '@/components/blocks/TextBlock';
-import ImageBlock from '@/components/blocks/ImageBlock';
-
-function SortableBlock({ block }: { block: Block }) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({ id: block.id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  const renderBlock = () => {
-    switch (block.type) {
-      case 'hero':
-        return <HeroBlock block={block} />;
-      case 'text':
-        return <TextBlock block={block} />;
-      case 'image':
-        return <ImageBlock block={block} />;
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners} className="mb-4">
-      {renderBlock()}
-    </div>
-  );
-}
+import BlockWrapper from '@/components/ui/BlockWrapper';
 
 export default function Canvas() {
   const { blocks, reorderBlocks } = useBuilderStore();
@@ -83,7 +44,7 @@ export default function Canvas() {
 
   return (
     <div className="flex-1 bg-gray-50 overflow-y-auto">
-      <div className="max-w-5xl mx-auto p-8">
+      <div className="max-w-5xl mx-auto p-8 pl-16">
         {blocks.length === 0 ? (
           <div className="text-center py-20 text-gray-400">
             <p className="text-xl mb-2">Your canvas is empty</p>
@@ -97,7 +58,7 @@ export default function Canvas() {
           >
             <SortableContext items={blocks.map((b) => b.id)} strategy={verticalListSortingStrategy}>
               {blocks.map((block) => (
-                <SortableBlock key={block.id} block={block} />
+                <BlockWrapper key={block.id} block={block} />
               ))}
             </SortableContext>
           </DndContext>

@@ -9,8 +9,7 @@ interface TextBlockProps {
 }
 
 export default function TextBlock({ block }: TextBlockProps) {
-  const { updateBlock, selectedBlockId, selectBlock } = useBuilderStore();
-  const isSelected = selectedBlockId === block.id;
+  const { updateBlock } = useBuilderStore();
 
   const handleContentChange = (field: keyof TextBlockType['content'], value: string) => {
     updateBlock(block.id, {
@@ -22,10 +21,7 @@ export default function TextBlock({ block }: TextBlockProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`relative p-8 bg-white rounded-lg cursor-pointer transition-all ${
-        isSelected ? 'ring-4 ring-yellow-400' : 'hover:shadow-md border border-gray-200'
-      }`}
-      onClick={() => selectBlock(block.id)}
+      className="relative p-8 bg-white rounded-lg border border-gray-200"
     >
       <div className="max-w-3xl mx-auto">
         <input
@@ -34,7 +30,6 @@ export default function TextBlock({ block }: TextBlockProps) {
           value={block.content.heading}
           onChange={(e) => handleContentChange('heading', e.target.value)}
           placeholder="Text Block Heading"
-          onClick={(e) => e.stopPropagation()}
         />
         <textarea
           className="w-full text-lg text-gray-700 border-2 border-transparent hover:border-gray-300 focus:border-blue-500 focus:outline-none resize-none rounded p-2"
@@ -42,7 +37,6 @@ export default function TextBlock({ block }: TextBlockProps) {
           value={block.content.body}
           onChange={(e) => handleContentChange('body', e.target.value)}
           placeholder="Enter your text content here..."
-          onClick={(e) => e.stopPropagation()}
         />
       </div>
     </motion.div>

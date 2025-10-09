@@ -9,8 +9,7 @@ interface ImageBlockProps {
 }
 
 export default function ImageBlock({ block }: ImageBlockProps) {
-  const { updateBlock, selectedBlockId, selectBlock } = useBuilderStore();
-  const isSelected = selectedBlockId === block.id;
+  const { updateBlock } = useBuilderStore();
 
   const handleContentChange = (field: keyof ImageBlockType['content'], value: string) => {
     updateBlock(block.id, {
@@ -22,10 +21,7 @@ export default function ImageBlock({ block }: ImageBlockProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`relative p-8 bg-white rounded-lg cursor-pointer transition-all ${
-        isSelected ? 'ring-4 ring-yellow-400' : 'hover:shadow-md border border-gray-200'
-      }`}
-      onClick={() => selectBlock(block.id)}
+      className="relative p-8 bg-white rounded-lg border border-gray-200"
     >
       <div className="max-w-3xl mx-auto">
         <div className="mb-4">
@@ -35,7 +31,6 @@ export default function ImageBlock({ block }: ImageBlockProps) {
             value={block.content.src}
             onChange={(e) => handleContentChange('src', e.target.value)}
             placeholder="Image URL"
-            onClick={(e) => e.stopPropagation()}
           />
           {block.content.src ? (
             <img
@@ -55,7 +50,6 @@ export default function ImageBlock({ block }: ImageBlockProps) {
           value={block.content.alt}
           onChange={(e) => handleContentChange('alt', e.target.value)}
           placeholder="Alt text"
-          onClick={(e) => e.stopPropagation()}
         />
         <input
           type="text"
@@ -63,7 +57,6 @@ export default function ImageBlock({ block }: ImageBlockProps) {
           value={block.content.caption}
           onChange={(e) => handleContentChange('caption', e.target.value)}
           placeholder="Caption (optional)"
-          onClick={(e) => e.stopPropagation()}
         />
         {block.content.caption && (
           <p className="mt-2 text-center text-sm text-gray-600 italic">
