@@ -4,7 +4,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Bentobuild is a drag-and-drop, AI-assisted website builder built with Next.js 15 (App Router), TypeScript, and Zustand for state management. Users describe their website context (e.g., "I'm a freelance photographer"), add modular blocks (hero, text, image) to a canvas, and can generate AI-powered content for each block based on their context.
+**Bentoblocks** is an AI-powered, drag-and-drop website builder built for simplicity and personalization.
+
+**Tagline**: _"Describe it once. Build visually. Let AI do the rest."_
+
+Users describe what their site is about once (e.g., "I'm a freelance designer showcasing my portfolio"), then visually assemble pages using modular "bento" blocks — pre-designed content sections such as Hero, About, Gallery, or Contact. Each block can auto-generate its copy, CTAs, and image suggestions using the user's context prompt, creating fast, tailored sites without manual editing.
+
+### Core Objectives
+
+1. Make building a personal website as intuitive as rearranging blocks
+2. Use AI as a creative assistant, not a black box — suggestions, not takeovers
+3. Deliver a fluid, responsive, design-driven experience that feels premium and fast
+
+### User Flow
+
+1. **Context Setup**: User enters a short description in the "Context Box" (e.g., "I'm a freelance UI/UX designer")
+2. **Canvas Editing**: Drag and drop content blocks from the palette onto the canvas grid
+3. **AI Personalization**: Each block has a "Generate with AI" button that fills in content consistent with the user's context
+4. **Customization**: Users can edit text, replace images, or tweak styling directly in the block editor
+5. **Preview & Deploy**: One-click deploy generates a live Daytona sandbox preview
 
 ## Development Commands
 
@@ -21,6 +39,19 @@ npx playwright test tests/example.spec.ts  # Run single test file
 ```
 
 ## Architecture
+
+### Tech Stack
+
+| Layer | Tool |
+|-------|------|
+| Frontend | Next.js 15 (App Router), React, TypeScript |
+| Styling | TailwindCSS |
+| State | Zustand |
+| Drag & Drop | @dnd-kit/core |
+| AI | OpenAI GPT-4o-mini |
+| Animation | Framer Motion |
+| Testing | Playwright |
+| Deployment | Daytona Sandbox |
 
 ### State Management (Zustand)
 
@@ -46,13 +77,26 @@ The entire application state lives in a single Zustand store at `store/useBuilde
 
 ### Block System
 
-Blocks are the core building units. Each block:
-- Has a discriminated union type: `HeroBlock | TextBlock | ImageBlock`
+Blocks are the core building units ("bento blocks"). Each block:
+
+- Has a discriminated union type: `HeroBlock | TextBlock | ImageBlock | GalleryBlock | ContactBlock`
 - Extends `BaseBlock` with `id`, `type`, and `order` fields
 - Contains a `content` object with block-specific fields
 - Renders via dedicated components in `components/blocks/`
 
+**Data Model**:
+
+```typescript
+interface BaseBlock {
+  id: string;
+  type: "hero" | "text" | "image" | "gallery" | "contact";
+  order: number;
+  content: Record<string, string>;
+}
+```
+
 **Adding new block types**:
+
 1. Define type in `types/block.types.ts` (extend BaseBlock)
 2. Add to the `Block` discriminated union
 3. Create component in `components/blocks/`
@@ -62,6 +106,7 @@ Blocks are the core building units. Each block:
 ### Drag & Drop Architecture
 
 Uses `@dnd-kit/core` and `@dnd-kit/sortable`:
+
 - `Canvas.tsx` wraps blocks in `DndContext` with `SortableContext`
 - Each block is wrapped in `SortableBlock` component using `useSortable` hook
 - `handleDragEnd` updates block order via `reorderBlocks` action
@@ -69,21 +114,32 @@ Uses `@dnd-kit/core` and `@dnd-kit/sortable`:
 
 ### Layout Structure
 
-```
+```text
 app/page.tsx:
-  ├── ContextBox (top)      - Global context input
+  ├── ContextBox (top)         - Global context input
   └── flex container
       ├── BlockPalette (left)  - Add blocks
-      └── Canvas (main)        - DnD area
+      ├── Canvas (main)        - DnD area
+      └── BlockEditor (right)  - Edit selected block (future)
 ```
 
 This is a fixed layout. The Canvas takes remaining flex space and scrolls independently.
 
 ### AI Content Generation
 
+**AI Prompt Logic**: Each block generation uses this template:
+
+```text
+You are generating web copy for a {blockType} section.
+User context: "{contextPrompt}"
+Return concise, natural-sounding text as JSON:
+{ title, body, cta?, imageUrl? }
+```
+
 **Current State**: The `/api/generate-block-content` endpoint is stubbed in main branch but fully implemented in `feature/ai-generator` worktree.
 
 **Request format**:
+
 ```json
 POST /api/generate-block-content
 {
@@ -94,6 +150,7 @@ POST /api/generate-block-content
 ```
 
 **Response format**:
+
 ```json
 {
   "success": true,
@@ -108,11 +165,13 @@ POST /api/generate-block-content
 
 The implemented version (in worktree) uses OpenAI's GPT-4o-mini with structured JSON output.
 
+**Fallback**: If model fails, use static defaults per block type.
+
 ### Worktree Development Model
 
 This project uses git worktrees for parallel feature development:
 
-```
+```text
 .trees/
 ├── layout-engine/     # Enhanced drag-drop UX
 ├── block-editor/      # Right-side editing panel
@@ -123,15 +182,25 @@ This project uses git worktrees for parallel feature development:
 ```
 
 **Working with worktrees**:
+
 - Each worktree is a separate working directory on its own branch
 - Changes in one worktree don't affect others
 - To work on a feature: `cd .trees/<feature-name>` then commit/push from there
 - View all worktrees: `git worktree list`
 - The `.trees/` directory is gitignored
 
+## Design Principles
+
+- **Minimal Surface, Max Feedback**: Everything happens in one screen
+- **Frictionless Flow**: No page reloads or nested dialogs
+- **AI as Co-Pilot**: Always editable; never overwrite user input silently
+- **Responsive Grid**: Blocks adapt cleanly from desktop → mobile
+- **Micro-Delight**: Motion and state transitions are subtle but intentional
+
 ## TypeScript Patterns
 
 **Path aliases**: Use `@/*` to import from project root (configured in tsconfig.json)
+
 ```typescript
 import { useBuilderStore } from '@/store/useBuilderStore';
 import { Block } from '@/types/block.types';
@@ -144,6 +213,7 @@ import { Block } from '@/types/block.types';
 ## Testing
 
 Playwright is configured for E2E testing:
+
 - Tests live in `tests/`
 - Config: `playwright.config.ts`
 - Automatically starts dev server before running tests
@@ -160,11 +230,20 @@ Playwright is configured for E2E testing:
 ## Environment Variables
 
 Required for AI features (implemented in worktrees):
-```
+
+```bash
 OPENAI_API_KEY=sk-...  # For content generation
 ```
 
 Copy `.env.example` to `.env.local` when working with AI features.
+
+## Future Enhancements
+
+- **AI Layout Suggestions**: Generate a full starter layout from a description
+- **AI Image Generation**: Suggest relevant visuals per block (Unsplash or DALLE)
+- **Themes**: One-click theme presets with Tailwind tokens
+- **Export**: Static HTML export for self-hosting
+- **Collaborative Editing**: WebSocket sync (Y.js)
 
 ## Known Limitations & TODOs
 
@@ -174,3 +253,7 @@ Copy `.env.example` to `.env.local` when working with AI features.
 - No right-side editing panel (see `feature/block-editor` worktree)
 - No localStorage persistence (see `feature/state-manager` worktree)
 - Context Box doesn't trigger regeneration (see `feature/context-system` worktree)
+
+## Guiding Philosophy
+
+_"Visual editing meets intelligent generation — websites built from meaning, not markup."_
