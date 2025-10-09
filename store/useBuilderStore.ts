@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Block, BuilderState } from '@/types/block.types';
+import { Block, BuilderState, FontFamily } from '@/types/block.types';
 import { historyMiddleware } from './middleware/historyMiddleware';
 import { persistenceMiddleware } from './middleware/persistenceMiddleware';
 
@@ -8,12 +8,14 @@ interface BaseBuilderState {
   blocks: Block[];
   contextPrompt: string;
   selectedBlockId: string | null;
+  selectedFont: FontFamily;
   addBlock: (block: Block) => void;
   updateBlock: (id: string, updates: Partial<Block>) => void;
   deleteBlock: (id: string) => void;
   setContextPrompt: (prompt: string) => void;
   selectBlock: (id: string | null) => void;
   reorderBlocks: (blocks: Block[]) => void;
+  setFont: (font: FontFamily) => void;
 }
 
 export const useBuilderStore = create<BuilderState>(
@@ -23,6 +25,7 @@ export const useBuilderStore = create<BuilderState>(
         blocks: [],
         contextPrompt: '',
         selectedBlockId: null,
+        selectedFont: 'sans',
 
         addBlock: (block: Block) =>
           set((state) => ({
@@ -50,6 +53,9 @@ export const useBuilderStore = create<BuilderState>(
 
         reorderBlocks: (blocks: Block[]) =>
           set({ blocks }),
+
+        setFont: (font: FontFamily) =>
+          set({ selectedFont: font }),
       }),
       { excludeKeys: ['selectedBlockId'] } // Don't persist selected block
     ),

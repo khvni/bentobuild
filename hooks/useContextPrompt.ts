@@ -6,7 +6,6 @@ import { Block } from '@/types/block.types';
 
 export function useContextPrompt() {
   const { contextPrompt, setContextPrompt, blocks, updateBlock } = useBuilderStore();
-  const [isRegenerating, setIsRegenerating] = useState(false);
   const [regeneratingBlockId, setRegeneratingBlockId] = useState<string | null>(null);
 
   const regenerateBlock = async (blockId: string) => {
@@ -36,26 +35,10 @@ export function useContextPrompt() {
     }
   };
 
-  const regenerateAllBlocks = async () => {
-    if (!contextPrompt || blocks.length === 0) return;
-
-    setIsRegenerating(true);
-    try {
-      // Regenerate blocks sequentially to avoid rate limits
-      for (const block of blocks) {
-        await regenerateBlock(block.id);
-      }
-    } finally {
-      setIsRegenerating(false);
-    }
-  };
-
   return {
     contextPrompt,
     setContextPrompt,
-    regenerateAllBlocks,
     regenerateBlock,
-    isRegenerating,
     regeneratingBlockId,
     hasContext: contextPrompt.length > 0,
     hasBlocks: blocks.length > 0,

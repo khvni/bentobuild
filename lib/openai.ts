@@ -9,8 +9,9 @@ import OpenAI from 'openai';
 
 // Initialize OpenAI client
 // API key should be set in environment variables as OPENAI_API_KEY
+// Use a placeholder during build time if key is not available
 export const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY || 'sk-placeholder-key',
 });
 
 /**

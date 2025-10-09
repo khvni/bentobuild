@@ -1,13 +1,15 @@
 'use client';
 
 import { useBuilderStore } from '@/store/useBuilderStore';
-import { BlockType, HeroBlock, TextBlock, ImageBlock } from '@/types/block.types';
+import { BlockType, HeroBlock, TextBlock, ImageBlock, ButtonBlock, LinkBlock, NavbarBlock } from '@/types/block.types';
+import { useDraggable } from '@dnd-kit/core';
 
 const blockTemplates = {
   hero: {
     type: 'hero' as BlockType,
     icon: '🎯',
     label: 'Hero Section',
+    color: '#E63946', // Bauhaus Red
     defaultContent: {
       heading: 'Welcome to Our Site',
       subheading: 'Build something amazing today',
@@ -19,6 +21,7 @@ const blockTemplates = {
     type: 'text' as BlockType,
     icon: '📝',
     label: 'Text Block',
+    color: '#F1C40F', // Bauhaus Yellow
     defaultContent: {
       heading: 'Section Heading',
       body: 'Add your content here. This is a text block that can be customized with your own content.',
@@ -28,13 +31,110 @@ const blockTemplates = {
     type: 'image' as BlockType,
     icon: '🖼️',
     label: 'Image Block',
+    color: '#2563EB', // Bauhaus Blue
     defaultContent: {
       src: 'https://via.placeholder.com/800x400',
       alt: 'Placeholder image',
       caption: '',
     },
   },
+  button: {
+    type: 'button' as BlockType,
+    icon: '🔘',
+    label: 'Button',
+    color: '#E63946', // Bauhaus Red
+    defaultContent: {
+      text: 'Click Me',
+      url: '#',
+      style: 'filled' as const,
+      backgroundColor: '#3B82F6',
+      textColor: '#FFFFFF',
+    },
+  },
+  link: {
+    type: 'link' as BlockType,
+    icon: '🔗',
+    label: 'Link',
+    color: '#F1C40F', // Bauhaus Yellow
+    defaultContent: {
+      text: 'Learn More',
+      url: '#',
+      description: 'Click to explore additional resources',
+    },
+  },
+  navbar: {
+    type: 'navbar' as BlockType,
+    icon: '🧭',
+    label: 'Navigation Bar',
+    color: '#2563EB', // Bauhaus Blue
+    defaultContent: {
+      brandName: 'My Brand',
+      logoUrl: '',
+      links: [
+        { text: 'Home', url: '#' },
+        { text: 'About', url: '#about' },
+        { text: 'Contact', url: '#contact' },
+      ],
+    },
+  },
 };
+
+interface DraggableBlockTemplateProps {
+  blockType: BlockType;
+  template: typeof blockTemplates[keyof typeof blockTemplates];
+  onAddBlock: (blockType: BlockType) => void;
+}
+
+function DraggableBlockTemplate({ blockType, template, onAddBlock }: DraggableBlockTemplateProps) {
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: `palette-${blockType}`,
+    data: {
+      type: 'palette-item',
+      blockType,
+      template,
+    },
+  });
+
+  return (
+    <button
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+      onClick={() => onAddBlock(blockType)}
+      className={`relative w-full p-4 bg-white border-l-8 rounded-bauhaus-md transition-all text-left group cursor-grab active:cursor-grabbing shadow-bauhaus-sm hover:shadow-bauhaus-md bauhaus-transition focus:ring-4 focus:ring-bauhaus-blue focus:outline-none ${
+        isDragging ? 'opacity-50 scale-95' : ''
+      }`}
+      style={{ borderLeftColor: template.color }}
+      aria-label={`Add ${template.label} to canvas - drag or click`}
+      title={`Add ${template.label}`}
+    >
+      {/* Color accent square */}
+      <div
+        className="absolute top-2 right-2 w-3 h-3 rounded-bauhaus-sm opacity-60"
+        style={{ backgroundColor: template.color }}
+        aria-hidden="true"
+      />
+
+      <div className="flex items-center gap-3">
+        <div
+          className="w-10 h-10 flex items-center justify-center rounded-bauhaus-sm"
+          style={{ backgroundColor: `${template.color}20` }}
+          aria-hidden="true"
+        >
+          <span className="text-2xl" role="img" aria-label={template.label}>
+            {template.icon}
+          </span>
+        </div>
+        <div>
+          <p className="font-bold text-gray-900 uppercase text-xs tracking-wide mb-0.5">
+            {template.label}
+          </p>
+          <p className="text-xs text-gray-500 font-medium" aria-hidden="true">+ ADD</p>
+        </div>
+      </div>
+    </button>
+  );
+}
 
 export default function BlockPalette() {
   const { addBlock, blocks } = useBuilderStore();
@@ -54,36 +154,49 @@ export default function BlockPalette() {
       addBlock(newBlock as TextBlock);
     } else if (blockType === 'image') {
       addBlock(newBlock as ImageBlock);
+    } else if (blockType === 'button') {
+      addBlock(newBlock as ButtonBlock);
+    } else if (blockType === 'link') {
+      addBlock(newBlock as LinkBlock);
+    } else if (blockType === 'navbar') {
+      addBlock(newBlock as NavbarBlock);
     }
   };
 
   return (
-    <div className="w-64 bg-white border-r border-gray-200 p-4 overflow-y-auto">
-      <h2 className="text-lg font-semibold mb-4 text-gray-800">Block Palette</h2>
-      <div className="space-y-3">
+    <nav
+      className="w-72 bg-gray-50 border-r-4 border-black p-6 overflow-y-auto relative bauhaus-accent-line"
+      role="navigation"
+      aria-label="Block palette"
+    >
+      {/* Header */}
+      <div className="mb-6">
+        <h2 className="bauhaus-h3 uppercase tracking-wider text-black mb-1">Blocks</h2>
+        <div className="h-1 w-16 bg-gradient-to-r from-bauhaus-red to-bauhaus-yellow rounded-full" aria-hidden="true"></div>
+      </div>
+
+      {/* Block Templates */}
+      <div className="space-y-3" role="menu" aria-label="Available block types">
         {Object.entries(blockTemplates).map(([key, template]) => (
-          <button
+          <DraggableBlockTemplate
             key={key}
-            onClick={() => handleAddBlock(template.type)}
-            className="w-full p-4 bg-gray-50 hover:bg-blue-50 border-2 border-gray-200 hover:border-blue-400 rounded-lg transition-all text-left group"
-          >
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">{template.icon}</span>
-              <div>
-                <p className="font-medium text-gray-800 group-hover:text-blue-600">
-                  {template.label}
-                </p>
-                <p className="text-xs text-gray-500">Click to add</p>
-              </div>
-            </div>
-          </button>
+            blockType={template.type}
+            template={template}
+            onAddBlock={handleAddBlock}
+          />
         ))}
       </div>
 
-      <div className="mt-8 pt-4 border-t border-gray-200">
-        <p className="text-xs text-gray-500 mb-2">Blocks on canvas:</p>
-        <p className="text-2xl font-bold text-gray-800">{blocks.length}</p>
+      {/* Stats Section */}
+      <div className="mt-8 pt-6 border-t-2 border-gray-300" role="status" aria-label="Canvas statistics">
+        <div className="bg-white rounded-bauhaus-md p-4 shadow-bauhaus-sm border-2 border-black">
+          <p className="text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Canvas</p>
+          <div className="flex items-baseline gap-2">
+            <p className="text-4xl font-bold text-black" aria-label={`${blocks.length} blocks`}>{blocks.length}</p>
+            <p className="text-sm font-semibold text-gray-500 uppercase">Blocks</p>
+          </div>
+        </div>
       </div>
-    </div>
+    </nav>
   );
 }

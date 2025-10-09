@@ -1,4 +1,4 @@
-# Bentobuild
+# Bentoblocks
 
 A drag-and-drop, AI-assisted website builder built with Next.js, React, and TypeScript.
 
@@ -55,7 +55,7 @@ npm run dev
 ### Project Structure
 
 ```
-bentobuild/
+bentoblocks/
 ├── app/
 │   ├── api/
 │   │   └── generate-block-content/  # API route for AI content generation

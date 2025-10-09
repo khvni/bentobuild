@@ -7,6 +7,9 @@ import { useBlockActions } from '@/hooks/useBlockActions';
 import HeroBlock from '@/components/blocks/HeroBlock';
 import TextBlock from '@/components/blocks/TextBlock';
 import ImageBlock from '@/components/blocks/ImageBlock';
+import ButtonBlock from '@/components/blocks/ButtonBlock';
+import LinkBlock from '@/components/blocks/LinkBlock';
+import NavbarBlock from '@/components/blocks/NavbarBlock';
 
 interface BlockWrapperProps {
   block: Block;
@@ -39,6 +42,12 @@ export default function BlockWrapper({ block }: BlockWrapperProps) {
         return <TextBlock block={block} />;
       case 'image':
         return <ImageBlock block={block} />;
+      case 'button':
+        return <ButtonBlock block={block} />;
+      case 'link':
+        return <LinkBlock block={block} />;
+      case 'navbar':
+        return <NavbarBlock block={block} />;
       default:
         return null;
     }
@@ -50,15 +59,18 @@ export default function BlockWrapper({ block }: BlockWrapperProps) {
       style={style}
       className={`relative mb-4 group ${selected ? 'ring-4 ring-yellow-400 rounded-lg' : ''}`}
       onClick={() => handleSelect(block.id)}
+      role="listitem"
+      aria-label={`${block.type} block`}
     >
       {/* Drag Handle */}
       <button
         {...attributes}
         {...listeners}
-        className={`absolute -left-8 top-1/2 -translate-y-1/2 w-6 h-12 bg-gray-300 hover:bg-gray-400 rounded-l-lg flex items-center justify-center cursor-grab active:cursor-grabbing transition-opacity ${
+        className={`absolute -left-8 top-1/2 -translate-y-1/2 w-6 h-12 bg-gray-300 hover:bg-gray-400 rounded-l-lg flex items-center justify-center cursor-grab active:cursor-grabbing transition-opacity focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-bauhaus-blue ${
           selected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
         }`}
-        aria-label="Drag to reorder"
+        aria-label={`Drag to reorder ${block.type} block`}
+        title="Drag to reorder (use keyboard arrow keys)"
       >
         <svg
           className="w-4 h-4 text-gray-600"
@@ -78,16 +90,18 @@ export default function BlockWrapper({ block }: BlockWrapperProps) {
       {/* Action Controls */}
       <div
         className={`absolute -top-3 right-4 flex gap-2 transition-opacity ${
-          selected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+          selected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100 focus-within:opacity-100'
         }`}
+        role="toolbar"
+        aria-label="Block actions"
       >
         <button
           onClick={(e) => {
             e.stopPropagation();
             handleDuplicate(block);
           }}
-          className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-lg transition-colors"
-          aria-label="Duplicate block"
+          className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-300"
+          aria-label={`Duplicate ${block.type} block`}
           title="Duplicate"
         >
           <svg
@@ -109,8 +123,8 @@ export default function BlockWrapper({ block }: BlockWrapperProps) {
             e.stopPropagation();
             handleDelete(block.id);
           }}
-          className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-lg transition-colors"
-          aria-label="Delete block"
+          className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-lg shadow-lg transition-colors focus:outline-none focus:ring-2 focus:ring-red-300"
+          aria-label={`Delete ${block.type} block`}
           title="Delete"
         >
           <svg

@@ -4,23 +4,42 @@ import { useBuilderStore } from '@/store/useBuilderStore';
 import { useBlockEditor } from '@/hooks/useBlockEditor';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Block } from '@/types/block.types';
+import ColorPicker from './ColorPicker';
+import { useState } from 'react';
 
 export default function BlockEditorPanel() {
   const { blocks, selectedBlockId, selectBlock, updateBlock, deleteBlock, contextPrompt } = useBuilderStore();
   const { loading, error, success, generateContent, resetStatus } = useBlockEditor();
+  const [colorsExpanded, setColorsExpanded] = useState(true);
 
   const selectedBlock = blocks.find((b) => b.id === selectedBlockId);
 
   const handleFieldChange = (field: string, value: string) => {
     if (!selectedBlock) return;
-    updateBlock(selectedBlock.id, {
-      content: { ...selectedBlock.content, [field]: value },
-    });
+
+    // Create properly typed content update based on block type
+    switch (selectedBlock.type) {
+      case 'hero':
+        updateBlock(selectedBlock.id, {
+          content: { ...selectedBlock.content, [field]: value },
+        });
+        break;
+      case 'text':
+        updateBlock(selectedBlock.id, {
+          content: { ...selectedBlock.content, [field]: value },
+        });
+        break;
+      case 'image':
+        updateBlock(selectedBlock.id, {
+          content: { ...selectedBlock.content, [field]: value },
+        });
+        break;
+    }
   };
 
   const handleGenerateContent = () => {
     if (!selectedBlock) return;
-    generateContent(selectedBlock.id, selectedBlock.type, selectedBlock.content);
+    generateContent(selectedBlock.id, selectedBlock.type, selectedBlock.content as Record<string, unknown>);
   };
 
   const handleDelete = () => {
@@ -34,44 +53,102 @@ export default function BlockEditorPanel() {
         return (
           <>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Heading</label>
+              <label htmlFor="hero-heading" className="block text-sm font-medium text-gray-700 mb-1">
+                Heading
+              </label>
               <input
+                id="hero-heading"
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
                 value={block.content.heading}
                 onChange={(e) => handleFieldChange('heading', e.target.value)}
                 placeholder="Hero heading"
+                aria-required="true"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Subheading</label>
+              <label htmlFor="hero-subheading" className="block text-sm font-medium text-gray-700 mb-1">
+                Subheading
+              </label>
               <input
+                id="hero-subheading"
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
                 value={block.content.subheading}
                 onChange={(e) => handleFieldChange('subheading', e.target.value)}
                 placeholder="Hero subheading"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">CTA Text</label>
+              <label htmlFor="hero-cta-text" className="block text-sm font-medium text-gray-700 mb-1">
+                CTA Text
+              </label>
               <input
+                id="hero-cta-text"
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
                 value={block.content.ctaText}
                 onChange={(e) => handleFieldChange('ctaText', e.target.value)}
                 placeholder="Call to action text"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">CTA Link</label>
+              <label htmlFor="hero-cta-link" className="block text-sm font-medium text-gray-700 mb-1">
+                CTA Link
+              </label>
               <input
-                type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                id="hero-cta-link"
+                type="url"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
                 value={block.content.ctaLink}
                 onChange={(e) => handleFieldChange('ctaLink', e.target.value)}
                 placeholder="https://..."
+                aria-describedby="cta-link-help"
               />
+              <p id="cta-link-help" className="sr-only">Enter the URL for the call to action button</p>
+            </div>
+
+            {/* Colors Section */}
+            <div className="pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setColorsExpanded(!colorsExpanded)}
+                className="flex items-center justify-between w-full text-sm font-semibold text-gray-700 mb-3"
+              >
+                <span>Colors</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${colorsExpanded ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {colorsExpanded && (
+                <div className="space-y-3">
+                  <ColorPicker
+                    label="Background"
+                    value={block.content.backgroundColor || '#3B82F6'}
+                    onChange={(color) => handleFieldChange('backgroundColor', color)}
+                  />
+                  <ColorPicker
+                    label="Text Color"
+                    value={block.content.textColor || '#FFFFFF'}
+                    onChange={(color) => handleFieldChange('textColor', color)}
+                  />
+                  <ColorPicker
+                    label="Button Background"
+                    value={block.content.buttonColor || '#FFFFFF'}
+                    onChange={(color) => handleFieldChange('buttonColor', color)}
+                  />
+                  <ColorPicker
+                    label="Button Text"
+                    value={block.content.buttonTextColor || '#3B82F6'}
+                    onChange={(color) => handleFieldChange('buttonTextColor', color)}
+                  />
+                </div>
+              )}
             </div>
           </>
         );
@@ -80,24 +157,70 @@ export default function BlockEditorPanel() {
         return (
           <>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Heading</label>
+              <label htmlFor="text-heading" className="block text-sm font-medium text-gray-700 mb-1">
+                Heading
+              </label>
               <input
+                id="text-heading"
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
                 value={block.content.heading}
                 onChange={(e) => handleFieldChange('heading', e.target.value)}
                 placeholder="Section heading"
+                aria-required="true"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Body</label>
+              <label htmlFor="text-body" className="block text-sm font-medium text-gray-700 mb-1">
+                Body
+              </label>
               <textarea
+                id="text-body"
                 rows={6}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none focus:outline-none"
                 value={block.content.body}
                 onChange={(e) => handleFieldChange('body', e.target.value)}
                 placeholder="Enter your text content..."
+                aria-required="true"
               />
+            </div>
+
+            {/* Colors Section */}
+            <div className="pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setColorsExpanded(!colorsExpanded)}
+                className="flex items-center justify-between w-full text-sm font-semibold text-gray-700 mb-3"
+              >
+                <span>Colors</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${colorsExpanded ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {colorsExpanded && (
+                <div className="space-y-3">
+                  <ColorPicker
+                    label="Background"
+                    value={block.content.backgroundColor || '#FFFFFF'}
+                    onChange={(color) => handleFieldChange('backgroundColor', color)}
+                  />
+                  <ColorPicker
+                    label="Heading Color"
+                    value={block.content.headingColor || '#111827'}
+                    onChange={(color) => handleFieldChange('headingColor', color)}
+                  />
+                  <ColorPicker
+                    label="Text Color"
+                    value={block.content.textColor || '#4B5563'}
+                    onChange={(color) => handleFieldChange('textColor', color)}
+                  />
+                </div>
+              )}
             </div>
           </>
         );
@@ -106,34 +229,84 @@ export default function BlockEditorPanel() {
         return (
           <>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+              <label htmlFor="image-src" className="block text-sm font-medium text-gray-700 mb-1">
+                Image URL
+              </label>
               <input
-                type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                id="image-src"
+                type="url"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
                 value={block.content.src}
                 onChange={(e) => handleFieldChange('src', e.target.value)}
                 placeholder="https://..."
+                aria-required="true"
+                aria-describedby="image-src-help"
               />
+              <p id="image-src-help" className="sr-only">Enter the URL of the image to display</p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Alt Text</label>
+              <label htmlFor="image-alt" className="block text-sm font-medium text-gray-700 mb-1">
+                Alt Text
+              </label>
               <input
+                id="image-alt"
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
                 value={block.content.alt}
                 onChange={(e) => handleFieldChange('alt', e.target.value)}
                 placeholder="Image description"
+                aria-required="true"
+                aria-describedby="image-alt-help"
               />
+              <p id="image-alt-help" className="text-xs text-gray-600 mt-1">
+                Describe the image for screen readers (required for accessibility)
+              </p>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Caption</label>
+              <label htmlFor="image-caption" className="block text-sm font-medium text-gray-700 mb-1">
+                Caption
+              </label>
               <input
+                id="image-caption"
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
                 value={block.content.caption}
                 onChange={(e) => handleFieldChange('caption', e.target.value)}
                 placeholder="Optional caption"
               />
+            </div>
+
+            {/* Colors Section */}
+            <div className="pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setColorsExpanded(!colorsExpanded)}
+                className="flex items-center justify-between w-full text-sm font-semibold text-gray-700 mb-3"
+              >
+                <span>Colors</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${colorsExpanded ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {colorsExpanded && (
+                <div className="space-y-3">
+                  <ColorPicker
+                    label="Background"
+                    value={block.content.backgroundColor || '#F9FAFB'}
+                    onChange={(color) => handleFieldChange('backgroundColor', color)}
+                  />
+                  <ColorPicker
+                    label="Caption Color"
+                    value={block.content.captionColor || '#4B5563'}
+                    onChange={(color) => handleFieldChange('captionColor', color)}
+                  />
+                </div>
+              )}
             </div>
           </>
         );
@@ -163,40 +336,60 @@ export default function BlockEditorPanel() {
 
   if (!selectedBlock) {
     return (
-      <div className="w-80 bg-white border-l border-gray-200 p-6 flex items-center justify-center">
-        <div className="text-center text-gray-400">
-          <div className="text-5xl mb-3">✏️</div>
-          <p className="text-sm font-medium">Select a block to edit</p>
-          <p className="text-xs mt-1">Click on any block in the canvas</p>
+      <aside
+        className="w-80 bg-gray-50 border-l-4 border-black p-6 flex items-center justify-center relative"
+        role="complementary"
+        aria-label="Block editor panel"
+      >
+        {/* Geometric decorations */}
+        <div className="absolute top-8 right-8 w-8 h-8 bg-bauhaus-blue rounded-full opacity-20" aria-hidden="true"></div>
+        <div className="absolute bottom-16 left-6 w-12 h-12 bg-bauhaus-yellow rounded-bauhaus-sm opacity-20" aria-hidden="true"></div>
+
+        <div className="text-center">
+          <div className="w-24 h-24 mx-auto mb-6 bg-white rounded-bauhaus-md flex items-center justify-center shadow-bauhaus-md border-2 border-gray-300">
+            <svg className="w-12 h-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+          </div>
+          <p className="bauhaus-h3 text-gray-900 mb-2">Editor</p>
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Select a block to edit</p>
         </div>
-      </div>
+      </aside>
     );
   }
 
   return (
-    <motion.div
+    <motion.aside
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
-      className="w-80 bg-white border-l border-gray-200 overflow-y-auto flex flex-col"
+      className="w-80 bg-gray-50 border-l-4 border-black overflow-y-auto flex flex-col"
+      role="complementary"
+      aria-label="Block editor panel"
     >
       {/* Header */}
-      <div className="p-4 border-b border-gray-200 flex-shrink-0">
-        <div className="flex items-start justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">{getBlockTypeIcon(selectedBlock.type)}</span>
+      <div className="p-6 border-b-2 border-gray-300 flex-shrink-0 bg-white relative">
+        {/* Colored accent bar */}
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-bauhaus-red via-bauhaus-yellow to-bauhaus-blue" aria-hidden="true"></div>
+
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 bg-gray-100 rounded-bauhaus-sm flex items-center justify-center border-2 border-gray-300">
+              <span className="text-2xl">{getBlockTypeIcon(selectedBlock.type)}</span>
+            </div>
             <div>
-              <h3 className="font-semibold text-gray-900">{getBlockTypeLabel(selectedBlock.type)}</h3>
-              <p className="text-xs text-gray-500">{selectedBlock.id}</p>
+              <h3 className="bauhaus-h3 text-black uppercase">{getBlockTypeLabel(selectedBlock.type)}</h3>
+              <p className="text-xs text-gray-500 font-mono">{selectedBlock.id.split('-')[0]}</p>
             </div>
           </div>
           <button
             onClick={() => selectBlock(null)}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
-            aria-label="Close panel"
+            className="text-gray-400 hover:text-black transition-colors p-2 hover:bg-gray-100 rounded-bauhaus-sm focus:outline-none focus:ring-2 focus:ring-bauhaus-blue"
+            aria-label="Close editor panel"
+            title="Close (Escape)"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
@@ -235,7 +428,11 @@ export default function BlockEditorPanel() {
 
       {/* Form Fields */}
       <div className="flex-1 p-4 space-y-4 relative">
-        <div className={loading ? 'blur-sm pointer-events-none' : ''}>
+        <div
+          className={loading ? 'blur-sm pointer-events-none' : ''}
+          role="form"
+          aria-label={`Edit ${getBlockTypeLabel(selectedBlock.type)}`}
+        >
           {renderFields(selectedBlock)}
         </div>
 
@@ -284,33 +481,43 @@ export default function BlockEditorPanel() {
       </div>
 
       {/* Actions */}
-      <div className="p-4 border-t border-gray-200 space-y-2 flex-shrink-0">
+      <div
+        className="p-6 border-t-2 border-gray-300 space-y-3 flex-shrink-0 bg-white"
+        role="group"
+        aria-label="Block actions"
+      >
         <button
           onClick={handleGenerateContent}
           disabled={loading || !contextPrompt.trim()}
-          className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="bauhaus-button w-full bg-bauhaus-blue text-white rounded-bauhaus-md font-bold shadow-bauhaus-md hover:shadow-bauhaus-lg disabled:bg-gray-300 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2 border-2 border-black focus:outline-none focus:ring-2 focus:ring-bauhaus-blue focus:ring-offset-2"
+          aria-label="Generate content with AI"
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
-          Generate with AI
+          Generate AI
         </button>
         <button
           onClick={handleDelete}
           disabled={loading}
-          className="w-full px-4 py-2 bg-white text-red-600 border border-red-300 rounded-lg font-medium hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="bauhaus-button w-full bg-white text-bauhaus-red border-2 border-bauhaus-red rounded-bauhaus-md font-bold hover:bg-bauhaus-red hover:text-white shadow-bauhaus-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-bauhaus-red focus:ring-offset-2"
+          aria-label={`Delete ${getBlockTypeLabel(selectedBlock.type)}`}
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
           </svg>
-          Delete Block
+          Delete
         </button>
         {!contextPrompt.trim() && (
-          <p className="text-xs text-gray-500 text-center">
-            Add a website context to enable AI generation
+          <p
+            className="text-xs text-gray-600 text-center font-semibold uppercase tracking-wide mt-3"
+            role="status"
+            aria-live="polite"
+          >
+            Add context to enable AI
           </p>
         )}
       </div>
-    </motion.div>
+    </motion.aside>
   );
 }

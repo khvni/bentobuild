@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Bentobuild', () => {
+test.describe('Bentoblocks', () => {
   test('should load the main page', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('text=Website Context')).toBeVisible();

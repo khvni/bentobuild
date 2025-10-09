@@ -8,7 +8,7 @@ interface UseBlockEditorReturn {
   loading: boolean;
   error: string | null;
   success: boolean;
-  generateContent: (blockId: string, blockType: BlockType, existingContent: Record<string, string>) => Promise<void>;
+  generateContent: (blockId: string, blockType: BlockType, existingContent: Record<string, unknown>) => Promise<void>;
   resetStatus: () => void;
 }
 
@@ -22,7 +22,7 @@ export function useBlockEditor(): UseBlockEditorReturn {
   const generateContent = async (
     blockId: string,
     blockType: BlockType,
-    existingContent: Record<string, string>
+    existingContent: Record<string, unknown>
   ) => {
     if (!contextPrompt.trim()) {
       setError('Please enter a context prompt first');

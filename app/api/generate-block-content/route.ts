@@ -6,7 +6,7 @@
  * @route POST /api/generate-block-content
  *
  * @body {
- *   context: string - Global site context describing the website/business
+ *   contextPrompt: string - Global site context describing the website/business
  *   blockType: string - Type of block (e.g., "hero", "about", "features", "testimonial")
  *   existingFields?: object - Optional current field values to refine/improve
  * }
@@ -26,7 +26,7 @@
  * @example
  * POST /api/generate-block-content
  * {
- *   "context": "A modern fitness studio offering yoga and pilates classes",
+ *   "contextPrompt": "A modern fitness studio offering yoga and pilates classes",
  *   "blockType": "hero",
  *   "existingFields": {}
  * }
@@ -47,9 +47,9 @@ import { openai, CONTENT_GENERATION_CONFIG } from '@/lib/openai';
 
 // Type definitions
 interface GenerateBlockContentRequest {
-  context: string;
+  contextPrompt: string;
   blockType: string;
-  existingFields?: Record<string, any>;
+  existingFields?: Record<string, unknown>;
 }
 
 interface BlockContent {
@@ -57,7 +57,7 @@ interface BlockContent {
   body?: string;
   cta?: string;
   imageUrl?: string;
-  [key: string]: any;
+  [key: string]: string | undefined;
 }
 
 /**
@@ -65,26 +65,69 @@ interface BlockContent {
  */
 function buildPrompt(
   blockType: string,
-  context: string,
-  existingFields?: Record<string, any>
+  contextPrompt: string,
+  existingFields?: Record<string, unknown>
 ): string {
+  const hasExistingContent = existingFields && Object.keys(existingFields).length > 0
+    && Object.values(existingFields).some(val => val && String(val).trim().length > 0);
+
+  // Block-specific instructions
+  let blockSpecificInstructions = '';
+  switch (blockType) {
+    case 'button':
+      blockSpecificInstructions = `For a button block, generate:
+- text: Clear, action-oriented button text (max 25 characters)
+- url: Suggest a relevant URL (e.g., "#contact", "#signup", etc.)
+- style: Choose from "filled", "outlined", or "text"
+- color: Suggest a Tailwind color (e.g., "blue", "purple", "green")`;
+      break;
+    case 'link':
+      blockSpecificInstructions = `For a link block, generate:
+- text: Compelling link text that describes the destination (max 50 characters)
+- url: Suggest a relevant URL
+- description: Brief explanation of where the link leads or why it's useful (max 150 characters)`;
+      break;
+    case 'navbar':
+      blockSpecificInstructions = `For a navbar block, generate:
+- brandName: A short, memorable brand name (max 30 characters)
+- links: Array of 3-5 navigation items with "text" and "url" fields
+- logoUrl: Optional - you can omit this or suggest a placeholder
+Example: { "brandName": "My Brand", "links": [{"text": "Home", "url": "#"}, {"text": "About", "url": "#about"}] }`;
+      break;
+    case 'hero':
+      blockSpecificInstructions = `For a hero block, generate:
+- heading: Bold, attention-grabbing headline (max 60 characters)
+- subheading: Supporting text (max 120 characters)
+- ctaText: Call-to-action button text (max 25 characters)
+- ctaLink: URL for the CTA`;
+      break;
+    case 'text':
+      blockSpecificInstructions = `For a text block, generate:
+- heading: Section heading (max 60 characters)
+- body: Descriptive content (max 500 characters)`;
+      break;
+    case 'image':
+      blockSpecificInstructions = `For an image block, generate:
+- src: Placeholder URL like https://via.placeholder.com/800x400
+- alt: Descriptive alt text
+- caption: Optional caption`;
+      break;
+    default:
+      blockSpecificInstructions = `Generate appropriate fields for a ${blockType} block.`;
+  }
+
   const basePrompt = `You are generating web copy for a ${blockType} section.
 
-User context: ${context}
+User's website context: ${contextPrompt}
 
-${existingFields && Object.keys(existingFields).length > 0 ? `Existing content to refine:\n${JSON.stringify(existingFields, null, 2)}\n` : ''}
-
-Generate concise, natural, and engaging content appropriate for a ${blockType} section.
+${hasExistingContent ? `The block currently contains the following content:\n${JSON.stringify(existingFields, null, 2)}\n\nYour task: Generate FRESH content that builds upon or improves this existing content while staying aligned with the user's context. Use the existing content as inspiration but create new variations. Do not simply repeat the existing text.` : 'Generate brand new, original content based on the user context above.'}
 
 IMPORTANT: Return ONLY valid JSON with no additional text, markdown, or code blocks.
 
-The JSON should include relevant fields from the following options based on the block type:
-- title: A compelling headline (max 80 characters)
-- body: Supporting text or description (max 200 characters for concise blocks, max 500 for content-heavy blocks)
-- cta: Call-to-action text (max 30 characters)
-- imageUrl: Suggest a descriptive image placeholder URL using https://via.placeholder.com/WIDTHxHEIGHT (optional)
+${blockSpecificInstructions}
 
-Ensure all text is professional, engaging, and tailored to the context provided.`;
+Generate concise, natural, and engaging content appropriate for a ${blockType} section.
+Ensure all text is professional, engaging, and tailored to both the user's context and the existing content.`;
 
   return basePrompt;
 }
@@ -92,43 +135,45 @@ Ensure all text is professional, engaging, and tailored to the context provided.
 /**
  * Validates and sanitizes the AI-generated response
  */
-function validateAndSanitizeResponse(data: any): BlockContent {
+function validateAndSanitizeResponse(data: unknown): BlockContent {
   if (typeof data !== 'object' || data === null) {
     throw new Error('Invalid response format: expected JSON object');
   }
 
+  // Type guard to ensure data is a record
+  const record = data as Record<string, unknown>;
   const sanitized: BlockContent = {};
 
   // Validate and sanitize title
-  if (data.title && typeof data.title === 'string') {
-    sanitized.title = data.title.trim().slice(0, 200);
+  if (record.title && typeof record.title === 'string') {
+    sanitized.title = record.title.trim().slice(0, 200);
   }
 
   // Validate and sanitize body
-  if (data.body && typeof data.body === 'string') {
-    sanitized.body = data.body.trim().slice(0, 1000);
+  if (record.body && typeof record.body === 'string') {
+    sanitized.body = record.body.trim().slice(0, 1000);
   }
 
   // Validate and sanitize CTA
-  if (data.cta && typeof data.cta === 'string') {
-    sanitized.cta = data.cta.trim().slice(0, 50);
+  if (record.cta && typeof record.cta === 'string') {
+    sanitized.cta = record.cta.trim().slice(0, 50);
   }
 
   // Validate and sanitize image URL
-  if (data.imageUrl && typeof data.imageUrl === 'string') {
+  if (record.imageUrl && typeof record.imageUrl === 'string') {
     const urlPattern = /^https?:\/\/.+/;
-    if (urlPattern.test(data.imageUrl)) {
-      sanitized.imageUrl = data.imageUrl.trim();
+    if (urlPattern.test(record.imageUrl)) {
+      sanitized.imageUrl = record.imageUrl.trim();
     }
   }
 
   // Include any other string fields that might be present
-  for (const [key, value] of Object.entries(data)) {
+  for (const [key, value] of Object.entries(record)) {
     if (
       !['title', 'body', 'cta', 'imageUrl'].includes(key) &&
       typeof value === 'string'
     ) {
-      sanitized[key] = (value as string).trim().slice(0, 500);
+      sanitized[key] = value.trim().slice(0, 500);
     }
   }
 
@@ -154,13 +199,13 @@ export async function POST(request: NextRequest) {
 
     // Parse and validate request body
     const body = await request.json();
-    const { context, blockType, existingFields } = body as GenerateBlockContentRequest;
+    const { contextPrompt, blockType, existingFields } = body as GenerateBlockContentRequest;
 
-    if (!context || typeof context !== 'string') {
+    if (!contextPrompt || typeof contextPrompt !== 'string') {
       return NextResponse.json(
         {
           success: false,
-          error: 'Invalid request: "context" is required and must be a string',
+          error: 'Invalid request: "contextPrompt" is required and must be a string',
         },
         { status: 400 }
       );
@@ -177,7 +222,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Build the prompt
-    const prompt = buildPrompt(blockType, context, existingFields);
+    const prompt = buildPrompt(blockType, contextPrompt, existingFields);
 
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
@@ -209,7 +254,7 @@ export async function POST(request: NextRequest) {
     let parsedContent;
     try {
       parsedContent = JSON.parse(rawContent);
-    } catch (parseError) {
+    } catch {
       console.error('Failed to parse OpenAI response:', rawContent);
       throw new Error('Invalid JSON response from AI');
     }
