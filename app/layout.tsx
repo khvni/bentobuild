@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { StateHydrator } from '@/components/StateHydrator';
 
 export const metadata: Metadata = {
   title: 'Bentobuild - AI Website Builder',
@@ -13,7 +14,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <StateHydrator />
+        {children}
+      </body>
     </html>
   );
 }

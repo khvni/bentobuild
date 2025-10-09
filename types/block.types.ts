@@ -45,4 +45,12 @@ export interface BuilderState {
   setContextPrompt: (prompt: string) => void;
   selectBlock: (id: string | null) => void;
   reorderBlocks: (blocks: Block[]) => void;
+  // History actions
+  undo: () => void;
+  redo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
+  clearHistory: () => void;
+  // Persistence action
+  hydrate: () => void;
 }
