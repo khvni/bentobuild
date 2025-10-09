@@ -19,6 +19,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "framer-motion": "^12.23.22",
     "next": "^15.5.4",
+    "openai": "^6.2.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "zustand": "^5.0.8"
