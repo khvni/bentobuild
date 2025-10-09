@@ -32,7 +32,7 @@ export const useBuilderStore = create<BuilderState>(
         updateBlock: (id: string, updates: Partial<Block>) =>
           set((state) => ({
             blocks: state.blocks.map((block) =>
-              block.id === id ? { ...block, ...updates } : block
+              block.id === id ? { ...block, ...updates } as Block : block
             ),
           })),
 

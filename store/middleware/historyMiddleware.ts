@@ -45,6 +45,10 @@ type HistoryMiddlewareImpl = <T extends object>(
  * Creates a snapshot of the current state, excluding history-related fields
  */
 function createSnapshot<T extends object>(state: T): Partial<T> {
+  if (!state || typeof state !== 'object') {
+    return {};
+  }
+
   const snapshot: Partial<T> = {};
   const excludeKeys = ['past', 'future', 'undo', 'redo', 'canUndo', 'canRedo', 'clearHistory'];
 
@@ -69,25 +73,36 @@ const historyMiddlewareImpl: HistoryMiddlewareImpl = (config, options = {}) => (
   // Track if we're in an undo/redo operation to prevent adding to history
   let isUndoRedo = false;
 
+  // Track initialization
+  let isInitialized = false;
+
   // Initialize with history state
   const initialState = config(
-    (partial, replace) => {
-      // Only add to history if not during undo/redo
-      if (!isUndoRedo) {
+    (partial, replace?) => {
+      // Only add to history if initialized and not during undo/redo
+      if (isInitialized && !isUndoRedo) {
         const currentState = get() as TStateWithHistory;
-        const snapshot = createSnapshot(currentState);
 
-        // Add current state to past
-        const newPast = [...currentState.past, snapshot];
+        // Check if past/future exist before using them
+        if (currentState && typeof currentState === 'object' && 'past' in currentState) {
+          const snapshot = createSnapshot(currentState);
 
-        // Limit history size
-        const past = newPast.slice(-maxHistorySize);
+          // Add current state to past
+          const newPast = [...(currentState.past || []), snapshot];
 
-        // Clear future on new action
-        set({ past, future: [] } as Partial<TStateWithHistory>, false);
+          // Limit history size
+          const past = newPast.slice(-maxHistorySize);
+
+          // Clear future on new action
+          set({ past, future: [] } as Partial<TStateWithHistory>, false);
+        }
       }
 
-      set(partial as any, replace);
+      if (replace === true) {
+        set(partial as any, true);
+      } else {
+        set(partial as any, false);
+      }
     },
     get,
     api
@@ -118,7 +133,7 @@ const historyMiddlewareImpl: HistoryMiddlewareImpl = (config, options = {}) => (
           future: [currentSnapshot, ...state.future],
           canUndo: newPast.length > 0,
           canRedo: true,
-        } as Partial<TStateWithHistory>,
+        } as any,
         true
       );
 
@@ -142,7 +157,7 @@ const historyMiddlewareImpl: HistoryMiddlewareImpl = (config, options = {}) => (
           future: newFuture,
           canUndo: true,
           canRedo: newFuture.length > 0,
-        } as Partial<TStateWithHistory>,
+        } as any,
         true
       );
 
@@ -175,6 +190,9 @@ const historyMiddlewareImpl: HistoryMiddlewareImpl = (config, options = {}) => (
 
   // Set initial state
   set(stateWithHistory as any, true);
+
+  // Mark as initialized after setting initial state
+  isInitialized = true;
 
   return stateWithHistory;
 };

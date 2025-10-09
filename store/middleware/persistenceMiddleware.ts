@@ -28,6 +28,10 @@ type PersistenceMiddlewareImpl = <T extends object>(
  * Creates a persistable version of the state
  */
 function createPersistableState<T extends object>(state: T, excludeKeys: string[]): Partial<T> {
+  if (!state || typeof state !== 'object') {
+    return {};
+  }
+
   const persistable: Partial<T> = {};
   const defaultExclude = ['hydrate', 'past', 'future', 'undo', 'redo', 'canUndo', 'canRedo', 'clearHistory'];
   const allExcludeKeys = [...defaultExclude, ...excludeKeys];
@@ -58,6 +62,9 @@ const persistenceMiddlewareImpl: PersistenceMiddlewareImpl = (config, options = 
 
   // Debounced save function
   const debouncedSave = () => {
+    // Only run in browser environment
+    if (typeof window === 'undefined') return;
+
     if (saveTimeout) {
       clearTimeout(saveTimeout);
     }
