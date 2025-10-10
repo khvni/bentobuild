@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useBuilderStore } from '@/store/useBuilderStore';
 import { BlockType } from '@/types/block.types';
 import { useDraggable } from '@dnd-kit/core';
@@ -101,9 +102,17 @@ const blockTemplates = {
   },
 };
 
+interface BlockTemplate {
+  type: BlockType;
+  icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>;
+  label: string;
+  color: string;
+  defaultContent: Record<string, unknown>;
+}
+
 interface DraggableBlockTemplateProps {
   blockType: BlockType;
-  template: typeof blockTemplates[keyof typeof blockTemplates];
+  template: BlockTemplate;
 }
 
 function DraggableBlockTemplate({ blockType, template }: DraggableBlockTemplateProps) {
@@ -115,6 +124,8 @@ function DraggableBlockTemplate({ blockType, template }: DraggableBlockTemplateP
       template,
     },
   });
+
+  const IconComponent = template.icon;
 
   return (
     <button
@@ -142,7 +153,7 @@ function DraggableBlockTemplate({ blockType, template }: DraggableBlockTemplateP
           style={{ backgroundColor: `${template.color}20` }}
           aria-hidden="true"
         >
-          <template.icon className="w-6 h-6" style={{ color: template.color }} />
+          <IconComponent className="w-6 h-6" style={{ color: template.color }} />
         </div>
         <div>
           <p className="font-bold text-gray-900 uppercase text-xs tracking-wide mb-0.5">
