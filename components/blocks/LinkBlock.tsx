@@ -26,11 +26,16 @@ export default function LinkBlock({ block }: LinkBlockProps) {
     await regenerateBlock(block.id);
   };
 
+  const backgroundColor = block.content.backgroundColor || '#FFFFFF';
+  const textColor = block.content.textColor || '#111827';
+  const linkColor = block.content.linkColor || '#3B82F6';
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative p-10 bg-white border-l-8 border-bauhaus-yellow rounded-bauhaus-md shadow-bauhaus-lg hover:shadow-bauhaus-xl bauhaus-transition"
+      className="relative p-10 border-l-8 border-bauhaus-yellow rounded-bauhaus-md shadow-bauhaus-lg hover:shadow-bauhaus-xl bauhaus-transition"
+      style={{ backgroundColor }}
     >
       {/* Geometric accents */}
       <div className="absolute top-4 right-4 w-6 h-6 bg-bauhaus-yellow rounded-full opacity-25"></div>
@@ -89,16 +94,20 @@ export default function LinkBlock({ block }: LinkBlockProps) {
           <div className="flex-1">
             <input
               type="text"
-              className="w-full bauhaus-h3 font-bold text-bauhaus-blue hover:text-black border-b-4 border-transparent hover:border-bauhaus-blue focus:border-bauhaus-blue focus:outline-none mb-4 bauhaus-transition uppercase tracking-wide"
+              className="w-full bauhaus-h3 font-bold border-b-4 border-transparent hover:border-current focus:border-current focus:outline-none mb-4 bauhaus-transition uppercase tracking-wide"
+              style={{ color: linkColor }}
               value={block.content.text}
               onChange={(e) => handleContentChange('text', e.target.value)}
+              onClick={(e) => e.stopPropagation()}
               placeholder="Link Text"
             />
 
             <textarea
-              className="w-full text-gray-700 border-b-2 border-transparent hover:border-gray-300 focus:border-gray-300 focus:outline-none mb-3 resize-none"
+              className="w-full border-b-2 border-transparent hover:border-gray-300 focus:border-gray-300 focus:outline-none mb-3 resize-none"
+              style={{ color: textColor, backgroundColor }}
               value={block.content.description}
               onChange={(e) => handleContentChange('description', e.target.value)}
+              onClick={(e) => e.stopPropagation()}
               placeholder="Link description (optional)"
               rows={2}
             />
@@ -110,6 +119,7 @@ export default function LinkBlock({ block }: LinkBlockProps) {
                 className="flex-1 text-sm text-gray-600 hover:text-gray-800 border-b border-transparent hover:border-gray-400 focus:border-gray-400 focus:outline-none font-mono"
                 value={block.content.url}
                 onChange={(e) => handleContentChange('url', e.target.value)}
+                onClick={(e) => e.stopPropagation()}
                 placeholder="https://example.com"
               />
             </div>

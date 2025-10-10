@@ -48,11 +48,16 @@ export default function FooterBlock({ block }: FooterBlockProps) {
     await regenerateBlock(block.id);
   };
 
+  const backgroundColor = block.content.backgroundColor || '#111827';
+  const textColor = block.content.textColor || '#F9FAFB';
+  const linkColor = block.content.linkColor || '#60A5FA';
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative bg-gray-900 text-white border-t-4 border-bauhaus-yellow shadow-bauhaus-lg"
+      className="relative border-t-4 border-bauhaus-yellow shadow-bauhaus-lg"
+      style={{ backgroundColor, color: textColor }}
     >
       {/* Bauhaus accent bar */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-bauhaus-blue via-bauhaus-yellow to-bauhaus-red"></div>
@@ -109,18 +114,22 @@ export default function FooterBlock({ block }: FooterBlockProps) {
           <div>
             <input
               type="text"
-              className="bauhaus-h3 font-bold text-white bg-transparent border-b-4 border-transparent hover:border-bauhaus-yellow focus:border-bauhaus-yellow focus:outline-none bauhaus-transition uppercase tracking-wide mb-3"
+              className="bauhaus-h3 font-bold bg-transparent border-b-4 border-transparent hover:border-bauhaus-yellow focus:border-bauhaus-yellow focus:outline-none bauhaus-transition uppercase tracking-wide mb-3"
+              style={{ color: textColor, backgroundColor }}
               value={block.content.companyName}
               onChange={(e) => handleContentChange('companyName', e.target.value)}
+              onClick={(e) => e.stopPropagation()}
               placeholder="Company Name"
             />
-            <div className="text-gray-400 text-sm">
-              <label className="block text-xs font-semibold text-gray-500 mb-1">Contact:</label>
+            <div className="text-sm">
+              <label className="block text-xs font-semibold mb-1" style={{ color: textColor, opacity: 0.7 }}>Contact:</label>
               <input
                 type="email"
-                className="w-full bg-transparent border-b border-transparent hover:border-gray-600 focus:border-bauhaus-blue focus:outline-none text-gray-300 pb-1"
+                className="w-full bg-transparent border-b border-transparent hover:border-gray-600 focus:border-bauhaus-blue focus:outline-none pb-1"
+                style={{ color: textColor, opacity: 0.9 }}
                 value={block.content.contactEmail}
                 onChange={(e) => handleContentChange('contactEmail', e.target.value)}
+                onClick={(e) => e.stopPropagation()}
                 placeholder="contact@company.com"
               />
             </div>
@@ -130,24 +139,28 @@ export default function FooterBlock({ block }: FooterBlockProps) {
           <div className="flex items-center justify-center">
             <input
               type="text"
-              className="text-center text-gray-400 bg-transparent border-b border-transparent hover:border-gray-600 focus:border-bauhaus-blue focus:outline-none px-2 py-1"
+              className="text-center bg-transparent border-b border-transparent hover:border-gray-600 focus:border-bauhaus-blue focus:outline-none px-2 py-1"
+              style={{ color: textColor, opacity: 0.7 }}
               value={block.content.copyright}
               onChange={(e) => handleContentChange('copyright', e.target.value)}
+              onClick={(e) => e.stopPropagation()}
               placeholder="© 2024 Company. All rights reserved."
             />
           </div>
 
           {/* Social Links */}
           <div>
-            <p className="text-sm font-semibold text-gray-400 mb-3 uppercase tracking-wide">Connect</p>
+            <p className="text-sm font-semibold mb-3 uppercase tracking-wide" style={{ color: textColor, opacity: 0.7 }}>Connect</p>
             <div className="space-y-2">
               {block.content.socialLinks.map((link, index) => (
                 <div key={index} className="flex items-center gap-2 group">
                   <input
                     type="text"
-                    className="flex-1 bg-transparent border-b border-transparent hover:border-gray-600 focus:border-bauhaus-blue focus:outline-none text-sm text-gray-300"
+                    className="flex-1 bg-transparent border-b border-transparent hover:border-gray-600 focus:border-bauhaus-blue focus:outline-none text-sm"
+                    style={{ color: linkColor }}
                     value={link.platform}
                     onChange={(e) => handleSocialLinkChange(index, 'platform', e.target.value)}
+                    onClick={(e) => e.stopPropagation()}
                     placeholder="Platform"
                   />
                   <button
@@ -183,6 +196,7 @@ export default function FooterBlock({ block }: FooterBlockProps) {
                   className="flex-1 px-3 py-1 bg-gray-900 border border-gray-700 rounded focus:ring-2 focus:ring-bauhaus-blue focus:border-transparent text-gray-300 font-mono text-xs"
                   value={link.url}
                   onChange={(e) => handleSocialLinkChange(index, 'url', e.target.value)}
+                  onClick={(e) => e.stopPropagation()}
                   placeholder="https://..."
                 />
               </div>

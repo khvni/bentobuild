@@ -51,11 +51,17 @@ export default function NavbarBlock({ block }: NavbarBlockProps) {
     await regenerateBlock(block.id);
   };
 
+  const backgroundColor = block.content.backgroundColor || '#FFFFFF';
+  const textColor = block.content.textColor || '#111827';
+  const linkColor = block.content.linkColor || '#3B82F6';
+  const linkHoverColor = block.content.linkHoverColor || '#2563EB';
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative bg-white border-b-4 border-black shadow-bauhaus-lg"
+      className="relative border-b-4 border-black shadow-bauhaus-lg"
+      style={{ backgroundColor }}
     >
       {/* Bauhaus accent bar */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-bauhaus-red via-bauhaus-yellow to-bauhaus-blue"></div>
@@ -121,9 +127,11 @@ export default function NavbarBlock({ block }: NavbarBlockProps) {
             )}
             <input
               type="text"
-              className="bauhaus-h3 font-bold text-black border-b-4 border-transparent hover:border-bauhaus-red focus:border-bauhaus-red focus:outline-none bauhaus-transition uppercase tracking-wide"
+              className="bauhaus-h3 font-bold border-b-4 border-transparent hover:border-bauhaus-red focus:border-bauhaus-red focus:outline-none bauhaus-transition uppercase tracking-wide"
+              style={{ color: textColor, backgroundColor }}
               value={block.content.brandName}
               onChange={(e) => handleContentChange('brandName', e.target.value)}
+              onClick={(e) => e.stopPropagation()}
               placeholder="Brand Name"
             />
           </div>
@@ -134,9 +142,16 @@ export default function NavbarBlock({ block }: NavbarBlockProps) {
               <div key={index} className="flex items-center gap-2 group">
                 <input
                   type="text"
-                  className="text-gray-700 hover:text-blue-600 border-b border-transparent hover:border-gray-300 focus:border-blue-600 focus:outline-none font-medium"
+                  className="border-b border-transparent hover:border-gray-300 focus:outline-none font-medium"
+                  style={{
+                    color: linkColor,
+                    backgroundColor,
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = linkHoverColor)}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = linkColor)}
                   value={link.text}
                   onChange={(e) => handleLinkChange(index, 'text', e.target.value)}
+                  onClick={(e) => e.stopPropagation()}
                   placeholder="Link"
                 />
                 <button

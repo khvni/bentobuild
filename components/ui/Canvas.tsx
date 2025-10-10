@@ -10,7 +10,7 @@ import BlockWrapper from '@/components/ui/BlockWrapper';
 import GeometricDecoration from '@/components/ui/GeometricDecoration';
 
 export default function Canvas() {
-  const { blocks, selectedFont } = useBuilderStore();
+  const { blocks } = useBuilderStore();
 
   const { setNodeRef } = useDroppable({
     id: 'canvas-droppable',
@@ -31,7 +31,7 @@ export default function Canvas() {
       <div
         id="main-canvas"
         ref={setNodeRef}
-        className={`max-w-5xl mx-auto p-8 pl-16 min-h-full font-${selectedFont} relative`}
+        className="max-w-5xl mx-auto p-8 pl-16 min-h-full relative"
         aria-label="Website blocks canvas"
       >
         {blocks.length === 0 ? (

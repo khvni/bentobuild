@@ -23,6 +23,14 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-noto-sans)', 'sans-serif'],
         serif: ['var(--font-instrument-serif)', 'serif'],
+        // Individual font families for selector
+        'inter': ['var(--font-inter)', 'sans-serif'],
+        'noto-sans': ['var(--font-noto-sans)', 'sans-serif'],
+        'lexend': ['var(--font-lexend)', 'sans-serif'],
+        'manrope': ['var(--font-manrope)', 'sans-serif'],
+        'instrument-serif': ['var(--font-instrument-serif)', 'serif'],
+        'eb-garamond': ['var(--font-eb-garamond)', 'serif'],
+        'playfair-display': ['var(--font-playfair-display)', 'serif'],
       },
       borderRadius: {
         'bauhaus-sm': '2px',

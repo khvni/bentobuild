@@ -3,14 +3,27 @@
 import { useState } from 'react';
 import { useBuilderStore } from '@/store/useBuilderStore';
 import { motion, AnimatePresence } from 'framer-motion';
+import { usePreviewSync } from '@/hooks/usePreviewSync';
 
 export default function PreviewButton() {
   const { blocks, contextPrompt } = useBuilderStore();
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [sandboxId, setSandboxId] = useState<string | null>(null);
   const [isMock, setIsMock] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [liveSyncEnabled, setLiveSyncEnabled] = useState(false);
+
+  // Live sync hook
+  const {
+    isSyncing,
+    lastSyncTime,
+    syncError,
+    enableSync,
+    disableSync,
+    manualSync,
+  } = usePreviewSync();
 
   const handlePreview = async () => {
     if (blocks.length === 0) {
@@ -38,6 +51,7 @@ export default function PreviewButton() {
 
       if (data.success) {
         setPreviewUrl(data.url);
+        setSandboxId(data.sandboxId || null);
         setIsMock(data.isMock || false);
         setShowModal(true);
       } else {
@@ -57,6 +71,46 @@ export default function PreviewButton() {
     setPreviewUrl(null);
     setError(null);
     setIsMock(false);
+
+    // Disable sync when modal closes
+    if (liveSyncEnabled) {
+      disableSync();
+      setLiveSyncEnabled(false);
+    }
+  };
+
+  const toggleLiveSync = () => {
+    if (!sandboxId || isMock) return;
+
+    if (liveSyncEnabled) {
+      disableSync();
+      setLiveSyncEnabled(false);
+    } else {
+      enableSync(sandboxId);
+      setLiveSyncEnabled(true);
+    }
+  };
+
+  const handleManualSync = async () => {
+    await manualSync();
+  };
+
+  // Format time ago
+  const getTimeAgo = (date: Date | null): string => {
+    if (!date) return 'Never';
+    const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
+    if (seconds < 5) return 'Just now';
+    if (seconds < 60) return `${seconds}s ago`;
+    if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+    return `${Math.floor(seconds / 3600)}h ago`;
+  };
+
+  // Sync status indicator
+  const getSyncStatusIcon = () => {
+    if (!liveSyncEnabled) return '⚪'; // Gray - disabled
+    if (isSyncing) return '🟡'; // Yellow - syncing
+    if (syncError) return '🔴'; // Red - error
+    return '🟢'; // Green - synced
   };
 
   return (
@@ -159,6 +213,65 @@ export default function PreviewButton() {
                         >
                           {previewUrl}
                         </a>
+                      </div>
+                    )}
+
+                    {/* Live Sync Controls */}
+                    {!isMock && sandboxId && (
+                      <div className="bg-gradient-to-br from-purple-50 to-blue-50 p-4 rounded-lg border border-purple-200 mt-4">
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg">{getSyncStatusIcon()}</span>
+                            <span className="font-semibold text-gray-900">Live Sync</span>
+                          </div>
+                          <button
+                            onClick={toggleLiveSync}
+                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                              liveSyncEnabled ? 'bg-blue-600' : 'bg-gray-300'
+                            }`}
+                          >
+                            <span
+                              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                                liveSyncEnabled ? 'translate-x-6' : 'translate-x-1'
+                              }`}
+                            />
+                          </button>
+                        </div>
+
+                        {liveSyncEnabled && (
+                          <div className="space-y-2 text-sm">
+                            <div className="flex items-center justify-between text-gray-600">
+                              <span>Status:</span>
+                              <span className={`font-medium ${syncError ? 'text-red-600' : isSyncing ? 'text-yellow-600' : 'text-green-600'}`}>
+                                {syncError ? 'Error' : isSyncing ? 'Syncing...' : 'Up to date'}
+                              </span>
+                            </div>
+                            <div className="flex items-center justify-between text-gray-600">
+                              <span>Last synced:</span>
+                              <span className="font-medium text-gray-900">
+                                {getTimeAgo(lastSyncTime)}
+                              </span>
+                            </div>
+                            {syncError && (
+                              <div className="mt-2 p-2 bg-red-50 border border-red-200 rounded text-xs text-red-700">
+                                {syncError}
+                              </div>
+                            )}
+                            <button
+                              onClick={handleManualSync}
+                              disabled={isSyncing}
+                              className="w-full mt-2 px-3 py-2 bg-white border border-gray-300 rounded-md text-xs font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            >
+                              {isSyncing ? 'Syncing...' : 'Sync Now'}
+                            </button>
+                          </div>
+                        )}
+
+                        {!liveSyncEnabled && (
+                          <p className="text-xs text-gray-600 text-center">
+                            Enable to sync changes automatically
+                          </p>
+                        )}
                       </div>
                     )}
                   </div>

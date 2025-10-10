@@ -147,6 +147,7 @@ export default function ButtonBlock({ block }: ButtonBlockProps) {
                   className="w-full bg-transparent text-center outline-none min-w-[120px]"
                   value={block.content.text}
                   onChange={(e) => handleContentChange('text', e.target.value)}
+                  onClick={(e) => e.stopPropagation()}
                   placeholder="Button Text"
                 />
               </div>
@@ -162,6 +163,7 @@ export default function ButtonBlock({ block }: ButtonBlockProps) {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               value={block.content.url}
               onChange={(e) => handleContentChange('url', e.target.value)}
+              onClick={(e) => e.stopPropagation()}
               placeholder="https://example.com"
             />
           </div>

@@ -3,14 +3,17 @@
 import { useBuilderStore } from '@/store/useBuilderStore';
 import { useBlockEditor } from '@/hooks/useBlockEditor';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Block } from '@/types/block.types';
+import { Block, FontFamily } from '@/types/block.types';
 import ColorPicker from './ColorPicker';
+import FontSelector from './FontSelector';
+import RichTextEditor from './RichTextEditor';
 import { useState } from 'react';
 
 export default function BlockEditorPanel() {
   const { blocks, selectedBlockId, selectBlock, updateBlock, deleteBlock, contextPrompt } = useBuilderStore();
   const { loading, error, success, generateContent, resetStatus } = useBlockEditor();
   const [colorsExpanded, setColorsExpanded] = useState(true);
+  const [typographyExpanded, setTypographyExpanded] = useState(true);
 
   const selectedBlock = blocks.find((b) => b.id === selectedBlockId);
 
@@ -34,6 +37,26 @@ export default function BlockEditorPanel() {
           content: { ...selectedBlock.content, [field]: value },
         });
         break;
+      case 'button':
+        updateBlock(selectedBlock.id, {
+          content: { ...selectedBlock.content, [field]: value },
+        });
+        break;
+      case 'link':
+        updateBlock(selectedBlock.id, {
+          content: { ...selectedBlock.content, [field]: value },
+        });
+        break;
+      case 'navbar':
+        updateBlock(selectedBlock.id, {
+          content: { ...selectedBlock.content, [field]: value },
+        });
+        break;
+      case 'footer':
+        updateBlock(selectedBlock.id, {
+          content: { ...selectedBlock.content, [field]: value },
+        });
+        break;
     }
   };
 
@@ -52,33 +75,21 @@ export default function BlockEditorPanel() {
       case 'hero':
         return (
           <>
-            <div>
-              <label htmlFor="hero-heading" className="block text-sm font-medium text-gray-700 mb-1">
-                Heading
-              </label>
-              <input
-                id="hero-heading"
-                type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
-                value={block.content.heading}
-                onChange={(e) => handleFieldChange('heading', e.target.value)}
-                placeholder="Hero heading"
-                aria-required="true"
-              />
-            </div>
-            <div>
-              <label htmlFor="hero-subheading" className="block text-sm font-medium text-gray-700 mb-1">
-                Subheading
-              </label>
-              <input
-                id="hero-subheading"
-                type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
-                value={block.content.subheading}
-                onChange={(e) => handleFieldChange('subheading', e.target.value)}
-                placeholder="Hero subheading"
-              />
-            </div>
+            <RichTextEditor
+              value={block.content.heading}
+              onChange={(html) => handleFieldChange('heading', html)}
+              placeholder="Hero heading"
+              label="Heading"
+              minHeight="100px"
+              autoFocus
+            />
+            <RichTextEditor
+              value={block.content.subheading}
+              onChange={(html) => handleFieldChange('subheading', html)}
+              placeholder="Hero subheading"
+              label="Subheading"
+              minHeight="80px"
+            />
             <div>
               <label htmlFor="hero-cta-text" className="block text-sm font-medium text-gray-700 mb-1">
                 CTA Text
@@ -106,6 +117,48 @@ export default function BlockEditorPanel() {
                 aria-describedby="cta-link-help"
               />
               <p id="cta-link-help" className="sr-only">Enter the URL for the call to action button</p>
+            </div>
+
+            {/* Typography Section */}
+            <div className="pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setTypographyExpanded(!typographyExpanded)}
+                className="flex items-center justify-between w-full text-sm font-semibold text-gray-700 mb-3"
+              >
+                <span>Typography</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${typographyExpanded ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {typographyExpanded && (
+                <div className="space-y-3">
+                  <FontSelector
+                    value={block.content.fontFamily}
+                    onChange={(font: FontFamily) => handleFieldChange('fontFamily', font)}
+                  />
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1 uppercase tracking-wide">
+                      Font Size
+                    </label>
+                    <select
+                      className="w-full px-3 py-2 border-2 border-gray-300 rounded-bauhaus-sm focus:ring-2 focus:ring-bauhaus-blue focus:border-bauhaus-blue focus:outline-none"
+                      value={block.content.fontSize || 'medium'}
+                      onChange={(e) => handleFieldChange('fontSize', e.target.value)}
+                    >
+                      <option value="small">Small</option>
+                      <option value="medium">Medium</option>
+                      <option value="large">Large</option>
+                      <option value="xlarge">Extra Large</option>
+                    </select>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Colors Section */}
@@ -156,33 +209,62 @@ export default function BlockEditorPanel() {
       case 'text':
         return (
           <>
-            <div>
-              <label htmlFor="text-heading" className="block text-sm font-medium text-gray-700 mb-1">
-                Heading
-              </label>
-              <input
-                id="text-heading"
-                type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
-                value={block.content.heading}
-                onChange={(e) => handleFieldChange('heading', e.target.value)}
-                placeholder="Section heading"
-                aria-required="true"
-              />
-            </div>
-            <div>
-              <label htmlFor="text-body" className="block text-sm font-medium text-gray-700 mb-1">
-                Body
-              </label>
-              <textarea
-                id="text-body"
-                rows={6}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none focus:outline-none"
-                value={block.content.body}
-                onChange={(e) => handleFieldChange('body', e.target.value)}
-                placeholder="Enter your text content..."
-                aria-required="true"
-              />
+            <RichTextEditor
+              value={block.content.heading}
+              onChange={(html) => handleFieldChange('heading', html)}
+              placeholder="Section heading"
+              label="Heading"
+              minHeight="80px"
+              autoFocus
+            />
+            <RichTextEditor
+              value={block.content.body}
+              onChange={(html) => handleFieldChange('body', html)}
+              placeholder="Enter your text content..."
+              label="Body"
+              minHeight="200px"
+            />
+
+            {/* Typography Section */}
+            <div className="pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setTypographyExpanded(!typographyExpanded)}
+                className="flex items-center justify-between w-full text-sm font-semibold text-gray-700 mb-3"
+              >
+                <span>Typography</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${typographyExpanded ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {typographyExpanded && (
+                <div className="space-y-3">
+                  <FontSelector
+                    value={block.content.fontFamily}
+                    onChange={(font: FontFamily) => handleFieldChange('fontFamily', font)}
+                  />
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1 uppercase tracking-wide">
+                      Font Size
+                    </label>
+                    <select
+                      className="w-full px-3 py-2 border-2 border-gray-300 rounded-bauhaus-sm focus:ring-2 focus:ring-bauhaus-blue focus:border-bauhaus-blue focus:outline-none"
+                      value={block.content.fontSize || 'medium'}
+                      onChange={(e) => handleFieldChange('fontSize', e.target.value)}
+                    >
+                      <option value="small">Small</option>
+                      <option value="medium">Medium</option>
+                      <option value="large">Large</option>
+                      <option value="xlarge">Extra Large</option>
+                    </select>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Colors Section */}
@@ -262,18 +344,39 @@ export default function BlockEditorPanel() {
                 Describe the image for screen readers (required for accessibility)
               </p>
             </div>
-            <div>
-              <label htmlFor="image-caption" className="block text-sm font-medium text-gray-700 mb-1">
-                Caption
-              </label>
-              <input
-                id="image-caption"
-                type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
-                value={block.content.caption}
-                onChange={(e) => handleFieldChange('caption', e.target.value)}
-                placeholder="Optional caption"
-              />
+              <RichTextEditor
+              value={block.content.caption}
+              onChange={(html) => handleFieldChange('caption', html)}
+              placeholder="Optional caption"
+              label="Caption"
+              minHeight="60px"
+            />
+
+            {/* Typography Section */}
+            <div className="pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setTypographyExpanded(!typographyExpanded)}
+                className="flex items-center justify-between w-full text-sm font-semibold text-gray-700 mb-3"
+              >
+                <span>Typography</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${typographyExpanded ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {typographyExpanded && (
+                <div className="space-y-3">
+                  <FontSelector
+                    value={block.content.fontFamily}
+                    onChange={(font: FontFamily) => handleFieldChange('fontFamily', font)}
+                  />
+                </div>
+              )}
             </div>
 
             {/* Colors Section */}
@@ -311,6 +414,492 @@ export default function BlockEditorPanel() {
           </>
         );
 
+      case 'button':
+        return (
+          <>
+            <div>
+              <label htmlFor="button-text" className="block text-sm font-medium text-gray-700 mb-1">
+                Button Text
+              </label>
+              <input
+                id="button-text"
+                type="text"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
+                value={block.content.text}
+                onChange={(e) => handleFieldChange('text', e.target.value)}
+                placeholder="Button text"
+                aria-required="true"
+              />
+            </div>
+            <div>
+              <label htmlFor="button-url" className="block text-sm font-medium text-gray-700 mb-1">
+                Button URL
+              </label>
+              <input
+                id="button-url"
+                type="url"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
+                value={block.content.url}
+                onChange={(e) => handleFieldChange('url', e.target.value)}
+                placeholder="https://..."
+                aria-required="true"
+              />
+            </div>
+            <div>
+              <label htmlFor="button-style" className="block text-sm font-medium text-gray-700 mb-1">
+                Button Style
+              </label>
+              <select
+                id="button-style"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
+                value={block.content.style}
+                onChange={(e) => handleFieldChange('style', e.target.value as 'filled' | 'outlined' | 'text')}
+              >
+                <option value="filled">Filled</option>
+                <option value="outlined">Outlined</option>
+                <option value="text">Text</option>
+              </select>
+            </div>
+
+            {/* Typography Section */}
+            <div className="pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setTypographyExpanded(!typographyExpanded)}
+                className="flex items-center justify-between w-full text-sm font-semibold text-gray-700 mb-3"
+              >
+                <span>Typography</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${typographyExpanded ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {typographyExpanded && (
+                <div className="space-y-3">
+                  <FontSelector
+                    value={block.content.fontFamily}
+                    onChange={(font: FontFamily) => handleFieldChange('fontFamily', font)}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Colors Section */}
+            <div className="pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setColorsExpanded(!colorsExpanded)}
+                className="flex items-center justify-between w-full text-sm font-semibold text-gray-700 mb-3"
+              >
+                <span>Colors</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${colorsExpanded ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {colorsExpanded && (
+                <div className="space-y-3">
+                  <ColorPicker
+                    label="Background Color"
+                    value={block.content.backgroundColor || '#3B82F6'}
+                    onChange={(color) => handleFieldChange('backgroundColor', color)}
+                  />
+                  <ColorPicker
+                    label="Text Color"
+                    value={block.content.textColor || '#FFFFFF'}
+                    onChange={(color) => handleFieldChange('textColor', color)}
+                  />
+                  {block.content.style === 'outlined' && (
+                    <ColorPicker
+                      label="Border Color"
+                      value={block.content.borderColor || '#3B82F6'}
+                      onChange={(color) => handleFieldChange('borderColor', color)}
+                    />
+                  )}
+                </div>
+              )}
+            </div>
+          </>
+        );
+
+      case 'link':
+        return (
+          <>
+            <div>
+              <label htmlFor="link-text" className="block text-sm font-medium text-gray-700 mb-1">
+                Link Text
+              </label>
+              <input
+                id="link-text"
+                type="text"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
+                value={block.content.text}
+                onChange={(e) => handleFieldChange('text', e.target.value)}
+                placeholder="Link text"
+                aria-required="true"
+              />
+            </div>
+            <div>
+              <label htmlFor="link-url" className="block text-sm font-medium text-gray-700 mb-1">
+                Link URL
+              </label>
+              <input
+                id="link-url"
+                type="url"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
+                value={block.content.url}
+                onChange={(e) => handleFieldChange('url', e.target.value)}
+                placeholder="https://..."
+                aria-required="true"
+              />
+            </div>
+            <div>
+              <label htmlFor="link-description" className="block text-sm font-medium text-gray-700 mb-1">
+                Description
+              </label>
+              <textarea
+                id="link-description"
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none focus:outline-none"
+                value={block.content.description}
+                onChange={(e) => handleFieldChange('description', e.target.value)}
+                placeholder="Link description (optional)"
+              />
+            </div>
+
+            {/* Typography Section */}
+            <div className="pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setTypographyExpanded(!typographyExpanded)}
+                className="flex items-center justify-between w-full text-sm font-semibold text-gray-700 mb-3"
+              >
+                <span>Typography</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${typographyExpanded ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {typographyExpanded && (
+                <div className="space-y-3">
+                  <FontSelector
+                    value={block.content.fontFamily}
+                    onChange={(font: FontFamily) => handleFieldChange('fontFamily', font)}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Colors Section */}
+            <div className="pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setColorsExpanded(!colorsExpanded)}
+                className="flex items-center justify-between w-full text-sm font-semibold text-gray-700 mb-3"
+              >
+                <span>Colors</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${colorsExpanded ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {colorsExpanded && (
+                <div className="space-y-3">
+                  <ColorPicker
+                    label="Background Color"
+                    value={block.content.backgroundColor || '#FFFFFF'}
+                    onChange={(color) => handleFieldChange('backgroundColor', color)}
+                  />
+                  <ColorPicker
+                    label="Text Color"
+                    value={block.content.textColor || '#111827'}
+                    onChange={(color) => handleFieldChange('textColor', color)}
+                  />
+                  <ColorPicker
+                    label="Link Color"
+                    value={block.content.linkColor || '#3B82F6'}
+                    onChange={(color) => handleFieldChange('linkColor', color)}
+                  />
+                </div>
+              )}
+            </div>
+          </>
+        );
+
+      case 'navbar':
+        return (
+          <>
+            <div>
+              <label htmlFor="navbar-brand" className="block text-sm font-medium text-gray-700 mb-1">
+                Brand Name
+              </label>
+              <input
+                id="navbar-brand"
+                type="text"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
+                value={block.content.brandName}
+                onChange={(e) => handleFieldChange('brandName', e.target.value)}
+                placeholder="Brand name"
+                aria-required="true"
+              />
+            </div>
+            <div>
+              <label htmlFor="navbar-logo" className="block text-sm font-medium text-gray-700 mb-1">
+                Logo URL
+              </label>
+              <input
+                id="navbar-logo"
+                type="url"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
+                value={block.content.logoUrl || ''}
+                onChange={(e) => handleFieldChange('logoUrl', e.target.value)}
+                placeholder="https://... (optional)"
+              />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-700 mb-2">
+                Navigation Links
+              </p>
+              <p className="text-xs text-gray-600 mb-1">
+                Edit links directly in the navbar block on the canvas
+              </p>
+            </div>
+
+            {/* Typography Section */}
+            <div className="pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setTypographyExpanded(!typographyExpanded)}
+                className="flex items-center justify-between w-full text-sm font-semibold text-gray-700 mb-3"
+              >
+                <span>Typography</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${typographyExpanded ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {typographyExpanded && (
+                <div className="space-y-3">
+                  <FontSelector
+                    value={block.content.fontFamily}
+                    onChange={(font: FontFamily) => handleFieldChange('fontFamily', font)}
+                  />
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1 uppercase tracking-wide">
+                      Font Size
+                    </label>
+                    <select
+                      className="w-full px-3 py-2 border-2 border-gray-300 rounded-bauhaus-sm focus:ring-2 focus:ring-bauhaus-blue focus:border-bauhaus-blue focus:outline-none"
+                      value={block.content.fontSize || 'medium'}
+                      onChange={(e) => handleFieldChange('fontSize', e.target.value)}
+                    >
+                      <option value="small">Small</option>
+                      <option value="medium">Medium</option>
+                      <option value="large">Large</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Colors Section */}
+            <div className="pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setColorsExpanded(!colorsExpanded)}
+                className="flex items-center justify-between w-full text-sm font-semibold text-gray-700 mb-3"
+              >
+                <span>Colors</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${colorsExpanded ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {colorsExpanded && (
+                <div className="space-y-3">
+                  <ColorPicker
+                    label="Background Color"
+                    value={block.content.backgroundColor || '#FFFFFF'}
+                    onChange={(color) => handleFieldChange('backgroundColor', color)}
+                  />
+                  <ColorPicker
+                    label="Text Color"
+                    value={block.content.textColor || '#111827'}
+                    onChange={(color) => handleFieldChange('textColor', color)}
+                  />
+                  <ColorPicker
+                    label="Link Color"
+                    value={block.content.linkColor || '#3B82F6'}
+                    onChange={(color) => handleFieldChange('linkColor', color)}
+                  />
+                  <ColorPicker
+                    label="Link Hover Color"
+                    value={block.content.linkHoverColor || '#2563EB'}
+                    onChange={(color) => handleFieldChange('linkHoverColor', color)}
+                  />
+                </div>
+              )}
+            </div>
+          </>
+        );
+
+      case 'footer':
+        return (
+          <>
+            <div>
+              <label htmlFor="footer-company" className="block text-sm font-medium text-gray-700 mb-1">
+                Company Name
+              </label>
+              <input
+                id="footer-company"
+                type="text"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
+                value={block.content.companyName}
+                onChange={(e) => handleFieldChange('companyName', e.target.value)}
+                placeholder="Company name"
+                aria-required="true"
+              />
+            </div>
+            <div>
+              <label htmlFor="footer-copyright" className="block text-sm font-medium text-gray-700 mb-1">
+                Copyright Text
+              </label>
+              <input
+                id="footer-copyright"
+                type="text"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
+                value={block.content.copyright}
+                onChange={(e) => handleFieldChange('copyright', e.target.value)}
+                placeholder="© 2024 Company"
+              />
+            </div>
+            <div>
+              <label htmlFor="footer-email" className="block text-sm font-medium text-gray-700 mb-1">
+                Contact Email
+              </label>
+              <input
+                id="footer-email"
+                type="email"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
+                value={block.content.contactEmail}
+                onChange={(e) => handleFieldChange('contactEmail', e.target.value)}
+                placeholder="contact@company.com"
+              />
+            </div>
+            <div>
+              <p className="text-sm font-medium text-gray-700 mb-2">
+                Social Links
+              </p>
+              <p className="text-xs text-gray-600 mb-1">
+                Edit social links directly in the footer block on the canvas
+              </p>
+            </div>
+
+            {/* Typography Section */}
+            <div className="pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setTypographyExpanded(!typographyExpanded)}
+                className="flex items-center justify-between w-full text-sm font-semibold text-gray-700 mb-3"
+              >
+                <span>Typography</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${typographyExpanded ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {typographyExpanded && (
+                <div className="space-y-3">
+                  <FontSelector
+                    value={block.content.fontFamily}
+                    onChange={(font: FontFamily) => handleFieldChange('fontFamily', font)}
+                  />
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1 uppercase tracking-wide">
+                      Font Size
+                    </label>
+                    <select
+                      className="w-full px-3 py-2 border-2 border-gray-300 rounded-bauhaus-sm focus:ring-2 focus:ring-bauhaus-blue focus:border-bauhaus-blue focus:outline-none"
+                      value={block.content.fontSize || 'medium'}
+                      onChange={(e) => handleFieldChange('fontSize', e.target.value)}
+                    >
+                      <option value="small">Small</option>
+                      <option value="medium">Medium</option>
+                      <option value="large">Large</option>
+                    </select>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Colors Section */}
+            <div className="pt-4 border-t border-gray-200">
+              <button
+                type="button"
+                onClick={() => setColorsExpanded(!colorsExpanded)}
+                className="flex items-center justify-between w-full text-sm font-semibold text-gray-700 mb-3"
+              >
+                <span>Colors</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${colorsExpanded ? 'rotate-180' : ''}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {colorsExpanded && (
+                <div className="space-y-3">
+                  <ColorPicker
+                    label="Background Color"
+                    value={block.content.backgroundColor || '#111827'}
+                    onChange={(color) => handleFieldChange('backgroundColor', color)}
+                  />
+                  <ColorPicker
+                    label="Text Color"
+                    value={block.content.textColor || '#F9FAFB'}
+                    onChange={(color) => handleFieldChange('textColor', color)}
+                  />
+                  <ColorPicker
+                    label="Link Color"
+                    value={block.content.linkColor || '#60A5FA'}
+                    onChange={(color) => handleFieldChange('linkColor', color)}
+                  />
+                </div>
+              )}
+            </div>
+          </>
+        );
+
       default:
         return null;
     }
@@ -321,6 +910,10 @@ export default function BlockEditorPanel() {
       hero: 'Hero Section',
       text: 'Text Block',
       image: 'Image Block',
+      button: 'Button Block',
+      link: 'Link Block',
+      navbar: 'Navbar Block',
+      footer: 'Footer Block',
     };
     return labels[type] || type;
   };
@@ -330,6 +923,10 @@ export default function BlockEditorPanel() {
       hero: '🎯',
       text: '📝',
       image: '🖼️',
+      button: '🔘',
+      link: '🔗',
+      navbar: '📍',
+      footer: '🦶',
     };
     return icons[type] || '📦';
   };

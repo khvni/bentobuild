@@ -5,7 +5,6 @@ import Canvas from '@/components/ui/Canvas';
 import BlockPalette from '@/components/ui/BlockPalette';
 import PreviewButton from '@/components/ui/PreviewButton';
 import { HistoryControls } from '@/components/ui/HistoryControls';
-import FontSelector from '@/components/ui/FontSelector';
 import GeometricDecoration from '@/components/ui/GeometricDecoration';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
@@ -100,7 +99,6 @@ export default function Home() {
 
         {/* Controls */}
         <div className="flex items-center gap-4 relative z-20">
-          <FontSelector />
           <HistoryControls />
         </div>
 

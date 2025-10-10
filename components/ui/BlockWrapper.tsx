@@ -64,6 +64,8 @@ export default function BlockWrapper({ block }: BlockWrapperProps) {
       onClick={() => handleSelect(block.id)}
       role="listitem"
       aria-label={`${block.type} block`}
+      data-block-type={block.type}
+      data-block-id={block.id}
     >
       {/* Drag Handle */}
       <button
@@ -147,7 +149,7 @@ export default function BlockWrapper({ block }: BlockWrapperProps) {
       </div>
 
       {/* Block Content */}
-      <div onClick={(e) => e.stopPropagation()}>
+      <div>
         {renderBlock()}
       </div>
     </div>

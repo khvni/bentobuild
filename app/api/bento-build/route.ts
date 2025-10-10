@@ -53,63 +53,89 @@ interface BentoBuildResponse {
  * Builds the AI prompt for generating a complete website structure
  */
 function buildBentoBuildPrompt(contextPrompt: string): string {
-  return `You are an expert web designer creating a complete website structure.
+  return `You are a professional web designer and copywriter creating a complete, high-converting website.
 
 User's website context: "${contextPrompt}"
 
-Based on this context, generate a complete website layout. Return ONLY a JSON object with a "blocks" array.
+Based on this context, generate a complete website layout with professional, concise copy. Return ONLY a JSON object with a "blocks" array.
 
 Available block types:
 - navbar: Navigation bar with brand name and links
 - hero: Main hero section with heading, subheading, and CTA
-- text: Text content sections with heading and body
+- text: Text content sections with heading and body (1-2 sentences ONLY)
 - image: Image blocks with src, alt, and caption
 - button: Call-to-action buttons
 - link: Text links with descriptions
 - footer: Footer with company info, copyright, and social links
 
-IMPORTANT RULES:
+CRITICAL COPYWRITING RULES:
+1. Hero heading: Lead with the #1 benefit (max 50 characters)
+2. Hero subheading: 1-2 sentences explaining WHO it's for and WHAT problem it solves (max 120 characters)
+3. Text block body: ALWAYS 1-2 sentences maximum (max 200 characters)
+4. CTAs: Action-oriented, 2-3 words (e.g., "Get Started", "See Plans", "Join Free")
+5. Benefits over features: Focus on what users GAIN, not what you offer
+6. Conversational tone: Sound human, not corporate
+7. Specific, not generic: Avoid vague words like "quality" or "excellence"
+8. Each text block focuses on ONE clear benefit/feature
+
+STRUCTURE RULES:
 1. Return ONLY a valid JSON object with format: {"blocks": [...]}
 2. NO markdown, NO code blocks, NO extra text - ONLY the raw JSON object
 3. Each block must have: id (string), type (BlockType), order (number), content (object)
 4. Generate 5-8 blocks total for a complete website
 5. Always start with navbar (order: 0) and end with footer (last order)
-6. Content must be contextually relevant and professional
-7. For IDs, use format: "{type}-{timestamp}-{order}"
-8. Make content specific to the user's context, not generic
+6. For IDs, use format: "{type}-{timestamp}-{order}"
+7. Make content SPECIFIC to the user's context, not generic templates
 
-Example structure for a photographer:
+Example for "Modern coffee shop in downtown Portland":
 {
   "blocks": [
     {
-    "id": "navbar-1234567890-0",
-    "type": "navbar",
-    "order": 0,
-    "content": {
-      "brandName": "John Doe Photography",
-      "links": [
-        {"text": "Home", "url": "#"},
-        {"text": "Portfolio", "url": "#portfolio"},
-        {"text": "About", "url": "#about"},
-        {"text": "Contact", "url": "#contact"}
-      ]
+      "id": "navbar-1234567890-0",
+      "type": "navbar",
+      "order": 0,
+      "content": {
+        "brandName": "Brew & Co",
+        "links": [
+          {"text": "Menu", "url": "#menu"},
+          {"text": "Visit", "url": "#location"},
+          {"text": "Events", "url": "#events"}
+        ]
+      }
+    },
+    {
+      "id": "hero-1234567890-1",
+      "type": "hero",
+      "order": 1,
+      "content": {
+        "heading": "Your Daily Dose of Portland",
+        "subheading": "Locally roasted coffee and handcrafted pastries. Every morning, fresh.",
+        "ctaText": "See Menu",
+        "ctaLink": "#menu"
+      }
+    },
+    {
+      "id": "text-1234567890-2",
+      "type": "text",
+      "order": 2,
+      "content": {
+        "heading": "Roasted Here, Daily",
+        "body": "We roast our beans in-house every morning for the freshest cup in town. Taste the difference quality makes."
+      }
     }
-  },
-  {
-    "id": "hero-1234567890-1",
-    "type": "hero",
-    "order": 1,
-    "content": {
-      "heading": "Capturing Nature's Beauty",
-      "subheading": "Professional landscape photography services for your brand",
-      "ctaText": "View Portfolio",
-      "ctaLink": "#portfolio"
-    }
-  }
   ]
 }
 
+BAD EXAMPLE (avoid this):
+{
+  "heading": "Welcome to Our Coffee Shop",
+  "subheading": "We are a modern coffee establishment that provides high-quality beverages and food items to our valued customers in a comfortable atmosphere",
+  "body": "Our coffee shop offers a wide variety of premium beverages including espresso-based drinks, pour-over coffee, cold brew, and specialty teas. We also feature an extensive selection of freshly baked pastries, sandwiches, and desserts made from the finest ingredients..."
+}
+
 Now generate a complete website structure for: "${contextPrompt}"
+
+Remember: Every text block body must be 1-2 sentences ONLY. Be ruthlessly concise. Lead with benefits.
 
 Return ONLY the JSON object with "blocks" array, nothing else.`;
 }
@@ -183,7 +209,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<BentoBuil
         {
           role: 'system',
           content:
-            'You are a professional web designer. Generate complete website structures as JSON arrays only. Never include markdown code blocks or additional text - return only raw JSON arrays.',
+            'You are a professional web designer and copywriter specializing in high-converting websites. You create complete website structures with ultra-concise, benefit-focused copy. All body text is 1-2 sentences maximum. You focus on clear value propositions, conversational tone, and action-oriented CTAs. Never use generic corporate language. Generate complete website structures as JSON objects only - never include markdown code blocks or additional text, return only raw JSON.',
         },
         {
           role: 'user',

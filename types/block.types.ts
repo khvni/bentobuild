@@ -1,5 +1,14 @@
 export type BlockType = 'hero' | 'text' | 'image' | 'button' | 'link' | 'navbar' | 'footer';
 
+export type FontFamily =
+  | 'Inter'
+  | 'Instrument Serif'
+  | 'Noto Sans'
+  | 'Lexend'
+  | 'Manrope'
+  | 'EB Garamond'
+  | 'Playfair Display';
+
 export interface BaseBlock {
   id: string;
   type: BlockType;
@@ -18,6 +27,9 @@ export interface HeroBlock extends BaseBlock {
     textColor?: string;
     buttonColor?: string;
     buttonTextColor?: string;
+    // Typography properties
+    fontFamily?: FontFamily;
+    fontSize?: string;
   };
 }
 
@@ -30,6 +42,9 @@ export interface TextBlock extends BaseBlock {
     backgroundColor?: string;
     headingColor?: string;
     textColor?: string;
+    // Typography properties
+    fontFamily?: FontFamily;
+    fontSize?: string;
   };
 }
 
@@ -42,6 +57,8 @@ export interface ImageBlock extends BaseBlock {
     // Color properties
     backgroundColor?: string;
     captionColor?: string;
+    // Typography properties
+    fontFamily?: FontFamily;
   };
 }
 
@@ -55,6 +72,8 @@ export interface ButtonBlock extends BaseBlock {
     backgroundColor?: string;
     textColor?: string;
     borderColor?: string;
+    // Typography properties
+    fontFamily?: FontFamily;
   };
 }
 
@@ -68,6 +87,8 @@ export interface LinkBlock extends BaseBlock {
     backgroundColor?: string;
     textColor?: string;
     linkColor?: string;
+    // Typography properties
+    fontFamily?: FontFamily;
   };
 }
 
@@ -82,6 +103,9 @@ export interface NavbarBlock extends BaseBlock {
     textColor?: string;
     linkColor?: string;
     linkHoverColor?: string;
+    // Typography properties
+    fontFamily?: FontFamily;
+    fontSize?: string;
   };
 }
 
@@ -96,18 +120,18 @@ export interface FooterBlock extends BaseBlock {
     backgroundColor?: string;
     textColor?: string;
     linkColor?: string;
+    // Typography properties
+    fontFamily?: FontFamily;
+    fontSize?: string;
   };
 }
 
 export type Block = HeroBlock | TextBlock | ImageBlock | ButtonBlock | LinkBlock | NavbarBlock | FooterBlock;
 
-export type FontFamily = 'sans' | 'serif';
-
 export interface BuilderState {
   blocks: Block[];
   contextPrompt: string;
   selectedBlockId: string | null;
-  selectedFont: FontFamily;
   addBlock: (block: Block) => void;
   addBlocks: (blocks: Block[]) => void;
   updateBlock: (id: string, updates: Partial<Block>) => void;
@@ -115,7 +139,6 @@ export interface BuilderState {
   setContextPrompt: (prompt: string) => void;
   selectBlock: (id: string | null) => void;
   reorderBlocks: (blocks: Block[]) => void;
-  setFont: (font: FontFamily) => void;
   // History actions
   undo: () => void;
   redo: () => void;
