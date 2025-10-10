@@ -1,46 +1,75 @@
 # Bentoblocks
 
-A drag-and-drop, AI-assisted website builder built with Next.js, React, and TypeScript.
+**_"Describe it once. Build visually. Let AI do the rest."_**
 
-## Features
+An AI-powered, drag-and-drop website builder that combines visual editing with intelligent content generation. Built with Next.js, React, and TypeScript.
 
-- 🎨 **Drag & Drop Interface** - Intuitive block-based website building
-- 🤖 **AI-Powered Content** - Generate relevant copy based on website context
-- 🎯 **Modular Blocks** - Hero sections, text blocks, and image blocks
-- ⚡ **Real-time Editing** - Instant content updates as you type
+## ✨ Features
+
+- 🎨 **Drag & Drop Interface** - Intuitive block-based website building with smooth animations
+- 🤖 **AI-Powered Content** - Full-site generation with Bento Build button
+- 📝 **Per-Block AI Generation** - Generate context-aware copy for individual blocks
+- 🎯 **Modular Blocks** - Navbar, Hero, Text, Image, Gallery, Contact, Footer blocks
+- ⚡ **Real-time Editing** - Instant inline content updates
+- 🔄 **Undo/Redo** - Full state history with keyboard shortcuts
+- 💾 **Auto-Save** - localStorage persistence across sessions
+- 🚀 **One-Click Deploy** - Preview via Daytona sandbox integration
 - 🎭 **Smooth Animations** - Powered by Framer Motion
+- ✅ **Comprehensive Tests** - 114 E2E tests with Playwright
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 - **Framework**: Next.js 15 (App Router)
 - **Language**: TypeScript
 - **Styling**: TailwindCSS
 - **State Management**: Zustand
-- **Drag & Drop**: @dnd-kit
+- **Drag & Drop**: @dnd-kit/core + @dnd-kit/sortable
+- **AI**: OpenAI GPT-4o-mini
 - **Animations**: Framer Motion
-- **Testing**: Playwright
+- **Testing**: Playwright (114 E2E tests)
+- **Deployment**: Daytona Sandbox
 - **Linting**: ESLint + Prettier
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
 - Node.js 18+
 - npm or yarn
+- OpenAI API key (for AI features)
+- Daytona API key (optional, for deployment)
 
 ### Installation
 
-1. Install dependencies:
+1. **Clone the repository**:
+```bash
+git clone https://github.com/yourusername/bentoblocks.git
+cd bentoblocks
+```
+
+2. **Install dependencies**:
 ```bash
 npm install
 ```
 
-2. Run the development server:
+3. **Set up environment variables**:
+```bash
+cp .env.example .env.local
+```
+
+Then edit `.env.local` and add your API keys:
+```bash
+OPENAI_API_KEY=sk-...
+DAYTONA_API_KEY=...     # Optional
+DAYTONA_API_URL=...     # Optional
+```
+
+4. **Run the development server**:
 ```bash
 npm run dev
 ```
 
-3. Open [http://localhost:3000](http://localhost:3000) in your browser
+5. **Open [http://localhost:3000](http://localhost:3000)** in your browser
 
 ## Development
 
@@ -58,56 +87,99 @@ npm run dev
 bentoblocks/
 ├── app/
 │   ├── api/
-│   │   └── generate-block-content/  # API route for AI content generation
+│   │   ├── generate-block-content/  # Per-block AI generation
+│   │   └── bento-build/             # Full-site AI generation
 │   ├── layout.tsx                   # Root layout
 │   ├── page.tsx                     # Main canvas page
 │   └── globals.css                  # Global styles
 ├── components/
 │   ├── blocks/                      # Block components
+│   │   ├── NavbarBlock.tsx
 │   │   ├── HeroBlock.tsx
 │   │   ├── TextBlock.tsx
-│   │   └── ImageBlock.tsx
+│   │   ├── ImageBlock.tsx
+│   │   ├── GalleryBlock.tsx
+│   │   ├── ContactBlock.tsx
+│   │   └── FooterBlock.tsx
 │   └── ui/                          # UI components
-│       ├── ContextBox.tsx           # Context input
+│       ├── ContextBar.tsx           # Context + Bento Build button
 │       ├── Canvas.tsx               # Main canvas with DnD
-│       └── BlockPalette.tsx         # Block selector
+│       ├── BlockPalette.tsx         # Block selector
+│       ├── BlockWrapper.tsx         # Sortable block wrapper
+│       └── BlockEditor.tsx          # Right-side editing panel
+├── lib/
+│   └── daytonaClient.ts             # Daytona deployment integration
 ├── store/
 │   └── useBuilderStore.ts           # Zustand state management
 ├── types/
 │   └── block.types.ts               # TypeScript types
-└── tests/                           # Playwright tests
+└── tests/                           # Playwright E2E tests
+    ├── bento-build-api.spec.ts
+    ├── bento-build-e2e.spec.ts
+    ├── bento-build-ui.spec.ts
+    ├── drag-drop.spec.ts
+    └── example.spec.ts
 ```
 
-## How It Works
+## 💡 How It Works
 
-1. **Context Input**: Users describe their website in the Context Box (e.g., "I'm a freelance photographer")
-2. **Add Blocks**: Click blocks from the palette to add them to the canvas
-3. **Drag & Reorder**: Drag blocks to reorder them on the canvas
-4. **Edit Content**: Click on any block to select it and edit content inline
-5. **AI Generation**: (Coming Soon) Generate block content based on context
+### Quick Start Workflow
 
-## State Management
+1. **Enter Context**: Describe your website in the Context Bar (e.g., "I'm a freelance photographer showcasing my portfolio")
+2. **Bento Build**: Click the "Bento Build" button to generate a complete website layout with AI
+3. **Customize**: Edit any block content inline, drag to reorder, or add/delete blocks
+4. **Preview**: Use the preview button to see your site in a live Daytona sandbox
+5. **Save**: Your work auto-saves to localStorage
 
-The app uses Zustand for global state management with the following state:
+### Manual Building Workflow
 
-- `blocks` - Array of all blocks on the canvas
-- `contextPrompt` - User's website description
-- `selectedBlockId` - Currently selected block
-- Actions: `addBlock`, `updateBlock`, `deleteBlock`, `setContextPrompt`, `selectBlock`, `reorderBlocks`
+1. **Add Blocks**: Drag blocks from the left palette onto the canvas
+2. **Reorder**: Drag blocks vertically to reorder them
+3. **Select & Edit**: Click a block to select it, then edit content inline or in the right panel
+4. **AI Per Block**: Use the "Generate with AI" button on individual blocks
+5. **Delete/Duplicate**: Use action buttons on selected blocks
 
-## API Routes
+## 🗂️ State Management
+
+The app uses **Zustand** for global state management:
+
+```typescript
+{
+  blocks: Block[],              // All blocks on canvas
+  contextPrompt: string,        // User's site description
+  selectedBlockId: string | null,
+  history: State[],             // For undo/redo
+  historyIndex: number,
+
+  // Actions
+  addBlock(block),
+  addBlocks(blocks[]),          // Bulk add for Bento Build
+  updateBlock(id, updates),
+  deleteBlock(id),
+  duplicateBlock(id),
+  setContextPrompt(prompt),
+  selectBlock(id),
+  reorderBlocks(blocks),
+  undo(),
+  redo()
+}
+```
+
+State persists to localStorage and syncs across page reloads.
+
+## 🔌 API Routes
 
 ### `/api/generate-block-content`
 
-**Status**: Stub (to be implemented)
-
-**Purpose**: Generate AI-powered content for blocks based on context
+Generate AI content for individual blocks.
 
 **Request**:
 ```json
+POST /api/generate-block-content
 {
-  "blockType": "hero" | "text" | "image",
-  "contextPrompt": "User's website description"
+  "blockType": "hero" | "text" | "image" | "gallery" | "contact",
+  "contextPrompt": "User's website description",
+  "existingFields": { /* optional */ }
 }
 ```
 
@@ -116,26 +188,89 @@ The app uses Zustand for global state management with the following state:
 {
   "success": true,
   "content": {
-    // Block-specific content fields
+    "heading": "...",
+    "body": "...",
+    "cta": "...",
+    "imageUrl": "..."
   }
 }
 ```
 
-## Next Steps
+### `/api/bento-build`
 
-- [ ] Implement AI content generation API
-- [ ] Add more block types (gallery, contact form, footer, etc.)
-- [ ] Add export functionality (HTML/CSS)
-- [ ] Add responsive preview modes
-- [ ] Add undo/redo functionality
-- [ ] Add block duplication
-- [ ] Add save/load projects
-- [ ] Add template library
+Generate a complete website layout with AI.
 
-## Contributing
+**Request**:
+```json
+POST /api/bento-build
+{
+  "contextPrompt": "User's website description"
+}
+```
 
-This is an initial scaffold. Future agents will implement additional features.
+**Response**:
+```json
+{
+  "success": true,
+  "blocks": [
+    { "id": "...", "type": "navbar", "order": 0, "content": {...} },
+    { "id": "...", "type": "hero", "order": 1, "content": {...} },
+    // ... more blocks
+    { "id": "...", "type": "footer", "order": N, "content": {...} }
+  ]
+}
+```
 
-## License
+## 🎯 Keyboard Shortcuts
+
+- `Cmd/Ctrl + Z` - Undo
+- `Cmd/Ctrl + Shift + Z` - Redo
+- `Delete/Backspace` - Delete selected block
+- `Cmd/Ctrl + D` - Duplicate selected block
+
+## ✅ Completed Features
+
+- [x] AI content generation API (per-block)
+- [x] Bento Build (full-site AI generation)
+- [x] All block types (Navbar, Hero, Text, Image, Gallery, Contact, Footer)
+- [x] Undo/redo functionality
+- [x] Block duplication
+- [x] Auto-save/load via localStorage
+- [x] Daytona deployment integration
+- [x] Comprehensive E2E test suite (114 tests)
+- [x] Drag & drop with smooth animations
+- [x] Inline block editing
+
+## 🚧 Future Enhancements
+
+- [ ] AI image generation (Unsplash/DALL-E integration)
+- [ ] Export functionality (static HTML/CSS)
+- [ ] Theme presets
+- [ ] Responsive preview modes
+- [ ] Template library with industry-specific starters
+- [ ] Collaborative editing (WebSocket sync)
+
+## 📚 Documentation
+
+For detailed development guidance, see [CLAUDE.md](./CLAUDE.md) which includes:
+- Architecture details
+- Block system conventions
+- AI prompt engineering
+- Testing strategies
+- TypeScript patterns
+
+## 🤝 Contributing
+
+Contributions are welcome! This project follows a modular architecture with clear separation of concerns. Please ensure:
+- All new features include E2E tests
+- TypeScript strict mode compliance
+- ESLint passes without errors
+- Follow existing code conventions
+
+## 📄 License
 
 ISC
+
+---
+
+Built with ❤️ using Next.js, React, TypeScript, and OpenAI

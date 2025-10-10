@@ -136,7 +136,9 @@ Return concise, natural-sounding text as JSON:
 { title, body, cta?, imageUrl? }
 ```
 
-**Current State**: The `/api/generate-block-content` endpoint is stubbed in main branch but fully implemented in `feature/ai-generator` worktree.
+**Current State**: All AI features have been fully integrated into main branch:
+- `/api/generate-block-content` - Per-block AI content generation
+- `/api/bento-build` - Full-site AI generation with Bento Build button
 
 **Request format**:
 
@@ -163,31 +165,39 @@ POST /api/generate-block-content
 }
 ```
 
-The implemented version (in worktree) uses OpenAI's GPT-4o-mini with structured JSON output.
+The implementation uses OpenAI's GPT-4o-mini with structured JSON output.
 
 **Fallback**: If model fails, use static defaults per block type.
 
-### Worktree Development Model
+### Bento Build Feature
 
-This project uses git worktrees for parallel feature development:
+The **Bento Build** button in the ContextBar allows users to generate a complete website layout with one click:
 
-```text
-.trees/
-├── layout-engine/     # Enhanced drag-drop UX
-├── block-editor/      # Right-side editing panel
-├── ai-generator/      # OpenAI integration (implemented)
-├── context-system/    # Context propagation & bulk regeneration
-├── deployment/        # Preview/deploy via Daytona
-└── state-manager/     # Undo/redo + localStorage persistence
-```
+- Located in the top ContextBar next to the Save button
+- Generates a full site structure: Navbar → Hero → Content blocks → Footer
+- Uses the user's context prompt to create relevant, personalized content
+- Leverages OpenAI GPT-4o-mini to intelligently select and populate block types
+- Replaces existing blocks on canvas when generating new layouts
+- Shows loading states and error handling for robust UX
 
-**Working with worktrees**:
+**Endpoint**: `/api/bento-build`
 
-- Each worktree is a separate working directory on its own branch
-- Changes in one worktree don't affect others
-- To work on a feature: `cd .trees/<feature-name>` then commit/push from there
-- View all worktrees: `git worktree list`
-- The `.trees/` directory is gitignored
+**Implementation**: `components/ui/ContextBar.tsx` + `lib/daytonaClient.ts`
+
+### Feature Branch Integration Status
+
+All feature branches have been successfully merged into main:
+
+✅ **feature/state-manager** - Undo/redo + localStorage persistence
+✅ **feature/layout-engine** - Enhanced drag-drop UX
+✅ **feature/block-editor** - Right-side editing panel
+✅ **feature/ai-generator** - OpenAI integration
+✅ **feature/context-system** - Context propagation & bulk regeneration
+✅ **feature/deployment** - Preview/deploy via Daytona
+✅ **feature/bento-build** - Full-site AI generation
+✅ **feature/testing-suite** - Comprehensive E2E tests
+
+All worktree features are now available in the main branch.
 
 ## Design Principles
 
@@ -229,30 +239,35 @@ Playwright is configured for E2E testing:
 
 ## Environment Variables
 
-Required for AI features (implemented in worktrees):
+Required for AI features:
 
 ```bash
-OPENAI_API_KEY=sk-...  # For content generation
+OPENAI_API_KEY=sk-...  # For AI content generation (both per-block and Bento Build)
+DAYTONA_API_KEY=...    # For deployment preview functionality
+DAYTONA_API_URL=...    # Daytona API endpoint
 ```
 
-Copy `.env.example` to `.env.local` when working with AI features.
+Copy `.env.example` to `.env.local` and add your API keys.
 
 ## Future Enhancements
 
-- **AI Layout Suggestions**: Generate a full starter layout from a description
-- **AI Image Generation**: Suggest relevant visuals per block (Unsplash or DALLE)
+- **AI Image Generation**: Suggest relevant visuals per block (Unsplash or DALLE integration)
 - **Themes**: One-click theme presets with Tailwind tokens
 - **Export**: Static HTML export for self-hosting
 - **Collaborative Editing**: WebSocket sync (Y.js)
+- **Advanced Templates**: Industry-specific starter templates (portfolio, restaurant, agency)
 
-## Known Limitations & TODOs
+## Implemented Features
 
-- AI content generation is stubbed in main branch (see `feature/ai-generator` worktree for implementation)
-- No undo/redo yet (see `feature/state-manager` worktree)
-- No block deletion UI (see `feature/layout-engine` worktree)
-- No right-side editing panel (see `feature/block-editor` worktree)
-- No localStorage persistence (see `feature/state-manager` worktree)
-- Context Box doesn't trigger regeneration (see `feature/context-system` worktree)
+✅ **AI Content Generation** - Per-block AI content via `/api/generate-block-content`
+✅ **Bento Build** - Full-site AI generation with one click
+✅ **Undo/Redo** - State history management with keyboard shortcuts
+✅ **localStorage Persistence** - Auto-save and restore user work
+✅ **Drag & Drop UX** - Enhanced block manipulation and reordering
+✅ **Block Editor** - Right-side editing panel for selected blocks
+✅ **Context System** - Propagation and bulk regeneration
+✅ **Deployment Preview** - Daytona integration for live previews
+✅ **Comprehensive Testing** - 114 E2E tests covering all workflows
 
 ## Guiding Philosophy
 
