@@ -32,3 +32,13 @@ export const API_STATUS = {
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
 } as const;
+
+/**
+ * External API endpoints
+ */
+export const EXTERNAL_APIS = {
+  UNSPLASH_API: 'https://api.unsplash.com',
+  UNSPLASH_SEARCH: 'https://api.unsplash.com/search/photos',
+  UNSPLASH_RANDOM: 'https://api.unsplash.com/photos/random',
+  PICSUM_PLACEHOLDER: 'https://picsum.photos',
+} as const;

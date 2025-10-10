@@ -44,6 +44,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { openai, CONTENT_GENERATION_CONFIG } from '@/lib/openai';
+import { getContextualImageUrl, extractImageKeywords } from '@/lib/unsplash';
 
 // Type definitions
 interface GenerateBlockContentRequest {
@@ -261,6 +262,19 @@ export async function POST(request: NextRequest) {
 
     // Validate and sanitize the response
     const sanitizedContent = validateAndSanitizeResponse(parsedContent);
+
+    // If this is an image block and no image URL was provided, fetch from Unsplash
+    if (blockType === 'image' && !sanitizedContent.src) {
+      try {
+        const keywords = extractImageKeywords(contextPrompt, 'image');
+        const imageUrl = await getContextualImageUrl(keywords);
+        sanitizedContent.src = imageUrl;
+      } catch (error) {
+        console.error('Failed to fetch image from Unsplash:', error);
+        // Use placeholder as fallback
+        sanitizedContent.src = 'https://picsum.photos/seed/' + encodeURIComponent(contextPrompt) + '/1200/800';
+      }
+    }
 
     // Return successful response
     return NextResponse.json({

@@ -91,10 +91,10 @@ export default function ContextBar() {
             <button
               onClick={handleBentoBuild}
               disabled={!hasContext || isBuilding}
-              className={`bauhaus-button px-6 py-3 rounded-bauhaus-md font-bold text-sm uppercase tracking-wide border-2 ${
+              className={`bauhaus-button px-6 py-3 rounded-bauhaus-md font-bold text-sm uppercase tracking-wide border-2 bauhaus-transition ${
                 hasContext && !isBuilding
-                  ? 'bg-bauhaus-blue text-white border-black shadow-bauhaus-md hover:shadow-bauhaus-lg'
-                  : 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed transform-none'
+                  ? 'bg-blue-600 text-white border-black shadow-bauhaus-md hover:shadow-bauhaus-lg hover:bg-blue-700 active:scale-95'
+                  : 'bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed'
               }`}
               title="Generate complete website layout with AI"
             >

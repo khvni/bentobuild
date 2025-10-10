@@ -6,3 +6,11 @@ export {
   isLocalStorageAvailable,
   BUILDER_STATE_KEY,
 } from './localStorage';
+
+export {
+  searchUnsplashImages,
+  getRandomUnsplashImage,
+  getContextualImageUrl,
+  extractImageKeywords,
+  type UnsplashImage,
+} from './unsplash';

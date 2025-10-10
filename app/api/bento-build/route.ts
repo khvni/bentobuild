@@ -37,6 +37,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { openai, CONTENT_GENERATION_CONFIG } from '@/lib/openai';
 import { Block, BlockType } from '@/types/block.types';
+import { getContextualImageUrl, extractImageKeywords } from '@/lib/unsplash';
 
 interface BentoBuildRequest {
   contextPrompt: string;
@@ -247,10 +248,34 @@ export async function POST(request: NextRequest): Promise<NextResponse<BentoBuil
       throw new Error('No valid blocks were generated');
     }
 
+    // Fetch images for image blocks using Unsplash
+    const blocksWithImages = await Promise.all(
+      validatedBlocks.map(async (block) => {
+        if (block.type === 'image' && (!block.content.src || block.content.src.includes('placeholder'))) {
+          try {
+            const keywords = extractImageKeywords(contextPrompt, 'image');
+            const imageUrl = await getContextualImageUrl(keywords);
+            return {
+              ...block,
+              content: {
+                ...block.content,
+                src: imageUrl,
+              },
+            };
+          } catch (error) {
+            console.error('Failed to fetch image from Unsplash:', error);
+            // Keep the placeholder or existing URL
+            return block;
+          }
+        }
+        return block;
+      })
+    );
+
     // Return successful response
     return NextResponse.json({
       success: true,
-      blocks: validatedBlocks,
+      blocks: blocksWithImages,
     });
   } catch (error) {
     console.error('Error in Bento Build:', error);

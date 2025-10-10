@@ -59,10 +59,17 @@ cp .env.example .env.local
 
 Then edit `.env.local` and add your API keys:
 ```bash
-OPENAI_API_KEY=sk-...
-DAYTONA_API_KEY=...     # Optional
-DAYTONA_API_URL=...     # Optional
+OPENAI_API_KEY=sk-...                    # Required for AI features
+UNSPLASH_ACCESS_KEY=...                  # Optional for images (falls back to placeholders)
+DAYTONA_API_KEY=...                      # Optional for deployment
+DAYTONA_API_URL=...                      # Optional for deployment
 ```
+
+**About Unsplash (Optional)**:
+- Free tier: 50 requests/hour
+- Get your key at: https://unsplash.com/developers
+- If not set, the app will use placeholder images from Picsum Photos
+- Provides high-quality, contextually relevant images for your blocks
 
 4. **Run the development server**:
 ```bash
