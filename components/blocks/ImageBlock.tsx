@@ -4,15 +4,15 @@ import { ImageBlock as ImageBlockType } from '@/types/block.types';
 import { useBuilderStore } from '@/store/useBuilderStore';
 import { useContextPrompt } from '@/hooks/useContextPrompt';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 interface ImageBlockProps {
   block: ImageBlockType;
 }
 
 export default function ImageBlock({ block }: ImageBlockProps) {
-  const { updateBlock, selectedBlockId, selectBlock } = useBuilderStore();
+  const { updateBlock } = useBuilderStore();
   const { regenerateBlock, regeneratingBlockId, hasContext } = useContextPrompt();
-  const isSelected = selectedBlockId === block.id;
   const isRegenerating = regeneratingBlockId === block.id;
 
   const handleContentChange = (field: keyof ImageBlockType['content'], value: string) => {
@@ -98,10 +98,13 @@ export default function ImageBlock({ block }: ImageBlockProps) {
           />
           {block.content.src ? (
             <div className="relative">
-              <img
+              <Image
                 src={block.content.src}
                 alt={block.content.alt || 'Block image'}
+                width={800}
+                height={320}
                 className="w-full h-80 object-cover rounded-bauhaus-md border-4 border-black shadow-bauhaus-lg"
+                unoptimized
               />
               {/* Image corner accent */}
               <div className="absolute -bottom-3 -right-3 w-20 h-20 bg-bauhaus-blue rounded-bauhaus-sm opacity-80 -z-10"></div>

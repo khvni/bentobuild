@@ -1,7 +1,7 @@
 'use client';
 
 import { useBuilderStore } from '@/store/useBuilderStore';
-import { BlockType, HeroBlock, TextBlock, ImageBlock, ButtonBlock, LinkBlock, NavbarBlock, FooterBlock } from '@/types/block.types';
+import { BlockType } from '@/types/block.types';
 import { useDraggable } from '@dnd-kit/core';
 
 const blockTemplates = {
@@ -98,10 +98,9 @@ const blockTemplates = {
 interface DraggableBlockTemplateProps {
   blockType: BlockType;
   template: typeof blockTemplates[keyof typeof blockTemplates];
-  onAddBlock: (blockType: BlockType) => void;
 }
 
-function DraggableBlockTemplate({ blockType, template, onAddBlock }: DraggableBlockTemplateProps) {
+function DraggableBlockTemplate({ blockType, template }: DraggableBlockTemplateProps) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: `palette-${blockType}`,
     data: {
@@ -152,33 +151,7 @@ function DraggableBlockTemplate({ blockType, template, onAddBlock }: DraggableBl
 }
 
 export default function BlockPalette() {
-  const { addBlock, blocks } = useBuilderStore();
-
-  const handleAddBlock = (blockType: BlockType) => {
-    const template = blockTemplates[blockType];
-    const newBlock = {
-      id: `${blockType}-${Date.now()}`,
-      type: blockType,
-      order: blocks.length,
-      content: template.defaultContent,
-    };
-
-    if (blockType === 'hero') {
-      addBlock(newBlock as HeroBlock);
-    } else if (blockType === 'text') {
-      addBlock(newBlock as TextBlock);
-    } else if (blockType === 'image') {
-      addBlock(newBlock as ImageBlock);
-    } else if (blockType === 'button') {
-      addBlock(newBlock as ButtonBlock);
-    } else if (blockType === 'link') {
-      addBlock(newBlock as LinkBlock);
-    } else if (blockType === 'navbar') {
-      addBlock(newBlock as NavbarBlock);
-    } else if (blockType === 'footer') {
-      addBlock(newBlock as FooterBlock);
-    }
-  };
+  const { blocks } = useBuilderStore();
 
   return (
     <nav
@@ -199,7 +172,6 @@ export default function BlockPalette() {
             key={key}
             blockType={template.type}
             template={template}
-            onAddBlock={handleAddBlock}
           />
         ))}
       </div>

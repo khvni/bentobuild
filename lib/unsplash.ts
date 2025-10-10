@@ -57,7 +57,17 @@ export async function searchUnsplashImages(
 
     const data = await response.json();
 
-    return data.results.map((photo: any) => ({
+    interface UnsplashPhoto {
+      id: string;
+      urls: { regular: string; thumb: string; full: string };
+      alt_description?: string;
+      description?: string;
+      user: { name: string; links: { html: string } };
+      width: number;
+      height: number;
+    }
+
+    return data.results.map((photo: UnsplashPhoto) => ({
       id: photo.id,
       url: photo.urls.regular,
       thumbUrl: photo.urls.thumb,

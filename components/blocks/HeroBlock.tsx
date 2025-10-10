@@ -10,9 +10,8 @@ interface HeroBlockProps {
 }
 
 export default function HeroBlock({ block }: HeroBlockProps) {
-  const { updateBlock, selectedBlockId, selectBlock } = useBuilderStore();
+  const { updateBlock } = useBuilderStore();
   const { regenerateBlock, regeneratingBlockId, hasContext } = useContextPrompt();
-  const isSelected = selectedBlockId === block.id;
   const isRegenerating = regeneratingBlockId === block.id;
 
   const handleContentChange = (field: keyof HeroBlockType['content'], value: string) => {

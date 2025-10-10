@@ -6,6 +6,7 @@ import { useContextPrompt } from '@/hooks/useContextPrompt';
 import { motion } from 'framer-motion';
 import { Menu, X, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface NavbarBlockProps {
   block: NavbarBlockType;
@@ -110,9 +111,11 @@ export default function NavbarBlock({ block }: NavbarBlockProps) {
           {/* Brand Section */}
           <div className="flex items-center gap-3">
             {block.content.logoUrl && (
-              <img
+              <Image
                 src={block.content.logoUrl}
                 alt={block.content.brandName}
+                width={32}
+                height={32}
                 className="h-8 w-8 object-contain"
               />
             )}

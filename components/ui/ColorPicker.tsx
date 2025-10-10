@@ -6,7 +6,6 @@ interface ColorPickerProps {
   label: string;
   value: string;
   onChange: (color: string) => void;
-  showAlpha?: boolean;
 }
 
 const PRESET_COLORS = {
@@ -42,7 +41,6 @@ export default function ColorPicker({
   label,
   value,
   onChange,
-  showAlpha = false,
 }: ColorPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [customColor, setCustomColor] = useState(value || '#3B82F6');
