@@ -1,4 +1,4 @@
-export type BlockType = 'hero' | 'text' | 'image' | 'button' | 'link' | 'navbar';
+export type BlockType = 'hero' | 'text' | 'image' | 'button' | 'link' | 'navbar' | 'footer';
 
 export interface BaseBlock {
   id: string;
@@ -85,7 +85,21 @@ export interface NavbarBlock extends BaseBlock {
   };
 }
 
-export type Block = HeroBlock | TextBlock | ImageBlock | ButtonBlock | LinkBlock | NavbarBlock;
+export interface FooterBlock extends BaseBlock {
+  type: 'footer';
+  content: {
+    companyName: string;
+    copyright: string;
+    socialLinks: Array<{ platform: string; url: string }>;
+    contactEmail: string;
+    // Color properties
+    backgroundColor?: string;
+    textColor?: string;
+    linkColor?: string;
+  };
+}
+
+export type Block = HeroBlock | TextBlock | ImageBlock | ButtonBlock | LinkBlock | NavbarBlock | FooterBlock;
 
 export type FontFamily = 'sans' | 'serif';
 
@@ -95,6 +109,7 @@ export interface BuilderState {
   selectedBlockId: string | null;
   selectedFont: FontFamily;
   addBlock: (block: Block) => void;
+  addBlocks: (blocks: Block[]) => void;
   updateBlock: (id: string, updates: Partial<Block>) => void;
   deleteBlock: (id: string) => void;
   setContextPrompt: (prompt: string) => void;

@@ -10,6 +10,7 @@ interface BaseBuilderState {
   selectedBlockId: string | null;
   selectedFont: FontFamily;
   addBlock: (block: Block) => void;
+  addBlocks: (blocks: Block[]) => void;
   updateBlock: (id: string, updates: Partial<Block>) => void;
   deleteBlock: (id: string) => void;
   setContextPrompt: (prompt: string) => void;
@@ -31,6 +32,9 @@ export const useBuilderStore = create<BuilderState>(
           set((state) => ({
             blocks: [...state.blocks, block],
           })),
+
+        addBlocks: (blocks: Block[]) =>
+          set({ blocks }),
 
         updateBlock: (id: string, updates: Partial<Block>) =>
           set((state) => ({
