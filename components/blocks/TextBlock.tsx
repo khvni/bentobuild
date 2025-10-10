@@ -112,6 +112,7 @@ export default function TextBlock({ block }: TextBlockProps) {
               placeholder="Heading..."
               minHeight="60px"
               label="Heading"
+              fontFamily={block.content.fontFamily}
             />
             <div className="mt-4">
               <RichTextEditor
@@ -120,6 +121,7 @@ export default function TextBlock({ block }: TextBlockProps) {
                 placeholder="Body text..."
                 minHeight="120px"
                 label="Body"
+                fontFamily={block.content.fontFamily}
               />
             </div>
           </>

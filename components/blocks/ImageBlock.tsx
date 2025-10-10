@@ -314,6 +314,7 @@ export default function ImageBlock({ block }: ImageBlockProps) {
               placeholder="Image caption (optional)..."
               minHeight="60px"
               label="Caption"
+              fontFamily={block.content.fontFamily}
             />
           </div>
         ) : (

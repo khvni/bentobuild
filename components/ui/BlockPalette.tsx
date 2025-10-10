@@ -120,6 +120,7 @@ function DraggableBlockTemplate({ blockType, template }: DraggableBlockTemplateP
       ref={setNodeRef}
       {...listeners}
       {...attributes}
+      suppressHydrationWarning
       className={`relative w-full p-4 bg-white border-l-8 rounded-bauhaus-md transition-all text-left group cursor-grab active:cursor-grabbing shadow-bauhaus-sm hover:shadow-bauhaus-md bauhaus-transition focus:ring-4 focus:ring-bauhaus-blue focus:outline-none ${
         isDragging ? 'opacity-50 scale-95' : ''
       }`}

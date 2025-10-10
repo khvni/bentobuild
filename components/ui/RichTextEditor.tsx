@@ -18,6 +18,7 @@ interface RichTextEditorProps {
   minHeight?: string;
   disabled?: boolean;
   autoFocus?: boolean;
+  fontFamily?: string;
 }
 
 // Custom extension for font size
@@ -47,11 +48,13 @@ export default function RichTextEditor({
   minHeight = '150px',
   disabled = false,
   autoFocus = false,
+  fontFamily,
 }: RichTextEditorProps) {
   const [showColorPicker, setShowColorPicker] = useState(false);
   const colorPickerRef = useRef<HTMLDivElement>(null);
 
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit.configure({
         heading: {
@@ -238,6 +241,7 @@ export default function RichTextEditor({
           min-height: ${minHeight};
           max-height: 400px;
           overflow-y: auto;
+          ${fontFamily ? `font-family: var(--font-${fontFamily.toLowerCase().replace(/\s+/g, '-')});` : ''}
         }
 
         .mantine-RichTextEditor-content .ProseMirror:focus {

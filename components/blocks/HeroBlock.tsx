@@ -117,6 +117,7 @@ export default function HeroBlock({ block }: HeroBlockProps) {
               placeholder="Hero heading..."
               minHeight="60px"
               label="Heading"
+              fontFamily={block.content.fontFamily}
             />
             <div className="mt-4">
               <RichTextEditor
@@ -125,6 +126,7 @@ export default function HeroBlock({ block }: HeroBlockProps) {
                 placeholder="Hero subheading..."
                 minHeight="80px"
                 label="Subheading"
+                fontFamily={block.content.fontFamily}
               />
             </div>
           </>
