@@ -3,7 +3,6 @@
 import ContextBar from '@/components/ui/ContextBar';
 import Canvas from '@/components/ui/Canvas';
 import BlockPalette from '@/components/ui/BlockPalette';
-import BlockEditorPanel from '@/components/ui/BlockEditorPanel';
 import PreviewButton from '@/components/ui/PreviewButton';
 import { HistoryControls } from '@/components/ui/HistoryControls';
 import FontSelector from '@/components/ui/FontSelector';
@@ -11,7 +10,7 @@ import GeometricDecoration from '@/components/ui/GeometricDecoration';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { useBuilderStore } from '@/store/useBuilderStore';
-import { BlockType, HeroBlock, TextBlock, ImageBlock } from '@/types/block.types';
+import { BlockType, HeroBlock, TextBlock, ImageBlock, ButtonBlock, LinkBlock, NavbarBlock, FooterBlock } from '@/types/block.types';
 
 export default function Home() {
   const { blocks, reorderBlocks, addBlock } = useBuilderStore();
@@ -50,6 +49,14 @@ export default function Home() {
           addBlock(newBlock as TextBlock);
         } else if (blockType === 'image') {
           addBlock(newBlock as ImageBlock);
+        } else if (blockType === 'button') {
+          addBlock(newBlock as ButtonBlock);
+        } else if (blockType === 'link') {
+          addBlock(newBlock as LinkBlock);
+        } else if (blockType === 'navbar') {
+          addBlock(newBlock as NavbarBlock);
+        } else if (blockType === 'footer') {
+          addBlock(newBlock as FooterBlock);
         }
       }
     } else if (active.id !== over.id && !isPaletteItem) {
@@ -107,7 +114,6 @@ export default function Home() {
         <div className="flex flex-1 overflow-hidden relative" role="main">
           <BlockPalette />
           <Canvas />
-          <BlockEditorPanel />
         </div>
       </DndContext>
 

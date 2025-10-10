@@ -8,8 +8,12 @@ test.describe('Bentoblocks', () => {
 
   test('should add a block to canvas', async ({ page }) => {
     await page.goto('/');
-    await page.click('text=Hero Section');
-    await expect(page.locator('text=Welcome to Our Site')).toBeVisible();
+    // Use drag and drop instead of click
+    const heroBlock = page.locator('button:has-text("Hero Section")');
+    const canvas = page.locator('#main-canvas');
+    await heroBlock.dragTo(canvas);
+    // Check for the hero heading input instead of text
+    await expect(page.locator('input[value="Welcome to Our Site"]')).toBeVisible();
   });
 
   test('should update context prompt', async ({ page }) => {

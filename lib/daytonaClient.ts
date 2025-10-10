@@ -167,6 +167,40 @@ export function generateStaticHTML(blocks: Block[], contextPrompt: string): stri
     </nav>`;
           }
 
+          case 'footer': {
+            const socialLinks = block.content.socialLinks || [];
+            const bgColor = block.content.backgroundColor || '#111827';
+            const textColor = block.content.textColor || '#FFFFFF';
+            const linkColor = block.content.linkColor || '#9CA3AF';
+
+            const socialLinksHTML = socialLinks.map(link =>
+              `<a href="${escapeHTML(link.url)}" class="transition-colors hover:underline" style="color: ${linkColor};">${escapeHTML(link.platform)}</a>`
+            ).join('\n            ');
+
+            return `
+    <footer class="border-t-4 border-yellow-400" style="background-color: ${bgColor}; color: ${textColor};">
+      <div class="max-w-6xl mx-auto px-6 py-8">
+        <div class="grid md:grid-cols-3 gap-8 mb-6">
+          <div>
+            <h3 class="text-xl font-bold mb-3">${escapeHTML(block.content.companyName)}</h3>
+            <p class="text-sm" style="color: ${linkColor};">
+              <a href="mailto:${escapeHTML(block.content.contactEmail)}" class="hover:underline">${escapeHTML(block.content.contactEmail)}</a>
+            </p>
+          </div>
+          <div class="flex items-center justify-center">
+            <p class="text-sm" style="color: ${linkColor};">${escapeHTML(block.content.copyright)}</p>
+          </div>
+          <div>
+            <p class="text-sm font-semibold mb-3 uppercase tracking-wide" style="color: ${linkColor};">Connect</p>
+            <div class="flex flex-col gap-2 text-sm">
+              ${socialLinksHTML}
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>`;
+          }
+
           default:
             return '';
         }
@@ -229,7 +263,7 @@ function escapeHTML(str: string | undefined): string {
 /**
  * Deploy HTML to Daytona sandbox
  */
-async function deploySandbox(_html: string): Promise<PreviewResult> {
+async function deploySandbox(html: string): Promise<PreviewResult> {
   const apiKey = process.env.DAYTONA_API_KEY;
 
   if (!apiKey) {
@@ -245,23 +279,92 @@ async function deploySandbox(_html: string): Promise<PreviewResult> {
 
   try {
     // Initialize Daytona SDK
-    const _daytona = new Daytona({ apiKey });
+    const daytona = new Daytona({ apiKey });
 
-    // TODO: Implement actual Daytona deployment
-    // The Daytona SDK API needs to be properly integrated
-    // For now, using mock mode even with API key present
+    console.log('Creating Daytona sandbox for live preview...');
 
-    console.log('Daytona API key present but SDK integration pending');
+    // Create a new sandbox with Node.js/web server capabilities
+    const sandbox = await daytona.create({
+      language: 'javascript',
+      envVars: {
+        NODE_ENV: 'production',
+      },
+    });
 
-    // Return mock URL for now until SDK is properly configured
-    const mockUrl = `http://localhost:3000/preview/mock-${Date.now()}`;
+    console.log('Sandbox created, uploading HTML content...');
+
+    // Verify Node.js is available in the sandbox
+    const nodeCheck = await sandbox.process.executeCommand('node --version');
+    console.log('Node.js version:', nodeCheck.artifacts?.stdout?.trim());
+
+    // Create public directory structure
+    await sandbox.fs.createFolder('public', '755');
+
+    // Upload the HTML content to index.html
+    await sandbox.fs.uploadFile(
+      Buffer.from(html, 'utf-8'),
+      'public/index.html'
+    );
+
+    // Create a simple HTTP server script to serve the HTML
+    const serverScript = `
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+const PORT = 3000;
+
+const server = http.createServer((req, res) => {
+  const filePath = path.join(__dirname, 'public', 'index.html');
+
+  fs.readFile(filePath, 'utf-8', (err, content) => {
+    if (err) {
+      res.writeHead(500);
+      res.end('Error loading page');
+      return;
+    }
+
+    res.writeHead(200, { 'Content-Type': 'text/html' });
+    res.end(content);
+  });
+});
+
+server.listen(PORT, () => {
+  console.log(\`Server running on port \${PORT}\`);
+});
+`;
+
+    // Upload the server script
+    await sandbox.fs.uploadFile(
+      Buffer.from(serverScript, 'utf-8'),
+      'server.js'
+    );
+
+    console.log('Starting web server in sandbox...');
+
+    // Start the HTTP server in the background using nohup for persistence
+    const startResult = await sandbox.process.executeCommand(
+      'nohup node server.js > server.log 2>&1 & echo $!'
+    );
+
+    console.log('Server started with PID:', startResult.artifacts?.stdout?.trim());
+
+    // Wait a moment for the server to start and listen
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
+    // Get the preview URL for port 3000
+    const previewLink = await sandbox.getPreviewLink(3000);
+
+    console.log('Deployment successful! Preview URL:', previewLink.url);
+
     return {
       success: true,
-      url: mockUrl,
-      isMock: true,
+      url: previewLink.url,
+      isMock: false,
     };
   } catch (error) {
     console.error('Daytona deployment error:', error);
+
     // Fall back to mock mode on error
     const mockUrl = `http://localhost:3000/preview/mock-${Date.now()}`;
     return {

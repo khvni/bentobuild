@@ -10,6 +10,7 @@ import ImageBlock from '@/components/blocks/ImageBlock';
 import ButtonBlock from '@/components/blocks/ButtonBlock';
 import LinkBlock from '@/components/blocks/LinkBlock';
 import NavbarBlock from '@/components/blocks/NavbarBlock';
+import FooterBlock from '@/components/blocks/FooterBlock';
 
 interface BlockWrapperProps {
   block: Block;
@@ -48,6 +49,8 @@ export default function BlockWrapper({ block }: BlockWrapperProps) {
         return <LinkBlock block={block} />;
       case 'navbar':
         return <NavbarBlock block={block} />;
+      case 'footer':
+        return <FooterBlock block={block} />;
       default:
         return null;
     }

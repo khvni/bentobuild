@@ -1,7 +1,7 @@
 'use client';
 
 import { useBuilderStore } from '@/store/useBuilderStore';
-import { BlockType, HeroBlock, TextBlock, ImageBlock, ButtonBlock, LinkBlock, NavbarBlock } from '@/types/block.types';
+import { BlockType, HeroBlock, TextBlock, ImageBlock, ButtonBlock, LinkBlock, NavbarBlock, FooterBlock } from '@/types/block.types';
 import { useDraggable } from '@dnd-kit/core';
 
 const blockTemplates = {
@@ -77,6 +77,22 @@ const blockTemplates = {
       ],
     },
   },
+  footer: {
+    type: 'footer' as BlockType,
+    icon: '🦶',
+    label: 'Footer',
+    color: '#1F2937', // Dark Gray
+    defaultContent: {
+      companyName: 'My Company',
+      copyright: '© 2024 My Company. All rights reserved.',
+      socialLinks: [
+        { platform: 'Twitter', url: 'https://twitter.com' },
+        { platform: 'LinkedIn', url: 'https://linkedin.com' },
+        { platform: 'GitHub', url: 'https://github.com' },
+      ],
+      contactEmail: 'contact@company.com',
+    },
+  },
 };
 
 interface DraggableBlockTemplateProps {
@@ -100,13 +116,12 @@ function DraggableBlockTemplate({ blockType, template, onAddBlock }: DraggableBl
       ref={setNodeRef}
       {...listeners}
       {...attributes}
-      onClick={() => onAddBlock(blockType)}
       className={`relative w-full p-4 bg-white border-l-8 rounded-bauhaus-md transition-all text-left group cursor-grab active:cursor-grabbing shadow-bauhaus-sm hover:shadow-bauhaus-md bauhaus-transition focus:ring-4 focus:ring-bauhaus-blue focus:outline-none ${
         isDragging ? 'opacity-50 scale-95' : ''
       }`}
       style={{ borderLeftColor: template.color }}
-      aria-label={`Add ${template.label} to canvas - drag or click`}
-      title={`Add ${template.label}`}
+      aria-label={`Drag ${template.label} to add to canvas`}
+      title={`Drag ${template.label} to canvas`}
     >
       {/* Color accent square */}
       <div
@@ -160,6 +175,8 @@ export default function BlockPalette() {
       addBlock(newBlock as LinkBlock);
     } else if (blockType === 'navbar') {
       addBlock(newBlock as NavbarBlock);
+    } else if (blockType === 'footer') {
+      addBlock(newBlock as FooterBlock);
     }
   };
 
