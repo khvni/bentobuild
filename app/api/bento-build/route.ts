@@ -56,7 +56,7 @@ function buildBentoBuildPrompt(contextPrompt: string): string {
 
 User's website context: "${contextPrompt}"
 
-Based on this context, generate a complete website layout as a JSON array of blocks.
+Based on this context, generate a complete website layout. Return ONLY a JSON object with a "blocks" array.
 
 Available block types:
 - navbar: Navigation bar with brand name and links
@@ -68,17 +68,19 @@ Available block types:
 - footer: Footer with company info, copyright, and social links
 
 IMPORTANT RULES:
-1. Return ONLY a valid JSON array of blocks (no markdown, no code blocks, no extra text)
-2. Each block must have: id (string), type (BlockType), order (number), content (object)
-3. Generate 5-8 blocks total for a complete website
-4. Always start with navbar (order: 0) and end with footer (last order)
-5. Content must be contextually relevant and professional
-6. For IDs, use format: "{type}-{timestamp}-{order}"
-7. Make content specific to the user's context, not generic
+1. Return ONLY a valid JSON object with format: {"blocks": [...]}
+2. NO markdown, NO code blocks, NO extra text - ONLY the raw JSON object
+3. Each block must have: id (string), type (BlockType), order (number), content (object)
+4. Generate 5-8 blocks total for a complete website
+5. Always start with navbar (order: 0) and end with footer (last order)
+6. Content must be contextually relevant and professional
+7. For IDs, use format: "{type}-{timestamp}-{order}"
+8. Make content specific to the user's context, not generic
 
 Example structure for a photographer:
-[
-  {
+{
+  "blocks": [
+    {
     "id": "navbar-1234567890-0",
     "type": "navbar",
     "order": 0,
@@ -103,11 +105,12 @@ Example structure for a photographer:
       "ctaLink": "#portfolio"
     }
   }
-]
+  ]
+}
 
 Now generate a complete website structure for: "${contextPrompt}"
 
-Return ONLY the JSON array, nothing else.`;
+Return ONLY the JSON object with "blocks" array, nothing else.`;
 }
 
 /**
@@ -213,8 +216,20 @@ export async function POST(request: NextRequest): Promise<NextResponse<BentoBuil
       blocksArray = parsedContent.blocks;
     } else if (parsedContent.layout && Array.isArray(parsedContent.layout)) {
       blocksArray = parsedContent.layout;
+    } else if (parsedContent.website && Array.isArray(parsedContent.website)) {
+      blocksArray = parsedContent.website;
+    } else if (parsedContent.structure && Array.isArray(parsedContent.structure)) {
+      blocksArray = parsedContent.structure;
     } else {
-      throw new Error('AI response does not contain a valid blocks array');
+      // Try to find any array in the response
+      const values = Object.values(parsedContent);
+      const arrayValue = values.find(val => Array.isArray(val));
+      if (arrayValue && Array.isArray(arrayValue)) {
+        blocksArray = arrayValue;
+      } else {
+        console.error('AI response format:', parsedContent);
+        throw new Error('AI response does not contain a valid blocks array');
+      }
     }
 
     // Validate and sanitize blocks
