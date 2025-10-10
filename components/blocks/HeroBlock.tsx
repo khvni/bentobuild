@@ -4,14 +4,18 @@ import { HeroBlock as HeroBlockType } from '@/types/block.types';
 import { useBuilderStore } from '@/store/useBuilderStore';
 import { useContextPrompt } from '@/hooks/useContextPrompt';
 import { motion } from 'framer-motion';
+import { getFontClassName } from '@/components/ui/FontSelector';
+import { validateHtmlContent } from '@/lib/sanitizeHtml';
+import RichTextEditor from '@/components/ui/RichTextEditor';
 
 interface HeroBlockProps {
   block: HeroBlockType;
 }
 
 export default function HeroBlock({ block }: HeroBlockProps) {
-  const { updateBlock } = useBuilderStore();
+  const { selectedBlockId, updateBlock } = useBuilderStore();
   const { regenerateBlock, regeneratingBlockId, hasContext } = useContextPrompt();
+  const isSelected = selectedBlockId === block.id;
   const isRegenerating = regeneratingBlockId === block.id;
 
   const handleContentChange = (field: keyof HeroBlockType['content'], value: string) => {
@@ -30,6 +34,18 @@ export default function HeroBlock({ block }: HeroBlockProps) {
   const textColor = block.content.textColor || '#FFFFFF';
   const buttonColor = block.content.buttonColor || '#FFFFFF';
   const buttonTextColor = block.content.buttonTextColor || '#3B82F6';
+
+  // Get typography settings
+  const fontClass = block.content.fontFamily ? getFontClassName(block.content.fontFamily) : '';
+  const getFontSize = (size?: string) => {
+    switch (size) {
+      case 'small': return { heading: 'text-3xl', subheading: 'text-lg' };
+      case 'large': return { heading: 'text-7xl', subheading: 'text-3xl' };
+      case 'xlarge': return { heading: 'text-8xl', subheading: 'text-4xl' };
+      default: return { heading: 'text-5xl', subheading: 'text-2xl' };
+    }
+  };
+  const fontSize = getFontSize(block.content.fontSize);
 
   return (
     <motion.div
@@ -92,24 +108,41 @@ export default function HeroBlock({ block }: HeroBlockProps) {
           )}
         </button>
       )}
-      <div className="max-w-3xl mx-auto text-center relative z-10">
-        <input
-          type="text"
-          className="w-full bg-transparent bauhaus-h1 font-bold mb-6 border-b-4 border-transparent hover:border-current focus:border-current focus:outline-none text-center bauhaus-transition"
-          style={{ color: textColor }}
-          value={block.content.heading}
-          onChange={(e) => handleContentChange('heading', e.target.value)}
-          placeholder="Hero Heading"
-        />
-        <input
-          type="text"
-          className="w-full bg-transparent text-2xl font-semibold mb-10 border-b-2 border-transparent hover:border-current focus:border-current focus:outline-none text-center bauhaus-transition"
-          style={{ color: textColor }}
-          value={block.content.subheading}
-          onChange={(e) => handleContentChange('subheading', e.target.value)}
-          placeholder="Hero Subheading"
-        />
-        <div className="flex gap-4 justify-center items-center flex-wrap">
+      <div className={`max-w-3xl mx-auto text-center relative z-10 ${fontClass}`}>
+        {isSelected ? (
+          <>
+            <RichTextEditor
+              value={block.content.heading}
+              onChange={(html) => handleContentChange('heading', html)}
+              placeholder="Hero heading..."
+              minHeight="60px"
+              label="Heading"
+            />
+            <div className="mt-4">
+              <RichTextEditor
+                value={block.content.subheading}
+                onChange={(html) => handleContentChange('subheading', html)}
+                placeholder="Hero subheading..."
+                minHeight="80px"
+                label="Subheading"
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div
+              className={`w-full bg-transparent ${fontSize.heading} font-bold mb-6 text-center`}
+              style={{ color: textColor }}
+              dangerouslySetInnerHTML={{ __html: validateHtmlContent(block.content.heading) }}
+            />
+            <div
+              className={`w-full bg-transparent ${fontSize.subheading} font-semibold mb-10 text-center`}
+              style={{ color: textColor }}
+              dangerouslySetInnerHTML={{ __html: validateHtmlContent(block.content.subheading) }}
+            />
+          </>
+        )}
+        <div className="flex gap-4 justify-center items-center flex-wrap mt-6">
           <input
             type="text"
             className="bauhaus-button px-8 py-4 border-4 rounded-bauhaus-md bauhaus-transition text-center font-bold uppercase tracking-wide text-lg shadow-bauhaus-md"
@@ -120,6 +153,7 @@ export default function HeroBlock({ block }: HeroBlockProps) {
             }}
             value={block.content.ctaText}
             onChange={(e) => handleContentChange('ctaText', e.target.value)}
+            onClick={(e) => e.stopPropagation()}
             placeholder="CTA Text"
           />
           <input
@@ -128,6 +162,7 @@ export default function HeroBlock({ block }: HeroBlockProps) {
             style={{ color: textColor, borderColor: textColor, opacity: 0.8 }}
             value={block.content.ctaLink}
             onChange={(e) => handleContentChange('ctaLink', e.target.value)}
+            onClick={(e) => e.stopPropagation()}
             placeholder="URL"
           />
         </div>

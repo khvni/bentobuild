@@ -4,15 +4,24 @@ import { TextBlock as TextBlockType } from '@/types/block.types';
 import { useBuilderStore } from '@/store/useBuilderStore';
 import { useContextPrompt } from '@/hooks/useContextPrompt';
 import { motion } from 'framer-motion';
+import { getFontClassName } from '@/components/ui/FontSelector';
+import { validateHtmlContent } from '@/lib/sanitizeHtml';
+import RichTextEditor from '@/components/ui/RichTextEditor';
 
 interface TextBlockProps {
   block: TextBlockType;
 }
 
 export default function TextBlock({ block }: TextBlockProps) {
-  const { updateBlock } = useBuilderStore();
+  const { selectedBlockId, updateBlock } = useBuilderStore();
   const { regenerateBlock, regeneratingBlockId, hasContext } = useContextPrompt();
+  const isSelected = selectedBlockId === block.id;
   const isRegenerating = regeneratingBlockId === block.id;
+
+  const handleRegenerate = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    await regenerateBlock(block.id);
+  };
 
   const handleContentChange = (field: keyof TextBlockType['content'], value: string) => {
     updateBlock(block.id, {
@@ -20,15 +29,22 @@ export default function TextBlock({ block }: TextBlockProps) {
     });
   };
 
-  const handleRegenerate = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    await regenerateBlock(block.id);
-  };
-
   // Get custom colors or use defaults
   const backgroundColor = block.content.backgroundColor || '#FFFFFF';
   const headingColor = block.content.headingColor || '#111827';
   const textColor = block.content.textColor || '#4B5563';
+
+  // Get typography settings
+  const fontClass = block.content.fontFamily ? getFontClassName(block.content.fontFamily) : '';
+  const getFontSize = (size?: string) => {
+    switch (size) {
+      case 'small': return { heading: 'text-2xl', body: 'text-base' };
+      case 'large': return { heading: 'text-5xl', body: 'text-xl' };
+      case 'xlarge': return { heading: 'text-6xl', body: 'text-2xl' };
+      default: return { heading: 'text-3xl', body: 'text-lg' };
+    }
+  };
+  const fontSize = getFontSize(block.content.fontSize);
 
   return (
     <motion.div
@@ -87,23 +103,40 @@ export default function TextBlock({ block }: TextBlockProps) {
           )}
         </button>
       )}
-      <div className="max-w-3xl mx-auto relative">
-        <input
-          type="text"
-          className="w-full bauhaus-h2 font-bold mb-6 border-b-4 border-transparent hover:border-bauhaus-yellow focus:border-bauhaus-yellow focus:outline-none bauhaus-transition"
-          style={{ color: headingColor, backgroundColor: 'transparent' }}
-          value={block.content.heading}
-          onChange={(e) => handleContentChange('heading', e.target.value)}
-          placeholder="Text Block Heading"
-        />
-        <textarea
-          className="w-full text-lg leading-relaxed border-2 border-gray-300 hover:border-black focus:border-black focus:outline-none resize-none rounded-bauhaus-sm p-4 bauhaus-transition shadow-bauhaus-sm"
-          style={{ color: textColor, backgroundColor }}
-          rows={5}
-          value={block.content.body}
-          onChange={(e) => handleContentChange('body', e.target.value)}
-          placeholder="Enter your text content here..."
-        />
+      <div className={`max-w-3xl mx-auto relative ${fontClass}`}>
+        {isSelected ? (
+          <>
+            <RichTextEditor
+              value={block.content.heading}
+              onChange={(html) => handleContentChange('heading', html)}
+              placeholder="Heading..."
+              minHeight="60px"
+              label="Heading"
+            />
+            <div className="mt-4">
+              <RichTextEditor
+                value={block.content.body}
+                onChange={(html) => handleContentChange('body', html)}
+                placeholder="Body text..."
+                minHeight="120px"
+                label="Body"
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div
+              className={`w-full ${fontSize.heading} font-bold mb-6`}
+              style={{ color: headingColor }}
+              dangerouslySetInnerHTML={{ __html: validateHtmlContent(block.content.heading) }}
+            />
+            <div
+              className={`w-full ${fontSize.body} leading-relaxed prose prose-sm max-w-none`}
+              style={{ color: textColor }}
+              dangerouslySetInnerHTML={{ __html: validateHtmlContent(block.content.body) }}
+            />
+          </>
+        )}
 
         {/* Decorative accent */}
         <div className="absolute -bottom-2 right-8 w-16 h-1 bg-gradient-to-r from-bauhaus-yellow to-bauhaus-blue rounded-full"></div>
