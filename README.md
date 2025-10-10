@@ -85,40 +85,77 @@ npm run dev
 
 ```
 bentoblocks/
-├── app/
+├── app/                             # Next.js App Router
 │   ├── api/
+│   │   ├── bento-build/             # Full-site AI generation
 │   │   ├── generate-block-content/  # Per-block AI generation
-│   │   └── bento-build/             # Full-site AI generation
+│   │   └── preview/                 # Preview deployment
 │   ├── layout.tsx                   # Root layout
 │   ├── page.tsx                     # Main canvas page
 │   └── globals.css                  # Global styles
 ├── components/
+│   ├── accessibility/               # Accessibility components
+│   │   └── VisuallyHidden.tsx
 │   ├── blocks/                      # Block components
 │   │   ├── NavbarBlock.tsx
 │   │   ├── HeroBlock.tsx
 │   │   ├── TextBlock.tsx
 │   │   ├── ImageBlock.tsx
-│   │   ├── GalleryBlock.tsx
-│   │   ├── ContactBlock.tsx
+│   │   ├── ButtonBlock.tsx
+│   │   ├── LinkBlock.tsx
 │   │   └── FooterBlock.tsx
-│   └── ui/                          # UI components
-│       ├── ContextBar.tsx           # Context + Bento Build button
-│       ├── Canvas.tsx               # Main canvas with DnD
-│       ├── BlockPalette.tsx         # Block selector
-│       ├── BlockWrapper.tsx         # Sortable block wrapper
-│       └── BlockEditor.tsx          # Right-side editing panel
-├── lib/
-│   └── daytonaClient.ts             # Daytona deployment integration
-├── store/
-│   └── useBuilderStore.ts           # Zustand state management
+│   ├── ui/                          # Reusable UI components
+│   │   ├── ContextBar.tsx           # Context + Bento Build
+│   │   ├── Canvas.tsx               # DnD canvas
+│   │   ├── BlockPalette.tsx         # Block selector
+│   │   ├── BlockWrapper.tsx         # Sortable wrapper
+│   │   ├── BlockEditorPanel.tsx     # Right-side editor
+│   │   ├── ColorPicker.tsx
+│   │   ├── FontSelector.tsx
+│   │   ├── HistoryControls.tsx      # Undo/redo UI
+│   │   └── PreviewButton.tsx
+│   └── StateHydrator.tsx            # State rehydration
+├── constants/                       # Application constants
+│   ├── blockTypes.ts                # Block type definitions
+│   ├── apiEndpoints.ts              # API route constants
+│   ├── animations.ts                # Animation configs
+│   ├── keyboard.ts                  # Keyboard shortcuts
+│   ├── localStorage.ts              # Storage keys
+│   └── index.ts                     # Barrel export
+├── hooks/                           # Custom React hooks
+│   ├── useBlockActions.ts
+│   ├── useBlockEditor.ts
+│   ├── useContextPrompt.ts
+│   ├── useHistory.ts
+│   ├── useAnnouncer.ts              # A11y announcer
+│   ├── useFocusTrap.ts              # Focus management
+│   └── index.ts                     # Barrel export
+├── lib/                             # External integrations
+│   ├── daytonaClient.ts             # Daytona API
+│   ├── openai.ts                    # OpenAI integration
+│   ├── localStorage.ts              # Storage utilities
+│   └── index.ts                     # Barrel export
+├── store/                           # Zustand state
+│   ├── middleware/
+│   │   ├── historyMiddleware.ts     # Undo/redo logic
+│   │   └── persistenceMiddleware.ts # Auto-save logic
+│   └── useBuilderStore.ts           # Main store
 ├── types/
 │   └── block.types.ts               # TypeScript types
-└── tests/                           # Playwright E2E tests
-    ├── bento-build-api.spec.ts
-    ├── bento-build-e2e.spec.ts
-    ├── bento-build-ui.spec.ts
-    ├── drag-drop.spec.ts
-    └── example.spec.ts
+├── utils/                           # Utility functions
+│   ├── contrastChecker.ts           # WCAG contrast
+│   ├── test-helpers.ts              # Test utilities
+│   └── index.ts                     # Barrel export
+├── tests/                           # Playwright E2E tests
+│   ├── bento-build-api.spec.ts
+│   ├── bento-build-e2e.spec.ts
+│   ├── bento-build-ui.spec.ts
+│   ├── drag-drop.spec.ts
+│   └── example.spec.ts
+└── docs/                            # Documentation
+    ├── ACCESSIBILITY.md             # A11y guidelines
+    ├── STATE_MANAGER.md             # State architecture
+    └── DESIGN_SYSTEM.md             # Design tokens
 ```
 
 ## 💡 How It Works
@@ -250,14 +287,35 @@ POST /api/bento-build
 - [ ] Template library with industry-specific starters
 - [ ] Collaborative editing (WebSocket sync)
 
+## 📁 Project Organization
+
+This project follows modern React/Next.js best practices with a clean separation of concerns:
+
+- **`app/`** - Next.js 15 App Router (pages, layouts, API routes)
+- **`components/`** - React components organized by type (blocks, ui, accessibility)
+- **`constants/`** - Centralized constants (block types, API endpoints, animations, keyboard shortcuts)
+- **`hooks/`** - Custom React hooks with barrel exports
+- **`lib/`** - External service integrations (OpenAI, Daytona, localStorage)
+- **`store/`** - Zustand state management with middleware
+- **`types/`** - TypeScript type definitions
+- **`utils/`** - Pure utility functions (contrast checker, test helpers)
+- **`tests/`** - E2E tests with Playwright
+- **`docs/`** - Detailed documentation (accessibility, state management, design system)
+
+Each folder includes an `index.ts` barrel export for clean imports:
+```typescript
+import { BLOCK_TYPES, API_ENDPOINTS } from '@/constants';
+import { useBlockActions, useHistory } from '@/hooks';
+import { checkContrast } from '@/utils';
+```
+
 ## 📚 Documentation
 
-For detailed development guidance, see [CLAUDE.md](./CLAUDE.md) which includes:
-- Architecture details
-- Block system conventions
-- AI prompt engineering
-- Testing strategies
-- TypeScript patterns
+For detailed development guidance, see:
+- **[CLAUDE.md](./CLAUDE.md)** - Development guide for Claude Code (architecture, conventions, workflows)
+- **[docs/ACCESSIBILITY.md](./docs/ACCESSIBILITY.md)** - WCAG compliance and a11y best practices
+- **[docs/STATE_MANAGER.md](./docs/STATE_MANAGER.md)** - State architecture and undo/redo implementation
+- **[docs/DESIGN_SYSTEM.md](./docs/DESIGN_SYSTEM.md)** - Design tokens and component patterns
 
 ## 🤝 Contributing
 
