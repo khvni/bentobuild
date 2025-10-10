@@ -15,6 +15,8 @@ const blockTemplates = {
       subheading: 'Build something amazing today',
       ctaText: 'Get Started',
       ctaLink: '#',
+      fontFamily: 'Instrument Serif',
+      fontSize: 'medium',
     },
   },
   text: {
@@ -25,6 +27,8 @@ const blockTemplates = {
     defaultContent: {
       heading: 'Section Heading',
       body: 'Add your content here. This is a text block that can be customized with your own content.',
+      fontFamily: 'Instrument Serif',
+      fontSize: 'medium',
     },
   },
   image: {
@@ -36,6 +40,7 @@ const blockTemplates = {
       src: 'https://via.placeholder.com/800x400',
       alt: 'Placeholder image',
       caption: '',
+      fontFamily: 'Instrument Serif',
     },
   },
   button: {
