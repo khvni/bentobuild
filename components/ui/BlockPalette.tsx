@@ -3,11 +3,12 @@
 import { useBuilderStore } from '@/store/useBuilderStore';
 import { BlockType } from '@/types/block.types';
 import { useDraggable } from '@dnd-kit/core';
+import { Target, FileText, Image, MousePointer2, Link2, Menu, LayoutDashboard } from 'lucide-react';
 
 const blockTemplates = {
   hero: {
     type: 'hero' as BlockType,
-    icon: '🎯',
+    icon: Target,
     label: 'Hero Section',
     color: '#E63946', // Bauhaus Red
     defaultContent: {
@@ -21,7 +22,7 @@ const blockTemplates = {
   },
   text: {
     type: 'text' as BlockType,
-    icon: '📝',
+    icon: FileText,
     label: 'Text Block',
     color: '#F1C40F', // Bauhaus Yellow
     defaultContent: {
@@ -33,7 +34,7 @@ const blockTemplates = {
   },
   image: {
     type: 'image' as BlockType,
-    icon: '🖼️',
+    icon: Image,
     label: 'Image Block',
     color: '#2563EB', // Bauhaus Blue
     defaultContent: {
@@ -45,7 +46,7 @@ const blockTemplates = {
   },
   button: {
     type: 'button' as BlockType,
-    icon: '🔘',
+    icon: MousePointer2,
     label: 'Button',
     color: '#E63946', // Bauhaus Red
     defaultContent: {
@@ -58,7 +59,7 @@ const blockTemplates = {
   },
   link: {
     type: 'link' as BlockType,
-    icon: '🔗',
+    icon: Link2,
     label: 'Link',
     color: '#F1C40F', // Bauhaus Yellow
     defaultContent: {
@@ -69,7 +70,7 @@ const blockTemplates = {
   },
   navbar: {
     type: 'navbar' as BlockType,
-    icon: '🧭',
+    icon: Menu,
     label: 'Navigation Bar',
     color: '#2563EB', // Bauhaus Blue
     defaultContent: {
@@ -84,7 +85,7 @@ const blockTemplates = {
   },
   footer: {
     type: 'footer' as BlockType,
-    icon: '🦶',
+    icon: LayoutDashboard,
     label: 'Footer',
     color: '#1F2937', // Dark Gray
     defaultContent: {
@@ -141,9 +142,7 @@ function DraggableBlockTemplate({ blockType, template }: DraggableBlockTemplateP
           style={{ backgroundColor: `${template.color}20` }}
           aria-hidden="true"
         >
-          <span className="text-2xl" role="img" aria-label={template.label}>
-            {template.icon}
-          </span>
+          <template.icon className="w-6 h-6" style={{ color: template.color }} />
         </div>
         <div>
           <p className="font-bold text-gray-900 uppercase text-xs tracking-wide mb-0.5">

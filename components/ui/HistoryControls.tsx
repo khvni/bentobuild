@@ -11,18 +11,15 @@ export function HistoryControls() {
   const { undo, redo, canUndo, canRedo } = useHistory();
 
   return (
-    <div className="flex items-center gap-1 rounded-lg border border-gray-200 bg-white p-1 shadow-sm">
+    <div className="flex items-center gap-2">
       <button
         onClick={undo}
         disabled={!canUndo}
-        className={`
-          flex items-center gap-1.5 rounded px-3 py-1.5 text-sm font-medium transition-colors
-          ${
-            canUndo
-              ? 'text-gray-700 hover:bg-gray-100 active:bg-gray-200'
-              : 'cursor-not-allowed text-gray-300'
-          }
-        `}
+        className={`bauhaus-button px-4 py-2 rounded-bauhaus-md font-bold text-sm uppercase tracking-wide border-2 bauhaus-transition shadow-bauhaus-sm flex items-center gap-2 ${
+          canUndo
+            ? 'bg-white text-black border-black hover:shadow-bauhaus-md hover:bg-gray-50 active:scale-95'
+            : 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed'
+        }`}
         title={canUndo ? 'Undo (Ctrl+Z / Cmd+Z)' : 'Nothing to undo'}
         aria-label="Undo"
       >
@@ -30,19 +27,14 @@ export function HistoryControls() {
         <span className="hidden sm:inline">Undo</span>
       </button>
 
-      <div className="h-6 w-px bg-gray-200" />
-
       <button
         onClick={redo}
         disabled={!canRedo}
-        className={`
-          flex items-center gap-1.5 rounded px-3 py-1.5 text-sm font-medium transition-colors
-          ${
-            canRedo
-              ? 'text-gray-700 hover:bg-gray-100 active:bg-gray-200'
-              : 'cursor-not-allowed text-gray-300'
-          }
-        `}
+        className={`bauhaus-button px-4 py-2 rounded-bauhaus-md font-bold text-sm uppercase tracking-wide border-2 bauhaus-transition shadow-bauhaus-sm flex items-center gap-2 ${
+          canRedo
+            ? 'bg-white text-black border-black hover:shadow-bauhaus-md hover:bg-gray-50 active:scale-95'
+            : 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed'
+        }`}
         title={canRedo ? 'Redo (Ctrl+Y / Cmd+Y)' : 'Nothing to redo'}
         aria-label="Redo"
       >

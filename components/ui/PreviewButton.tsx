@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useBuilderStore } from '@/store/useBuilderStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePreviewSync } from '@/hooks/usePreviewSync';
+import { Eye } from 'lucide-react';
 
 export default function PreviewButton() {
   const { blocks, contextPrompt } = useBuilderStore();
@@ -121,10 +122,10 @@ export default function PreviewButton() {
         whileTap={{ scale: 0.95 }}
         onClick={handlePreview}
         disabled={isLoading}
-        className={`fixed bottom-8 right-8 z-50 px-6 py-3 rounded-lg font-semibold shadow-lg transition-all ${
+        className={`fixed bottom-8 right-8 z-50 bauhaus-button px-6 py-3 rounded-bauhaus-md font-bold text-sm uppercase tracking-wide border-2 bauhaus-transition shadow-bauhaus-md ${
           isLoading
-            ? 'bg-gray-400 cursor-not-allowed'
-            : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-xl'
+            ? 'bg-gray-400 border-gray-500 cursor-not-allowed'
+            : 'bg-blue-600 text-white border-black hover:shadow-bauhaus-lg hover:bg-blue-700 active:scale-95'
         }`}
       >
         {isLoading ? (
@@ -152,7 +153,10 @@ export default function PreviewButton() {
             Creating Preview...
           </span>
         ) : (
-          '🚀 Preview Site'
+          <span className="flex items-center gap-2">
+            <Eye className="w-5 h-5" />
+            Preview Site!
+          </span>
         )}
       </motion.button>
 
