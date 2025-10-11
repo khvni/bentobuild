@@ -58,7 +58,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-noto-sans), 'Arial', 'Helvetica', sans-serif;
+  font-family: var(--font-instrument-serif), 'Georgia', 'Times New Roman', serif;
 }
 
 /* Bauhaus Typography Utilities */

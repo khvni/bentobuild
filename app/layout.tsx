@@ -87,7 +87,7 @@ export default function RootLayout({
         ${playfairDisplay.variable}
       `}
     >
-      <body className="antialiased font-sans">
+      <body className="antialiased">
         <MantineProvider>
           <StateHydrator />
           {children}
