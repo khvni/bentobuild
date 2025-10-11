@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { getFontClassName } from '@/components/ui/FontSelector';
 import { validateHtmlContent } from '@/lib/sanitizeHtml';
-import RichTextEditor from '@/components/ui/RichTextEditor';
+import TiptapEditor from '@/components/ui/TiptapEditor';
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
 import { useState } from 'react';
 
@@ -306,25 +306,27 @@ export default function ImageBlock({ block }: ImageBlockProps) {
             placeholder="Alt text (accessibility)"
           />
         </div>
-        {isSelected ? (
-          <div className="mt-4">
-            <RichTextEditor
-              value={block.content.caption || ''}
-              onChange={(html) => handleContentChange('caption', html)}
-              placeholder="Image caption (optional)..."
-              minHeight="60px"
-              label="Caption"
-              fontFamily={block.content.fontFamily}
-            />
+        {/* Caption - WYSIWYG: Same styled container for edit and display */}
+        {(isSelected || block.content.caption) && (
+          <div
+            className={`mt-4 text-center text-sm font-semibold ${fontClass}`}
+            style={{ color: captionColor }}
+          >
+            {isSelected ? (
+              <TiptapEditor
+                value={block.content.caption || ''}
+                onChange={(html) => handleContentChange('caption', html)}
+                placeholder="Image caption (optional)..."
+              />
+            ) : (
+              block.content.caption && (
+                <div
+                  className="tiptap"
+                  dangerouslySetInnerHTML={{ __html: validateHtmlContent(block.content.caption) }}
+                />
+              )
+            )}
           </div>
-        ) : (
-          block.content.caption && (
-            <div
-              className={`mt-4 text-center text-sm font-semibold ${fontClass}`}
-              style={{ color: captionColor }}
-              dangerouslySetInnerHTML={{ __html: validateHtmlContent(block.content.caption) }}
-            />
-          )
         )}
       </div>
     </motion.div>

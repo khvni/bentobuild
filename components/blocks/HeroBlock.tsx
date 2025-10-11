@@ -6,7 +6,7 @@ import { useContextPrompt } from '@/hooks/useContextPrompt';
 import { motion } from 'framer-motion';
 import { getFontClassName } from '@/components/ui/FontSelector';
 import { validateHtmlContent } from '@/lib/sanitizeHtml';
-import RichTextEditor from '@/components/ui/RichTextEditor';
+import TiptapEditor from '@/components/ui/TiptapEditor';
 
 interface HeroBlockProps {
   block: HeroBlockType;
@@ -109,41 +109,44 @@ export default function HeroBlock({ block }: HeroBlockProps) {
         </button>
       )}
       <div className={`max-w-3xl mx-auto text-center relative z-10 ${fontClass}`}>
-        {isSelected ? (
-          <>
-            <RichTextEditor
+        {/* Heading - WYSIWYG: Same styled container for edit and display */}
+        <div
+          className={`${fontSize.heading} font-bold mb-6`}
+          style={{ color: textColor }}
+        >
+          {isSelected ? (
+            <TiptapEditor
               value={block.content.heading}
               onChange={(html) => handleContentChange('heading', html)}
               placeholder="Hero heading..."
-              minHeight="60px"
-              label="Heading"
-              fontFamily={block.content.fontFamily}
+              autoFocus
             />
-            <div className="mt-4">
-              <RichTextEditor
-                value={block.content.subheading}
-                onChange={(html) => handleContentChange('subheading', html)}
-                placeholder="Hero subheading..."
-                minHeight="80px"
-                label="Subheading"
-                fontFamily={block.content.fontFamily}
-              />
-            </div>
-          </>
-        ) : (
-          <>
+          ) : (
             <div
-              className={`w-full bg-transparent ${fontSize.heading} font-bold mb-6 text-center`}
-              style={{ color: textColor }}
+              className="tiptap"
               dangerouslySetInnerHTML={{ __html: validateHtmlContent(block.content.heading) }}
             />
+          )}
+        </div>
+
+        {/* Subheading - WYSIWYG: Same styled container for edit and display */}
+        <div
+          className={`${fontSize.subheading} font-semibold mb-10`}
+          style={{ color: textColor }}
+        >
+          {isSelected ? (
+            <TiptapEditor
+              value={block.content.subheading}
+              onChange={(html) => handleContentChange('subheading', html)}
+              placeholder="Hero subheading..."
+            />
+          ) : (
             <div
-              className={`w-full bg-transparent ${fontSize.subheading} font-semibold mb-10 text-center`}
-              style={{ color: textColor }}
+              className="tiptap"
               dangerouslySetInnerHTML={{ __html: validateHtmlContent(block.content.subheading) }}
             />
-          </>
-        )}
+          )}
+        </div>
         <div className="flex gap-4 justify-center items-center flex-wrap mt-6">
           <input
             type="text"

@@ -6,7 +6,7 @@ import { useContextPrompt } from '@/hooks/useContextPrompt';
 import { motion } from 'framer-motion';
 import { getFontClassName } from '@/components/ui/FontSelector';
 import { validateHtmlContent } from '@/lib/sanitizeHtml';
-import RichTextEditor from '@/components/ui/RichTextEditor';
+import TiptapEditor from '@/components/ui/TiptapEditor';
 
 interface TextBlockProps {
   block: TextBlockType;
@@ -104,41 +104,44 @@ export default function TextBlock({ block }: TextBlockProps) {
         </button>
       )}
       <div className={`max-w-3xl mx-auto relative ${fontClass}`}>
-        {isSelected ? (
-          <>
-            <RichTextEditor
+        {/* Heading - WYSIWYG: Same styled container for edit and display */}
+        <div
+          className={`${fontSize.heading} font-bold mb-6`}
+          style={{ color: headingColor }}
+        >
+          {isSelected ? (
+            <TiptapEditor
               value={block.content.heading}
               onChange={(html) => handleContentChange('heading', html)}
               placeholder="Heading..."
-              minHeight="60px"
-              label="Heading"
-              fontFamily={block.content.fontFamily}
+              autoFocus
             />
-            <div className="mt-4">
-              <RichTextEditor
-                value={block.content.body}
-                onChange={(html) => handleContentChange('body', html)}
-                placeholder="Body text..."
-                minHeight="120px"
-                label="Body"
-                fontFamily={block.content.fontFamily}
-              />
-            </div>
-          </>
-        ) : (
-          <>
+          ) : (
             <div
-              className={`w-full ${fontSize.heading} font-bold mb-6`}
-              style={{ color: headingColor }}
+              className="tiptap"
               dangerouslySetInnerHTML={{ __html: validateHtmlContent(block.content.heading) }}
             />
+          )}
+        </div>
+
+        {/* Body - WYSIWYG: Same styled container for edit and display */}
+        <div
+          className={`${fontSize.body} leading-relaxed`}
+          style={{ color: textColor }}
+        >
+          {isSelected ? (
+            <TiptapEditor
+              value={block.content.body}
+              onChange={(html) => handleContentChange('body', html)}
+              placeholder="Body text..."
+            />
+          ) : (
             <div
-              className={`w-full ${fontSize.body} leading-relaxed prose prose-sm max-w-none`}
-              style={{ color: textColor }}
+              className="tiptap"
               dangerouslySetInnerHTML={{ __html: validateHtmlContent(block.content.body) }}
             />
-          </>
-        )}
+          )}
+        </div>
 
         {/* Decorative accent */}
         <div className="absolute -bottom-2 right-8 w-16 h-1 bg-gradient-to-r from-bauhaus-yellow to-bauhaus-blue rounded-full"></div>

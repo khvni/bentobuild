@@ -235,3 +235,208 @@ select:focus-visible {
     text-wrap: balance;
   }
 }
+
+/* ========================================
+   Tiptap Rich Text Editor Styles (WYSIWYG)
+   ======================================== */
+
+/*
+ * Core principle: Editor content (.tiptap) inherits ALL styles from parent block
+ * This ensures edit mode looks identical to display mode (true WYSIWYG)
+ */
+
+.tiptap {
+  /* Inherit from parent block context */
+  font-family: inherit;
+  color: inherit;
+  background-color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  text-align: inherit;
+
+  /* Remove default constraints */
+  max-width: none;
+  outline: none;
+}
+
+/* Focus state - subtle outline that respects parent colors */
+.tiptap:focus {
+  outline: none;
+}
+
+/* Paragraph spacing */
+.tiptap p {
+  margin: 0.5em 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.tiptap p:first-child {
+  margin-top: 0;
+}
+
+.tiptap p:last-child {
+  margin-bottom: 0;
+}
+
+/* Headings - inherit color and font, but set semantic sizing */
+.tiptap h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 0.67em 0;
+  color: inherit;
+  font-family: inherit;
+  line-height: 1.2;
+}
+
+.tiptap h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0.75em 0;
+  color: inherit;
+  font-family: inherit;
+  line-height: 1.3;
+}
+
+.tiptap h3 {
+  font-size: 1.17em;
+  font-weight: bold;
+  margin: 0.83em 0;
+  color: inherit;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+/* Text formatting - preserve inline styles */
+.tiptap strong,
+.tiptap b {
+  font-weight: 700;
+  color: inherit;
+}
+
+.tiptap em,
+.tiptap i {
+  font-style: italic;
+  color: inherit;
+}
+
+.tiptap u {
+  text-decoration: underline;
+  color: inherit;
+}
+
+/* Lists */
+.tiptap ul,
+.tiptap ol {
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+  color: inherit;
+}
+
+.tiptap ul {
+  list-style-type: disc;
+}
+
+.tiptap ol {
+  list-style-type: decimal;
+}
+
+.tiptap li {
+  margin: 0.25em 0;
+  color: inherit;
+}
+
+.tiptap li p {
+  margin: 0;
+}
+
+/* Nested lists */
+.tiptap ul ul,
+.tiptap ol ul {
+  list-style-type: circle;
+}
+
+.tiptap ol ol,
+.tiptap ul ol {
+  list-style-type: lower-alpha;
+}
+
+/* Blockquote */
+.tiptap blockquote {
+  border-left: 3px solid currentColor;
+  padding-left: 1em;
+  margin: 1em 0;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* Code */
+.tiptap code {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9em;
+}
+
+.tiptap pre {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: #f3f4f6;
+  padding: 1em;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.tiptap pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+}
+
+/* Placeholder styling */
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  height: 0;
+}
+
+/* Selection color - use parent's text color with opacity */
+.tiptap ::selection {
+  background-color: rgba(59, 130, 246, 0.3);
+}
+
+/* Empty paragraph minimum height */
+.tiptap p.is-empty::before {
+  content: '\00a0';
+  color: transparent;
+}
+
+/* Ensure color marks are applied */
+.tiptap [style*="color"] {
+  color: var(--color) !important;
+}
+
+/* Custom scrollbar for very long content */
+.tiptap::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tiptap::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.tiptap::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.tiptap::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
