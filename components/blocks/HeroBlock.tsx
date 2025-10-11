@@ -36,7 +36,7 @@ export default function HeroBlock({ block }: HeroBlockProps) {
   const buttonTextColor = block.content.buttonTextColor || '#3B82F6';
 
   // Get typography settings
-  const fontClass = block.content.fontFamily ? getFontClassName(block.content.fontFamily) : '';
+  const fontClass = getFontClassName(block.content.fontFamily || 'Instrument Serif');
   const getFontSize = (size?: string) => {
     switch (size) {
       case 'small': return { heading: 'text-3xl', subheading: 'text-lg' };

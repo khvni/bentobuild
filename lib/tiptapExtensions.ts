@@ -3,7 +3,6 @@ import Underline from '@tiptap/extension-underline';
 import { Color } from '@tiptap/extension-color';
 import { TextStyle } from '@tiptap/extension-text-style';
 import Placeholder from '@tiptap/extension-placeholder';
-import BubbleMenu from '@tiptap/extension-bubble-menu';
 
 // Custom extension for font size
 export const FontSize = TextStyle.extend({
@@ -38,7 +37,6 @@ export const createEditorExtensions = (placeholder: string = 'Start typing...') 
   TextStyle,
   FontSize,
   Color,
-  BubbleMenu,
   Placeholder.configure({
     placeholder,
   }),

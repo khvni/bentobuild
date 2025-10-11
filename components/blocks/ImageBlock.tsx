@@ -72,7 +72,7 @@ export default function ImageBlock({ block }: ImageBlockProps) {
   const captionColor = block.content.captionColor || '#4B5563';
 
   // Get typography settings
-  const fontClass = block.content.fontFamily ? getFontClassName(block.content.fontFamily) : '';
+  const fontClass = getFontClassName(block.content.fontFamily || 'Instrument Serif');
 
   return (
     <motion.div

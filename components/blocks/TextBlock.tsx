@@ -35,7 +35,7 @@ export default function TextBlock({ block }: TextBlockProps) {
   const textColor = block.content.textColor || '#4B5563';
 
   // Get typography settings
-  const fontClass = block.content.fontFamily ? getFontClassName(block.content.fontFamily) : '';
+  const fontClass = getFontClassName(block.content.fontFamily || 'Instrument Serif');
   const getFontSize = (size?: string) => {
     switch (size) {
       case 'small': return { heading: 'text-2xl', body: 'text-base' };

@@ -1,7 +1,7 @@
 'use client';
 
 import { Editor } from '@tiptap/react';
-import { BubbleMenu } from '@tiptap/extension-bubble-menu';
+import { BubbleMenu } from '@tiptap/react/menus';
 import { Bold, Italic, Underline as UnderlineIcon, List, ListOrdered, Palette } from 'lucide-react';
 import ColorPicker from './ColorPicker';
 import { useState, useRef, useEffect } from 'react';
