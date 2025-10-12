@@ -1,4 +1,5 @@
 import { Daytona } from '@daytonaio/sdk';
+import { storePreview } from '@/lib/previewCache';
 import { Block, FontFamily } from '@/types/block.types';
 
 // Font family mapping for HTML/CSS
@@ -42,6 +43,7 @@ interface PreviewResult {
   sandboxId?: string;
   error?: string;
   isMock?: boolean;
+  fallbackSlug?: string;
 }
 
 /**
@@ -356,10 +358,46 @@ function sanitizeHtmlForPreview(content: string): string {
   return sanitized;
 }
 
+function normalizeBaseUrl(rawBaseUrl: string): string {
+  if (!rawBaseUrl) {
+    return 'http://localhost:3000';
+  }
+
+  return rawBaseUrl.endsWith('/') ? rawBaseUrl.slice(0, -1) : rawBaseUrl;
+}
+
+function createFallbackPreview(
+  html: string,
+  contextPrompt: string,
+  fallbackBaseUrl: string,
+  reason: string
+): PreviewResult {
+  console.warn('⚠️ Falling back to local preview due to Daytona issue:', reason);
+
+  const slug = storePreview(html, contextPrompt);
+  const baseUrl = normalizeBaseUrl(fallbackBaseUrl);
+  const fallbackUrl = `${baseUrl}/preview/${slug}`;
+
+  console.log('✓ Fallback preview generated at', fallbackUrl);
+
+  return {
+    success: true,
+    url: fallbackUrl,
+    isMock: true,
+    fallbackSlug: slug,
+  };
+}
+
 /**
  * Deploy HTML to Daytona sandbox
  */
-async function deploySandbox(html: string): Promise<PreviewResult> {
+interface DeployOptions {
+  html: string;
+  contextPrompt: string;
+  fallbackBaseUrl: string;
+}
+
+async function deploySandbox({ html, contextPrompt, fallbackBaseUrl }: DeployOptions): Promise<PreviewResult> {
   const apiKey = process.env.DAYTONA_API_KEY;
 
   // Enhanced logging for environment variable debugging
@@ -372,18 +410,7 @@ async function deploySandbox(html: string): Promise<PreviewResult> {
   console.log('=================================');
 
   if (!apiKey) {
-    // Mock mode - return simulated preview
-    console.warn('⚠️ DAYTONA_API_KEY not found - using mock preview mode');
-    console.warn('To enable live deployment:');
-    console.warn('  1. Add DAYTONA_API_KEY to your environment variables');
-    console.warn('  2. For Vercel: Add it in Settings > Environment Variables');
-    console.warn('  3. For local dev: Add it to .env.local file');
-    const mockUrl = `http://localhost:3000/preview/mock-${Date.now()}`;
-    return {
-      success: true,
-      url: mockUrl,
-      isMock: true,
-    };
+    return createFallbackPreview(html, contextPrompt, fallbackBaseUrl, 'DAYTONA_API_KEY not found');
   }
 
   try {
@@ -544,14 +571,7 @@ server.listen(PORT, () => {
 
     console.error('================================');
 
-    // Fall back to mock mode on error
-    console.warn('⚠️ Falling back to mock mode due to error');
-    const mockUrl = `http://localhost:3000/preview/mock-${Date.now()}`;
-    return {
-      success: true,
-      url: mockUrl,
-      isMock: true,
-    };
+    return createFallbackPreview(html, contextPrompt, fallbackBaseUrl, error instanceof Error ? error.message : 'Unknown Daytona error');
   }
 }
 
@@ -560,14 +580,19 @@ server.listen(PORT, () => {
  */
 export async function createPreview(
   blocks: Block[],
-  contextPrompt: string
+  contextPrompt: string,
+  fallbackBaseUrl: string
 ): Promise<PreviewResult> {
   try {
     // Generate static HTML
     const html = generateStaticHTML(blocks, contextPrompt);
 
     // Deploy to Daytona sandbox
-    const result = await deploySandbox(html);
+    const result = await deploySandbox({
+      html,
+      contextPrompt,
+      fallbackBaseUrl,
+    });
 
     return result;
   } catch (error) {

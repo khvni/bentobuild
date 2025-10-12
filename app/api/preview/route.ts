@@ -16,6 +16,11 @@ export async function POST(request: NextRequest) {
     console.log('  - Context prompt length:', contextPrompt ? contextPrompt.length : 0);
     console.log('  - Block types:', Array.isArray(blocks) ? blocks.map((b: Block) => b.type).join(', ') : 'N/A');
 
+    const host = request.headers.get('host') || 'localhost:3000';
+    const protocol = host.includes('localhost') || host.startsWith('127.') ? 'http' : 'https';
+    const baseUrl = `${protocol}://${host}`;
+    console.log('  - Base URL for fallback preview:', baseUrl);
+
     // Validate request
     if (!Array.isArray(blocks)) {
       console.error('❌ Invalid request: blocks is not an array');
@@ -28,7 +33,7 @@ export async function POST(request: NextRequest) {
     console.log('✓ Request validated, creating preview...');
 
     // Create preview
-    const result = await createPreview(blocks as Block[], contextPrompt || '');
+    const result = await createPreview(blocks as Block[], contextPrompt || '', baseUrl);
 
     console.log('Preview result:', {
       success: result.success,
@@ -50,6 +55,7 @@ export async function POST(request: NextRequest) {
         url: result.url,
         sandboxId: result.sandboxId,
         isMock: result.isMock || false,
+        fallbackSlug: result.fallbackSlug,
       });
     } else {
       console.error('❌ Preview creation failed:', result.error);
