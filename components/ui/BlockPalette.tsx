@@ -17,8 +17,14 @@ const blockTemplates = {
       subheading: 'Build something amazing today',
       ctaText: 'Get Started',
       ctaLink: '#',
+      // Typography properties
       fontFamily: 'Instrument Serif',
       fontSize: 'medium',
+      // Color properties
+      backgroundColor: '#3B82F6',
+      textColor: '#FFFFFF',
+      buttonColor: '#FFFFFF',
+      buttonTextColor: '#3B82F6',
     },
   },
   text: {
@@ -29,8 +35,13 @@ const blockTemplates = {
     defaultContent: {
       heading: 'Section Heading',
       body: 'Add your content here. This is a text block that can be customized with your own content.',
+      // Typography properties
       fontFamily: 'Instrument Serif',
       fontSize: 'medium',
+      // Color properties
+      backgroundColor: '#FFFFFF',
+      headingColor: '#111827',
+      textColor: '#4B5563',
     },
   },
   image: {
@@ -42,7 +53,11 @@ const blockTemplates = {
       src: 'https://via.placeholder.com/800x400',
       alt: 'Placeholder image',
       caption: '',
+      // Typography properties
       fontFamily: 'Instrument Serif',
+      // Color properties
+      backgroundColor: '#F9FAFB',
+      captionColor: '#4B5563',
     },
   },
   button: {
@@ -54,8 +69,12 @@ const blockTemplates = {
       text: 'Click Me',
       url: '#',
       style: 'filled' as const,
+      // Typography properties
+      fontFamily: 'Instrument Serif',
+      // Color properties
       backgroundColor: '#3B82F6',
       textColor: '#FFFFFF',
+      borderColor: '#3B82F6',
     },
   },
   link: {
@@ -67,6 +86,12 @@ const blockTemplates = {
       text: 'Learn More',
       url: '#',
       description: 'Click to explore additional resources',
+      // Typography properties
+      fontFamily: 'Instrument Serif',
+      // Color properties
+      backgroundColor: '#FFFFFF',
+      textColor: '#111827',
+      linkColor: '#3B82F6',
     },
   },
   navbar: {
@@ -82,6 +107,14 @@ const blockTemplates = {
         { text: 'About', url: '#about' },
         { text: 'Contact', url: '#contact' },
       ],
+      // Typography properties
+      fontFamily: 'Instrument Serif',
+      fontSize: 'medium',
+      // Color properties
+      backgroundColor: '#FFFFFF',
+      textColor: '#111827',
+      linkColor: '#3B82F6',
+      linkHoverColor: '#2563EB',
     },
   },
   footer: {
@@ -98,6 +131,13 @@ const blockTemplates = {
         { platform: 'GitHub', url: 'https://github.com' },
       ],
       contactEmail: 'contact@company.com',
+      // Typography properties
+      fontFamily: 'Instrument Serif',
+      fontSize: 'medium',
+      // Color properties
+      backgroundColor: '#111827',
+      textColor: '#F9FAFB',
+      linkColor: '#60A5FA',
     },
   },
 };

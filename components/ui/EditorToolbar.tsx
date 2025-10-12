@@ -60,7 +60,6 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
   return (
     <BubbleMenu
       editor={editor}
-      tippyOptions={{ duration: 100, maxWidth: 'none' }}
       className="bg-white border-2 border-black rounded-bauhaus-md shadow-bauhaus-lg p-2 flex gap-1 flex-wrap"
     >
       {/* Text formatting */}

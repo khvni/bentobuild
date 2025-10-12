@@ -3,6 +3,7 @@
 import ContextBar from '@/components/ui/ContextBar';
 import Canvas from '@/components/ui/Canvas';
 import BlockPalette from '@/components/ui/BlockPalette';
+import BlockEditorPanel from '@/components/ui/BlockEditorPanel';
 import PreviewButton from '@/components/ui/PreviewButton';
 import { HistoryControls } from '@/components/ui/HistoryControls';
 import GeometricDecoration from '@/components/ui/GeometricDecoration';
@@ -112,6 +113,7 @@ export default function Home() {
         <div className="flex flex-1 overflow-hidden relative" role="main">
           <BlockPalette />
           <Canvas />
+          <BlockEditorPanel />
         </div>
       </DndContext>
 

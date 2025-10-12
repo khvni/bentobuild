@@ -15,30 +15,30 @@ export function HistoryControls() {
       <button
         onClick={undo}
         disabled={!canUndo}
-        className={`bauhaus-button px-4 py-2 rounded-bauhaus-md font-bold text-sm uppercase tracking-wide border-2 bauhaus-transition shadow-bauhaus-sm flex items-center gap-2 ${
+        className={`bauhaus-button px-6 py-3 rounded-bauhaus-md font-bold text-sm uppercase tracking-wide border-2 bauhaus-transition flex items-center gap-2 ${
           canUndo
-            ? 'bg-white text-black border-black hover:shadow-bauhaus-md hover:bg-gray-50 active:scale-95'
-            : 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed'
+            ? 'bg-blue-600 text-white border-black shadow-bauhaus-md hover:shadow-bauhaus-lg hover:bg-blue-700 active:scale-95'
+            : 'bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed'
         }`}
         title={canUndo ? 'Undo (Ctrl+Z / Cmd+Z)' : 'Nothing to undo'}
         aria-label="Undo"
       >
-        <Undo2 className="h-4 w-4" />
+        <Undo2 className="h-5 w-5" />
         <span className="hidden sm:inline">Undo</span>
       </button>
 
       <button
         onClick={redo}
         disabled={!canRedo}
-        className={`bauhaus-button px-4 py-2 rounded-bauhaus-md font-bold text-sm uppercase tracking-wide border-2 bauhaus-transition shadow-bauhaus-sm flex items-center gap-2 ${
+        className={`bauhaus-button px-6 py-3 rounded-bauhaus-md font-bold text-sm uppercase tracking-wide border-2 bauhaus-transition flex items-center gap-2 ${
           canRedo
-            ? 'bg-white text-black border-black hover:shadow-bauhaus-md hover:bg-gray-50 active:scale-95'
-            : 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed'
+            ? 'bg-blue-600 text-white border-black shadow-bauhaus-md hover:shadow-bauhaus-lg hover:bg-blue-700 active:scale-95'
+            : 'bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed'
         }`}
         title={canRedo ? 'Redo (Ctrl+Y / Cmd+Y)' : 'Nothing to redo'}
         aria-label="Redo"
       >
-        <Redo2 className="h-4 w-4" />
+        <Redo2 className="h-5 w-5" />
         <span className="hidden sm:inline">Redo</span>
       </button>
     </div>
