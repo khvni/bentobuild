@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "playwright test"
+    "test": "playwright test",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,md}\"",
+    "type-check": "tsc --noEmit",
+    "ci": "npm run lint && npm run type-check && npm run format:check && npm run build && npm run test"
   },
   "keywords": [],
   "author": "",

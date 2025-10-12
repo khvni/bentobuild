@@ -1,5 +1,9 @@
 # Bentoblocks
 
+[![CI Pipeline](https://github.com/yourusername/bentoblocks/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/bentoblocks/actions/workflows/ci.yml)
+[![Deployment Preview](https://github.com/yourusername/bentoblocks/actions/workflows/deployment-preview.yml/badge.svg)](https://github.com/yourusername/bentoblocks/actions/workflows/deployment-preview.yml)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+
 **_"Describe it once. Build visually. Let AI do the rest."_**
 
 An AI-powered, drag-and-drop website builder that combines visual editing with intelligent content generation. Built with Next.js, React, and TypeScript.
@@ -34,8 +38,8 @@ An AI-powered, drag-and-drop website builder that combines visual editing with i
 
 ### Prerequisites
 
-- Node.js 18+
-- npm or yarn
+- Node.js 22+ (recommended) or 18+
+- npm 10+
 - OpenAI API key (for AI features)
 - Daytona API key (optional, for deployment)
 
@@ -87,6 +91,8 @@ npm run dev
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
 - `npm test` - Run Playwright tests
+- `npx prettier --check "**/*.{js,jsx,ts,tsx,json,css,md}"` - Check code formatting
+- `npx prettier --write "**/*.{js,jsx,ts,tsx,json,css,md}"` - Format code
 
 ### Project Structure
 

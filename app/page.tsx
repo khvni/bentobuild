@@ -101,6 +101,9 @@ export default function Home() {
         {/* Controls */}
         <div className="flex items-center gap-4 relative z-20">
           <HistoryControls />
+          {/* Vertical divider */}
+          <div className="h-8 w-px bg-gray-300" aria-hidden="true"></div>
+          <PreviewButton />
         </div>
 
         {/* Accent Line */}
@@ -116,8 +119,6 @@ export default function Home() {
           <BlockEditorPanel />
         </div>
       </DndContext>
-
-      <PreviewButton />
     </div>
   );
 }
