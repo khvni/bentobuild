@@ -41,10 +41,6 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
   const [showColorPicker, setShowColorPicker] = useState(false);
   const colorPickerRef = useRef<HTMLDivElement>(null);
 
-  if (!editor) return null;
-
-  const currentColor = editor.getAttributes('textStyle').color || '#000000';
-
   // Close color picker when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -56,6 +52,10 @@ export default function EditorToolbar({ editor }: EditorToolbarProps) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  if (!editor) return null;
+
+  const currentColor = editor.getAttributes('textStyle').color || '#000000';
 
   return (
     <BubbleMenu
