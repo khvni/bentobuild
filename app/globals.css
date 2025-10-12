@@ -245,6 +245,16 @@ select:focus-visible {
  * This ensures edit mode looks identical to display mode (true WYSIWYG)
  */
 
+/* Editor wrapper - must inherit font-family to pass through to children */
+.tiptap-editor {
+  font-family: inherit !important;
+  color: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+  text-align: inherit !important;
+}
+
 .tiptap {
   /* Inherit from parent block context */
   font-family: inherit;
