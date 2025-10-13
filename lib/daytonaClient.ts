@@ -1,6 +1,6 @@
 import { Daytona } from '@daytonaio/sdk';
 import { storePreview } from '@/lib/previewCache';
-import { Block, FontFamily } from '@/types/block.types';
+import { Block, BlockType, FontFamily } from '@/types/block.types';
 
 // Font family mapping for HTML/CSS
 const FONT_MAP: Record<FontFamily, string> = {
@@ -13,9 +13,20 @@ const FONT_MAP: Record<FontFamily, string> = {
   'Playfair Display': "'Playfair Display', serif",
 };
 
-// Convert FontFamily to CSS font-family value
-function getFontFamilyCSS(font?: FontFamily): string {
-  return font ? FONT_MAP[font] : "'Noto Sans', sans-serif";
+const DEFAULT_FONT_BY_BLOCK: Record<BlockType, FontFamily> = {
+  hero: 'Instrument Serif',
+  text: 'Instrument Serif',
+  image: 'Instrument Serif',
+  button: 'Manrope',
+  link: 'Manrope',
+  navbar: 'Manrope',
+  footer: 'Instrument Serif',
+};
+
+// Convert FontFamily to CSS font-family value, falling back to sensible block defaults
+function getFontFamilyCSS(font: FontFamily | undefined, blockType: BlockType): string {
+  const resolvedFont = font ?? DEFAULT_FONT_BY_BLOCK[blockType];
+  return FONT_MAP[resolvedFont] ?? FONT_MAP['Manrope'];
 }
 
 // Convert fontSize to CSS classes
@@ -78,7 +89,7 @@ export function generateStaticHTML(blocks: Block[], contextPrompt: string): stri
             const textColor = block.content.textColor || '#FFFFFF';
             const buttonBg = block.content.buttonColor || '#FFFFFF';
             const buttonText = block.content.buttonTextColor || '#3B82F6';
-            const fontFamily = getFontFamilyCSS(block.content.fontFamily);
+            const fontFamily = getFontFamilyCSS(block.content.fontFamily, 'hero');
             const headingSize = getFontSizeCSS(block.content.fontSize, 'heading');
             const bodySize = getFontSizeCSS(block.content.fontSize, 'body');
 
@@ -100,7 +111,7 @@ export function generateStaticHTML(blocks: Block[], contextPrompt: string): stri
             const bgColor = block.content.backgroundColor || '#FFFFFF';
             const headingColor = block.content.headingColor || '#111827';
             const textColor = block.content.textColor || '#4B5563';
-            const fontFamily = getFontFamilyCSS(block.content.fontFamily);
+            const fontFamily = getFontFamilyCSS(block.content.fontFamily, 'text');
             const headingSize = getFontSizeCSS(block.content.fontSize, 'heading');
             const bodySize = getFontSizeCSS(block.content.fontSize, 'body');
 
@@ -116,7 +127,7 @@ export function generateStaticHTML(blocks: Block[], contextPrompt: string): stri
           case 'image': {
             const bgColor = block.content.backgroundColor || '#F9FAFB';
             const captionColor = block.content.captionColor || '#4B5563';
-            const fontFamily = getFontFamilyCSS(block.content.fontFamily);
+            const fontFamily = getFontFamilyCSS(block.content.fontFamily, 'image');
 
             return `
     <section class="px-8 py-12" style="background-color: ${bgColor};">
@@ -132,7 +143,7 @@ export function generateStaticHTML(blocks: Block[], contextPrompt: string): stri
             const backgroundColor = block.content.backgroundColor || '#3B82F6';
             const textColor = block.content.textColor || '#FFFFFF';
             const borderColor = block.content.borderColor || backgroundColor;
-            const fontFamily = getFontFamilyCSS(block.content.fontFamily);
+            const fontFamily = getFontFamilyCSS(block.content.fontFamily, 'button');
             let buttonClass = 'inline-block px-6 py-3 rounded-lg font-semibold transition-all duration-200';
             let styleAttr = '';
 
@@ -158,7 +169,7 @@ export function generateStaticHTML(blocks: Block[], contextPrompt: string): stri
             const bgColor = block.content.backgroundColor || '#FFFFFF';
             const textColor = block.content.textColor || '#4B5563';
             const linkColor = block.content.linkColor || '#3B82F6';
-            const fontFamily = getFontFamilyCSS(block.content.fontFamily);
+            const fontFamily = getFontFamilyCSS(block.content.fontFamily, 'link');
 
             return `
     <section class="px-8 py-12 border border-gray-200 rounded-lg hover:border-blue-300 transition-colors" style="background-color: ${bgColor}; font-family: ${fontFamily};">
@@ -183,7 +194,7 @@ export function generateStaticHTML(blocks: Block[], contextPrompt: string): stri
             const textColor = block.content.textColor || '#111827';
             const linkColor = block.content.linkColor || '#4B5563';
             const linkHoverColor = block.content.linkHoverColor || '#3B82F6';
-            const fontFamily = getFontFamilyCSS(block.content.fontFamily);
+            const fontFamily = getFontFamilyCSS(block.content.fontFamily, 'navbar');
 
             const linksHTML = links.map(link =>
               `<a href="${escapeHTML(link.url)}" class="font-medium transition-colors" style="color: ${linkColor}; font-family: ${fontFamily};" onmouseover="this.style.color='${linkHoverColor}'" onmouseout="this.style.color='${linkColor}'">${escapeHTML(link.text)}</a>`
@@ -220,7 +231,7 @@ export function generateStaticHTML(blocks: Block[], contextPrompt: string): stri
             const bgColor = block.content.backgroundColor || '#111827';
             const textColor = block.content.textColor || '#FFFFFF';
             const linkColor = block.content.linkColor || '#9CA3AF';
-            const fontFamily = getFontFamilyCSS(block.content.fontFamily);
+            const fontFamily = getFontFamilyCSS(block.content.fontFamily, 'footer');
 
             const socialLinksHTML = socialLinks.map(link =>
               `<a href="${escapeHTML(link.url)}" class="transition-colors hover:underline" style="color: ${linkColor};">${escapeHTML(link.platform)}</a>`
