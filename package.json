@@ -18,7 +18,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@daytonaio/sdk": "^0.108.1",
+    "@daytonaio/sdk": "^0.110.1",
     "@dnd-kit/core": "^6.3.1",
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
@@ -36,10 +36,10 @@
     "@tiptap/extension-underline": "^3.6.6",
     "@tiptap/react": "^3.6.6",
     "@tiptap/starter-kit": "^3.6.6",
-    "framer-motion": "^12.23.22",
+    "framer-motion": "^12.23.24",
     "lucide-react": "^0.545.0",
     "next": "^15.5.4",
-    "openai": "^6.2.0",
+    "openai": "^6.3.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "zustand": "^5.0.8"
