@@ -30,11 +30,10 @@ import { rateLimit, RateLimitType } from './rateLimit';
 import { auth } from '@/lib/auth';
 
 /**
- * API handler function type
+ * API handler function type (simple routes without params)
  */
 type ApiHandler = (
-  req: NextRequest,
-  context?: any
+  req: NextRequest
 ) => Promise<NextResponse> | NextResponse;
 
 /**
@@ -100,7 +99,7 @@ export function secureApi(
     logRequests = true,
   } = options;
 
-  return async (req: NextRequest, context?: any) => {
+  return async (req: NextRequest) => {
     const startTime = Date.now();
 
     try {
@@ -148,7 +147,7 @@ export function secureApi(
       }
 
       // Execute the handler
-      const response = await handler(req, context);
+      const response = await handler(req);
 
       // Log successful completion
       if (logRequests) {

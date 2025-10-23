@@ -153,6 +153,7 @@ export interface BuilderState {
   // New Page-based architecture
   page: Page | null;
   addSection: (section: Section) => void;
+  addSectionWithComponents: (section: Section) => void;
   updateSection: (id: string, updates: Partial<Section>) => void;
   deleteSection: (id: string) => void;
   addComponent: (sectionId: string, component: Component) => void;

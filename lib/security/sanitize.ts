@@ -209,6 +209,25 @@ export const aiGenerateSchema = z.object({
 });
 
 /**
+ * Schema for component AI generation requests
+ */
+export const componentGenerateSchema = z.object({
+  componentType: z
+    .string()
+    .min(1, 'Component type is required')
+    .max(50, 'Component type is too long'),
+  contextPrompt: z
+    .string()
+    .max(2000, 'Context prompt is too long')
+    .default(''),
+  blockPrompt: z
+    .string()
+    .min(1, 'Block prompt is required')
+    .max(2000, 'Block prompt is too long'),
+  existingContent: z.record(z.any()).optional(),
+});
+
+/**
  * Schema for Bento Build requests
  */
 export const bentoBuildSchema = z.object({
@@ -306,9 +325,9 @@ export function validateInput<T>(
  * @returns Sanitized content object
  */
 export function sanitizeBlockContent(
-  content: Record<string, any>
-): Record<string, any> {
-  const sanitized: Record<string, any> = {};
+  content: Record<string, unknown>
+): Record<string, unknown> {
+  const sanitized: Record<string, unknown> = {};
 
   for (const [key, value] of Object.entries(content)) {
     if (typeof value === 'string') {
@@ -336,7 +355,7 @@ export function sanitizeBlockContent(
       );
     } else if (typeof value === 'object' && value !== null) {
       // Recursively sanitize nested objects
-      sanitized[key] = sanitizeBlockContent(value);
+      sanitized[key] = sanitizeBlockContent(value as Record<string, unknown>);
     } else {
       // Keep other types as-is
       sanitized[key] = value;
@@ -345,3 +364,15 @@ export function sanitizeBlockContent(
 
   return sanitized;
 }
+
+/**
+ * Collection of all validation schemas for convenient import
+ */
+export const schemas = {
+  aiGenerate: aiGenerateSchema,
+  componentGenerate: componentGenerateSchema,
+  bentoBuild: bentoBuildSchema,
+  projectCreate: projectCreateSchema,
+  projectUpdate: projectUpdateSchema,
+  preview: previewSchema,
+};

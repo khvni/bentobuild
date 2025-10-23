@@ -3,7 +3,7 @@
 import React from 'react';
 import { Component } from '@/types/canvas.types';
 import { useBuilderStore } from '@/store/useBuilderStore';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Sparkles } from 'lucide-react';
 import HeadingRenderer from './renderers/HeadingRenderer';
 import TextRenderer from './renderers/TextRenderer';
 import ButtonRenderer from './renderers/ButtonRenderer';
@@ -16,6 +16,7 @@ interface Props {
   data: Component;
   sectionId: string;
   selected?: boolean;
+  onGenerate?: (component: Component, sectionId: string) => void;
 }
 
 /**
@@ -24,13 +25,20 @@ interface Props {
  * Renders components inline within a section (not as separate ReactFlow nodes).
  * Used by SectionNode to display child components in their layout.
  */
-export default function InlineComponentRenderer({ data, sectionId, selected }: Props) {
+export default function InlineComponentRenderer({ data, sectionId, selected, onGenerate }: Props) {
   const { deleteComponent, selectBlock } = useBuilderStore();
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (confirm('Delete this component?')) {
       deleteComponent(sectionId, data.id);
+    }
+  };
+
+  const handleGenerate = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onGenerate) {
+      onGenerate(data, sectionId);
     }
   };
 
@@ -76,14 +84,26 @@ export default function InlineComponentRenderer({ data, sectionId, selected }: P
         {data.type}
       </div>
 
-      {/* Delete Button */}
-      <button
-        onClick={handleDelete}
-        className="absolute -top-1.5 -right-1.5 p-0.5 bg-bauhaus-red hover:bg-red-600 text-white border border-black rounded-bauhaus-sm transition-colors shadow-sm opacity-0 group-hover:opacity-100"
-        title="Delete"
-      >
-        <Trash2 className="w-2.5 h-2.5" />
-      </button>
+      {/* Action Buttons */}
+      <div className="absolute -top-1.5 -right-1.5 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        {/* Generate Button */}
+        <button
+          onClick={handleGenerate}
+          className="p-0.5 bg-bauhaus-yellow hover:bg-yellow-400 text-black border border-black rounded-bauhaus-sm transition-colors shadow-sm"
+          title="Generate with AI"
+        >
+          <Sparkles className="w-2.5 h-2.5" />
+        </button>
+
+        {/* Delete Button */}
+        <button
+          onClick={handleDelete}
+          className="p-0.5 bg-bauhaus-red hover:bg-red-600 text-white border border-black rounded-bauhaus-sm transition-colors shadow-sm"
+          title="Delete"
+        >
+          <Trash2 className="w-2.5 h-2.5" />
+        </button>
+      </div>
 
       {/* Render Component Content */}
       <div className="scale-75 origin-top-left">

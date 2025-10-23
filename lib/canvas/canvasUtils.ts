@@ -1,6 +1,5 @@
 import { Node, Edge } from '@xyflow/react';
 import { Section, Component, Page } from '@/types/canvas.types';
-import { v4 as uuid } from 'uuid';
 
 /**
  * Convert Page structure to ReactFlow nodes and edges

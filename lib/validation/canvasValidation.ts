@@ -14,6 +14,7 @@ import {
   ComponentType,
   SectionVariant,
   LayoutType,
+  LayoutConfig,
   PositionType,
 } from '@/types/canvas.types';
 
@@ -304,7 +305,7 @@ function validateLayout(layout: unknown): string[] {
     return errors;
   }
 
-  const layoutConfig = layout as any;
+  const layoutConfig = layout as LayoutConfig;
 
   // Validate layout type
   const validLayoutTypes: LayoutType[] = ['stack', 'grid', 'absolute'];

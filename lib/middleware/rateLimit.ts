@@ -119,7 +119,7 @@ export async function rateLimit(
     const identifier = `${ip}:${request.nextUrl.pathname}`;
 
     // Check rate limit
-    const { success, limit, remaining, reset } =
+    const { success, limit, reset } =
       await rateLimiters[type].limit(identifier);
 
     // If rate limit exceeded, return 429 response

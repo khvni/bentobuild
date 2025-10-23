@@ -118,9 +118,10 @@ function ReactFlowCanvas() {
     const dragData = active.data.current;
 
     // Get drop position from mouse position
+    const activator = event.activatorEvent as MouseEvent | PointerEvent | null;
     const dropPosition = screenToFlowPosition({
-      x: event.activatorEvent?.clientX || 0,
-      y: event.activatorEvent?.clientY || 0,
+      x: activator?.clientX || 0,
+      y: activator?.clientY || 0,
     });
 
     if (dragData.type === 'section') {

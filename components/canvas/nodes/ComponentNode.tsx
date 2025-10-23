@@ -1,7 +1,6 @@
 'use client';
 
 import React, { memo } from 'react';
-import { NodeProps } from '@xyflow/react';
 import { Component } from '@/types/canvas.types';
 import { useBuilderStore } from '@/store/useBuilderStore';
 import { Copy, Trash2, GripVertical } from 'lucide-react';

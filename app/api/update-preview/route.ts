@@ -20,7 +20,8 @@ interface UpdatePreviewRequest {
 async function handlePOST(request: NextRequest) {
   try {
     const body: UpdatePreviewRequest = await request.json();
-    let { sandboxId, blocks, contextPrompt } = body;
+    const { sandboxId, blocks } = body;
+    let { contextPrompt } = body;
 
     // Validation
     if (!sandboxId || typeof sandboxId !== 'string') {

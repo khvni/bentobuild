@@ -19,6 +19,7 @@ interface BaseBuilderState {
   selectBlock: (id: string | null) => void;
   reorderBlocks: (blocks: Block[]) => void;
   addSection: (section: Section) => void;
+  addSectionWithComponents: (section: Section) => void;
   updateSection: (id: string, updates: Partial<Section>) => void;
   deleteSection: (id: string) => void;
   addComponent: (sectionId: string, component: Component) => void;
@@ -86,6 +87,28 @@ export const useBuilderStore = create<BuilderState>(
             };
           }),
 
+        addSectionWithComponents: (section: Section) =>
+          set((state) => {
+            const currentPage = state.page || {
+              id: uuid(),
+              sections: [],
+              viewport: { zoom: 1, x: 0, y: 0 },
+              metadata: {},
+            };
+
+            // Calculate position based on current sections
+            const newOrder = currentPage.sections.length;
+            section.order = newOrder;
+            section.position = { x: 100, y: newOrder * 450 + 100 };
+
+            return {
+              page: {
+                ...currentPage,
+                sections: [...currentPage.sections, section],
+              },
+            };
+          }),
+
         updateSection: (id: string, updates: Partial<Section>) =>
           set((state) => {
             if (!state.page) return state;
@@ -136,7 +159,16 @@ export const useBuilderStore = create<BuilderState>(
                     ? {
                         ...s,
                         children: s.children.map((c) =>
-                          c.id === componentId ? { ...c, ...updates } as Component : c
+                          c.id === componentId
+                            ? {
+                                ...c,
+                                ...updates,
+                                // Deeply merge content if provided in updates
+                                content: updates.content
+                                  ? { ...c.content, ...updates.content }
+                                  : c.content,
+                              } as Component
+                            : c
                         ),
                       }
                     : s

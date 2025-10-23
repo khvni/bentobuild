@@ -1,7 +1,7 @@
 'use client';
 
-import React, { memo } from 'react';
-import { Handle, Position, NodeProps } from '@xyflow/react';
+import React, { memo, useState } from 'react';
+import { Handle, Position } from '@xyflow/react';
 import { Section } from '@/types/canvas.types';
 import { useBuilderStore } from '@/store/useBuilderStore';
 import {
@@ -11,8 +11,12 @@ import {
   Plus,
   Trash2,
   GripVertical,
+  Sparkles,
 } from 'lucide-react';
 import InlineComponentRenderer from './InlineComponentRenderer';
+import GenerateSectionModal from '@/components/ai/GenerateSectionModal';
+import GenerateModal from '@/components/ai/GenerateModal';
+import { useGenerateModal } from '@/hooks/useGenerateModal';
 
 interface SectionNodeProps {
   data: Section;
@@ -21,10 +25,17 @@ interface SectionNodeProps {
 
 const SectionNode = memo(({ data, selected }: SectionNodeProps) => {
   const { updateSection, deleteSection, selectBlock } = useBuilderStore();
+  const [showGenerateModal, setShowGenerateModal] = useState(false);
+  const { isOpen, activeComponent, openModal, closeModal } = useGenerateModal();
 
   const handleAddComponent = () => {
     // Will be implemented by Agent 3
     console.log('Add component to section:', data.id);
+  };
+
+  const handleGenerateSection = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowGenerateModal(true);
   };
 
   const handleChangeLayout = () => {
@@ -118,6 +129,15 @@ const SectionNode = memo(({ data, selected }: SectionNodeProps) => {
 
         {/* Right: Controls */}
         <div className="flex items-center gap-2">
+          {/* Generate with AI */}
+          <button
+            onClick={handleGenerateSection}
+            className="p-2 bg-bauhaus-yellow hover:bg-yellow-400 text-black border-2 border-black rounded-bauhaus-sm transition-colors bauhaus-transition"
+            title="Generate with AI"
+          >
+            <Sparkles className="w-4 h-4" />
+          </button>
+
           {/* Layout Toggle */}
           <button
             onClick={handleChangeLayout}
@@ -177,6 +197,7 @@ const SectionNode = memo(({ data, selected }: SectionNodeProps) => {
                 key={component.id}
                 data={component}
                 sectionId={data.id}
+                onGenerate={openModal}
               />
             ))}
           </div>
@@ -228,6 +249,24 @@ const SectionNode = memo(({ data, selected }: SectionNodeProps) => {
         className="w-3 h-3 bg-bauhaus-yellow border-2 border-black"
         style={{ top: -8 }}
       />
+
+      {/* Component Generation Modal */}
+      {isOpen && activeComponent && (
+        <GenerateModal
+          component={activeComponent.component}
+          sectionId={activeComponent.sectionId}
+          onClose={closeModal}
+        />
+      )}
+
+      {/* Section Generation Modal */}
+      {showGenerateModal && (
+        <GenerateSectionModal
+          sectionId={data.id}
+          sectionVariant={data.variant}
+          onClose={() => setShowGenerateModal(false)}
+        />
+      )}
     </div>
   );
 });

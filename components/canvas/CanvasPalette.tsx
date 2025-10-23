@@ -76,9 +76,9 @@ function DraggableItem({ id, label, icon: Icon, color, data }: DraggableItemProp
       <div className="flex items-center gap-2">
         <div
           className="w-8 h-8 flex items-center justify-center rounded-bauhaus-sm"
-          style={{ backgroundColor: `${color}20` }}
+          style={{ backgroundColor: `${color}20`, color }}
         >
-          <Icon className="w-4 h-4" style={{ color }} />
+          <Icon className="w-4 h-4" />
         </div>
         <span className="text-sm font-bold text-gray-900">{label}</span>
       </div>
