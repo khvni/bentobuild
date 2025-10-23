@@ -38,6 +38,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { openai, CONTENT_GENERATION_CONFIG } from '@/lib/openai';
 import { Block, BlockType } from '@/types/block.types';
 import { getContextualImageUrl, extractImageKeywords } from '@/lib/unsplash';
+import { secureApi } from '@/lib/middleware/apiWrapper';
+import {
+  validateInput,
+  bentoBuildSchema,
+  sanitizeAIPrompt,
+  sanitizeBlockContent,
+} from '@/lib/security/sanitize';
 
 interface BentoBuildRequest {
   contextPrompt: string;
@@ -169,7 +176,7 @@ function validateBlock(block: unknown, index: number, timestamp: number): Block 
 /**
  * POST handler for Bento Build
  */
-export async function POST(request: NextRequest): Promise<NextResponse<BentoBuildResponse>> {
+async function handlePOST(request: NextRequest): Promise<NextResponse<BentoBuildResponse>> {
   try {
     // Validate API key
     if (!process.env.OPENAI_API_KEY) {
@@ -185,20 +192,37 @@ export async function POST(request: NextRequest): Promise<NextResponse<BentoBuil
 
     // Parse and validate request
     const body = await request.json();
-    const { contextPrompt } = body as BentoBuildRequest;
 
-    if (!contextPrompt || typeof contextPrompt !== 'string' || contextPrompt.trim().length === 0) {
+    // Validate input with Zod schema
+    const validation = validateInput(bentoBuildSchema, body);
+    if (!validation.success) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Invalid request: "contextPrompt" is required and must be a non-empty string',
+          error: validation.error,
         },
         { status: 400 }
       );
     }
 
-    // Build prompt
-    const prompt = buildBentoBuildPrompt(contextPrompt.trim());
+    const { contextPrompt } = validation.data;
+
+    // Sanitize context prompt to prevent prompt injection
+    const sanitizedContextPrompt = sanitizeAIPrompt(contextPrompt);
+
+    // Validate that sanitization didn't remove everything
+    if (sanitizedContextPrompt.length === 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Invalid context prompt',
+        },
+        { status: 400 }
+      );
+    }
+
+    // Build prompt with sanitized input
+    const prompt = buildBentoBuildPrompt(sanitizedContextPrompt);
 
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
@@ -274,27 +298,33 @@ export async function POST(request: NextRequest): Promise<NextResponse<BentoBuil
       throw new Error('No valid blocks were generated');
     }
 
-    // Fetch images for image blocks using Unsplash
+    // Sanitize block content and fetch images
     const blocksWithImages = await Promise.all(
       validatedBlocks.map(async (block) => {
-        if (block.type === 'image' && (!block.content.src || block.content.src.includes('placeholder'))) {
+        // Sanitize content
+        const sanitizedContent = sanitizeBlockContent(block.content);
+        const sanitizedBlock = {
+          ...block,
+          content: sanitizedContent,
+        } as Block;
+        // Fetch image if needed
+        if (sanitizedBlock.type === 'image' && (!sanitizedContent.src || (typeof sanitizedContent.src === 'string' && sanitizedContent.src.includes('placeholder')))) {
           try {
-            const keywords = extractImageKeywords(contextPrompt, 'image');
+            const keywords = extractImageKeywords(sanitizedContextPrompt, 'image');
             const imageUrl = await getContextualImageUrl(keywords);
             return {
-              ...block,
+              ...sanitizedBlock,
               content: {
-                ...block.content,
+                ...sanitizedContent,
                 src: imageUrl,
               },
-            };
+            } as Block;
           } catch (error) {
             console.error('Failed to fetch image from Unsplash:', error);
             // Keep the placeholder or existing URL
-            return block;
           }
         }
-        return block;
+        return sanitizedBlock;
       })
     );
 
@@ -350,3 +380,10 @@ export async function POST(request: NextRequest): Promise<NextResponse<BentoBuil
     );
   }
 }
+
+// Export secured API handler with rate limiting
+export const POST = secureApi(handlePOST, {
+  rateLimit: 'ai', // 10 requests per minute for AI endpoints
+  requireAuth: false, // Allow unauthenticated access for now
+  logRequests: true,
+});

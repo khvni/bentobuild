@@ -45,6 +45,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { openai, CONTENT_GENERATION_CONFIG } from '@/lib/openai';
 import { getContextualImageUrl, extractImageKeywords } from '@/lib/unsplash';
+import { secureApi } from '@/lib/middleware/apiWrapper';
+import {
+  validateInput,
+  aiGenerateSchema,
+  sanitizeAIPrompt,
+  sanitizeBlockContent,
+} from '@/lib/security/sanitize';
 
 // Type definitions
 interface GenerateBlockContentRequest {
@@ -311,7 +318,7 @@ function validateAndSanitizeResponse(data: unknown): BlockContent {
 /**
  * POST handler for generating block content
  */
-export async function POST(request: NextRequest) {
+async function handlePOST(request: NextRequest) {
   try {
     // Validate API key
     if (!process.env.OPENAI_API_KEY) {
@@ -327,30 +334,38 @@ export async function POST(request: NextRequest) {
 
     // Parse and validate request body
     const body = await request.json();
-    const { contextPrompt, blockType, existingFields } = body as GenerateBlockContentRequest;
 
-    if (!contextPrompt || typeof contextPrompt !== 'string') {
+    // Validate input with Zod schema
+    const validation = validateInput(aiGenerateSchema, body);
+    if (!validation.success) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Invalid request: "contextPrompt" is required and must be a string',
+          error: validation.error,
         },
         { status: 400 }
       );
     }
 
-    if (!blockType || typeof blockType !== 'string') {
+    const { contextPrompt, blockType, existingFields } = validation.data;
+
+    // Sanitize prompts to prevent prompt injection
+    const sanitizedContextPrompt = sanitizeAIPrompt(contextPrompt);
+    const sanitizedBlockType = blockType.trim().toLowerCase();
+
+    // Validate that sanitization didn't remove everything
+    if (sanitizedContextPrompt.length === 0) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Invalid request: "blockType" is required and must be a string',
+          error: 'Invalid context prompt',
         },
         { status: 400 }
       );
     }
 
-    // Build the prompt
-    const prompt = buildPrompt(blockType, contextPrompt, existingFields);
+    // Build the prompt with sanitized inputs
+    const prompt = buildPrompt(sanitizedBlockType, sanitizedContextPrompt, existingFields);
 
     // Call OpenAI API
     const completion = await openai.chat.completions.create({
@@ -388,18 +403,19 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate and sanitize the response
-    const sanitizedContent = validateAndSanitizeResponse(parsedContent);
+    const validatedContent = validateAndSanitizeResponse(parsedContent);
+    const sanitizedContent = sanitizeBlockContent(validatedContent);
 
     // If this is an image block and no image URL was provided, fetch from Unsplash
-    if (blockType === 'image' && !sanitizedContent.src) {
+    if (sanitizedBlockType === 'image' && !sanitizedContent.src) {
       try {
-        const keywords = extractImageKeywords(contextPrompt, 'image');
+        const keywords = extractImageKeywords(sanitizedContextPrompt, 'image');
         const imageUrl = await getContextualImageUrl(keywords);
         sanitizedContent.src = imageUrl;
       } catch (error) {
         console.error('Failed to fetch image from Unsplash:', error);
         // Use placeholder as fallback
-        sanitizedContent.src = 'https://picsum.photos/seed/' + encodeURIComponent(contextPrompt) + '/1200/800';
+        sanitizedContent.src = 'https://picsum.photos/seed/' + encodeURIComponent(sanitizedContextPrompt) + '/1200/800';
       }
     }
 
@@ -455,3 +471,10 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+// Export secured API handler with rate limiting
+export const POST = secureApi(handlePOST, {
+  rateLimit: 'ai', // 10 requests per minute for AI endpoints
+  requireAuth: false, // Allow unauthenticated access for now
+  logRequests: true,
+});

@@ -1,20 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createPreview } from '@/lib/daytonaClient';
 import { Block } from '@/types/block.types';
+import { secureApi } from '@/lib/middleware/apiWrapper';
+import { sanitizeBlockContent, sanitizeAIPrompt } from '@/lib/security/sanitize';
 
-export async function POST(request: NextRequest) {
+async function handlePOST(request: NextRequest) {
   console.log('=== Preview API Route Called ===');
   console.log('Timestamp:', new Date().toISOString());
   console.log('Environment:', process.env.NODE_ENV || 'development');
 
   try {
     const body = await request.json();
-    const { blocks, contextPrompt } = body;
+    let { blocks, contextPrompt } = body;
 
     console.log('Request payload:');
     console.log('  - Number of blocks:', Array.isArray(blocks) ? blocks.length : 'N/A');
     console.log('  - Context prompt length:', contextPrompt ? contextPrompt.length : 0);
     console.log('  - Block types:', Array.isArray(blocks) ? blocks.map((b: Block) => b.type).join(', ') : 'N/A');
+
+    // Sanitize inputs
+    if (contextPrompt) {
+      contextPrompt = sanitizeAIPrompt(contextPrompt);
+    }
+
+    if (Array.isArray(blocks)) {
+      blocks = blocks.map((block: Block) => ({
+        ...block,
+        content: sanitizeBlockContent(block.content),
+      }));
+    }
 
     const host = request.headers.get('host') || 'localhost:3000';
     const protocol = host.includes('localhost') || host.startsWith('127.') ? 'http' : 'https';
@@ -84,3 +98,10 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+// Export secured API handler with rate limiting
+export const POST = secureApi(handlePOST, {
+  rateLimit: 'preview', // 5 requests per minute for preview endpoints
+  requireAuth: false, // Allow unauthenticated access for now
+  logRequests: true,
+});

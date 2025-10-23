@@ -27,6 +27,7 @@ An AI-powered, drag-and-drop website builder that combines visual editing with i
 - **Language**: TypeScript
 - **Styling**: TailwindCSS
 - **State Management**: Zustand
+- **Database**: Prisma + Supabase PostgreSQL
 - **Drag & Drop**: @dnd-kit/core + @dnd-kit/sortable
 - **AI**: OpenAI GPT-4o-mini
 - **Animations**: Framer Motion
@@ -41,6 +42,7 @@ An AI-powered, drag-and-drop website builder that combines visual editing with i
 - Node.js 22+ (recommended) or 18+
 - npm 10+
 - OpenAI API key (for AI features)
+- Supabase account (for database) - [Sign up free](https://supabase.com)
 - Daytona API key (optional, for deployment)
 
 ### Installation
@@ -82,6 +84,181 @@ npm run dev
 
 5. **Open [http://localhost:3000](http://localhost:3000)** in your browser
 
+### Database Setup
+
+Bentoblocks uses **Prisma** with **Supabase PostgreSQL** for data persistence. Follow these steps to set up the database:
+
+#### 1. Configure Database Connection
+
+The `.env.example` file includes placeholder database URLs. Copy them to your `.env.local`:
+
+```bash
+# Database Configuration (Supabase PostgreSQL)
+DATABASE_URL="postgresql://postgres.futpuaxcyezkvrnfflmd:[YOUR-PASSWORD]@aws-1-us-east-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+DIRECT_URL="postgresql://postgres.futpuaxcyezkvrnfflmd:[YOUR-PASSWORD]@aws-1-us-east-1.pooler.supabase.com:5432/postgres"
+```
+
+**Replace `[YOUR-PASSWORD]`** with your actual Supabase database password from:
+- Supabase Dashboard → Project Settings → Database → Connection String
+
+**Connection String Details**:
+- `DATABASE_URL`: Uses connection pooling (pgBouncer) - optimized for serverless environments
+- `DIRECT_URL`: Direct database connection - required for running Prisma migrations
+
+#### 2. Run Database Migrations
+
+Once you've added your database credentials to `.env.local`, run the migration script:
+
+```bash
+# Option 1: Using the migration script
+./scripts/migrate.sh
+
+# Option 2: Manual migration commands
+npx prisma migrate dev --name init
+npx prisma generate
+```
+
+This will:
+1. Create the database tables (User, Project, DeployedSite, etc.)
+2. Generate the Prisma Client for TypeScript
+3. Apply all schema changes to your Supabase database
+
+#### 3. Verify Database Setup
+
+Check that migrations were successful:
+
+```bash
+# View database schema in Prisma Studio
+npx prisma studio
+```
+
+This opens a GUI at `http://localhost:5555` to browse your database.
+
+#### Database Schema
+
+The Prisma schema includes the following models:
+
+- **User** - Authentication and project ownership
+  - `id`, `email`, `name`, `image`, `createdAt`, `updatedAt`
+- **Project** - User websites
+  - `id`, `userId`, `slug`, `name`, `contextPrompt`, `content` (JSON), `isPublic`, `subdomain`
+- **DeployedSite** - Deployment metadata
+  - `id`, `projectId`, `url`, `status`, `deployedAt`
+
+All relations include cascade deletes for data integrity.
+
+#### Security Features
+
+- **No Raw SQL**: All database queries use Prisma's type-safe API
+- **Input Validation**: Zod schemas validate all API inputs
+- **Ownership Checks**: API routes verify user ownership before operations
+- **SQL Injection Protection**: Prisma parameterizes all queries automatically
+
+#### Troubleshooting
+
+**Error: "Environment variable not found: DATABASE_URL"**
+- Ensure `.env.local` exists and contains your database credentials
+- Restart your dev server after adding environment variables
+
+**Error: "Can't reach database server"**
+- Check your Supabase password is correct
+- Verify your Supabase project is active
+- Ensure you're using the correct connection string (pooled vs direct)
+
+**Migration conflicts**
+- If you encounter migration conflicts, you can reset the database:
+  ```bash
+  npx prisma migrate reset
+  ```
+  **Warning**: This will delete all data in your database!
+
+### Authentication Setup
+
+Bentoblocks uses **NextAuth.js** for authentication with **GitHub** and **Google** OAuth providers. Follow these steps to set up authentication:
+
+#### 1. Generate NextAuth Secret
+
+Generate a secure secret for NextAuth:
+
+```bash
+openssl rand -base64 32
+```
+
+Copy the output and add it to your `.env.local`:
+
+```bash
+NEXTAUTH_SECRET=<your-generated-secret>
+NEXTAUTH_URL=http://localhost:3000
+```
+
+#### 2. Set Up GitHub OAuth App
+
+1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
+2. Click **"New OAuth App"**
+3. Fill in the application details:
+   - **Application name**: Bentoblocks (or your preferred name)
+   - **Homepage URL**: `http://localhost:3000`
+   - **Authorization callback URL**: `http://localhost:3000/api/auth/callback/github`
+4. Click **"Register application"**
+5. Copy the **Client ID** and generate a new **Client Secret**
+6. Add them to your `.env.local`:
+
+```bash
+GITHUB_CLIENT_ID=<your-github-client-id>
+GITHUB_CLIENT_SECRET=<your-github-client-secret>
+```
+
+#### 3. Set Up Google OAuth App
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Navigate to **APIs & Services** > **Credentials**
+4. Click **"Create Credentials"** > **"OAuth client ID"**
+5. Configure the OAuth consent screen if prompted (select "External" for testing)
+6. Select **"Web application"** as the application type
+7. Add authorized redirect URIs:
+   - `http://localhost:3000/api/auth/callback/google`
+8. Click **"Create"**
+9. Copy the **Client ID** and **Client Secret**
+10. Add them to your `.env.local`:
+
+```bash
+GOOGLE_CLIENT_ID=<your-google-client-id>
+GOOGLE_CLIENT_SECRET=<your-google-client-secret>
+```
+
+#### 4. Verify Authentication Setup
+
+After completing the above steps, your `.env.local` should include:
+
+```bash
+# Database
+DATABASE_URL="postgresql://..."
+DIRECT_URL="postgresql://..."
+
+# NextAuth
+NEXTAUTH_SECRET=<your-generated-secret>
+NEXTAUTH_URL=http://localhost:3000
+
+# GitHub OAuth
+GITHUB_CLIENT_ID=<your-github-client-id>
+GITHUB_CLIENT_SECRET=<your-github-client-secret>
+
+# Google OAuth
+GOOGLE_CLIENT_ID=<your-google-client-id>
+GOOGLE_CLIENT_SECRET=<your-google-client-secret>
+```
+
+Start the development server and visit `http://localhost:3000/auth/signin` to test the authentication flow.
+
+#### Security Best Practices
+
+- **Never commit `.env.local`** to version control (it's in `.gitignore`)
+- **Rotate secrets regularly** in production environments
+- **Use environment-specific callback URLs** (localhost for dev, production domain for prod)
+- **Enable 2FA** on your GitHub and Google accounts
+- **Review OAuth app permissions** before granting access
+
 ## Development
 
 ### Available Scripts
@@ -102,6 +279,9 @@ bentoblocks/
 │   ├── api/
 │   │   ├── bento-build/             # Full-site AI generation
 │   │   ├── generate-block-content/  # Per-block AI generation
+│   │   ├── projects/                # Project CRUD operations
+│   │   │   ├── route.ts             # List & create projects
+│   │   │   └── [id]/route.ts        # Get, update, delete project
 │   │   └── preview/                 # Preview deployment
 │   ├── layout.tsx                   # Root layout
 │   ├── page.tsx                     # Main canvas page
@@ -147,7 +327,12 @@ bentoblocks/
 │   ├── daytonaClient.ts             # Daytona API
 │   ├── openai.ts                    # OpenAI integration
 │   ├── localStorage.ts              # Storage utilities
+│   ├── prisma.ts                    # Prisma client singleton
 │   └── index.ts                     # Barrel export
+├── prisma/                          # Database
+│   └── schema.prisma                # Database schema
+├── scripts/                         # Utility scripts
+│   └── migrate.sh                   # Database migration helper
 ├── store/                           # Zustand state
 │   ├── middleware/
 │   │   ├── historyMiddleware.ts     # Undo/redo logic
@@ -218,6 +403,100 @@ The app uses **Zustand** for global state management:
 State persists to localStorage and syncs across page reloads.
 
 ## 🔌 API Routes
+
+### `/api/projects`
+
+Manage user projects with full CRUD operations.
+
+**GET** - List all projects for a user:
+```json
+GET /api/projects?userId=user_123
+
+Response:
+{
+  "projects": [
+    {
+      "id": "proj_123",
+      "name": "My Portfolio",
+      "slug": "my-portfolio",
+      "contextPrompt": "I'm a freelance designer",
+      "isPublic": false,
+      "subdomain": "myportfolio",
+      "createdAt": "2025-01-01T00:00:00.000Z",
+      "updatedAt": "2025-01-01T00:00:00.000Z"
+    }
+  ]
+}
+```
+
+**POST** - Create a new project:
+```json
+POST /api/projects
+{
+  "userId": "user_123",
+  "name": "My Portfolio",
+  "slug": "my-portfolio",
+  "contextPrompt": "I'm a freelance designer",
+  "blocks": [],
+  "isPublic": false,
+  "subdomain": "myportfolio"  // optional
+}
+
+Response:
+{
+  "project": { /* full project object */ }
+}
+```
+
+### `/api/projects/[id]`
+
+Manage individual projects.
+
+**GET** - Get a single project:
+```json
+GET /api/projects/proj_123
+
+Response:
+{
+  "project": {
+    "id": "proj_123",
+    "name": "My Portfolio",
+    "slug": "my-portfolio",
+    "blocks": [...],
+    "user": {
+      "id": "user_123",
+      "name": "John Doe",
+      "email": "john@example.com"
+    }
+  }
+}
+```
+
+**PATCH** - Update a project:
+```json
+PATCH /api/projects/proj_123
+{
+  "userId": "user_123",  // Required for ownership verification
+  "name": "Updated Portfolio",
+  "blocks": [...],
+  "isPublic": true
+}
+
+Response:
+{
+  "project": { /* updated project */ }
+}
+```
+
+**DELETE** - Delete a project:
+```json
+DELETE /api/projects/proj_123?userId=user_123
+
+Response:
+{
+  "message": "Project deleted successfully"
+}
+```
 
 ### `/api/generate-block-content`
 
