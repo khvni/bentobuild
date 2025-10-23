@@ -44,6 +44,58 @@ const sectionGenerateSchema = z.object({
 });
 
 /**
+ * AI Response Types - Define expected structure from OpenAI for each section variant
+ */
+interface NavbarAIData {
+  brandName?: string;
+  links?: Array<{ text: string; url: string }>;
+  ctaText?: string;
+  ctaUrl?: string;
+}
+
+interface HeroAIData {
+  heading?: string;
+  subheading?: string;
+  ctaText?: string;
+  ctaUrl?: string;
+}
+
+interface ContentAIData {
+  heading?: string;
+  paragraphs?: string[];
+}
+
+interface FeaturesAIData {
+  sectionHeading?: string;
+  features?: Array<{ title: string; description: string }>;
+}
+
+interface GalleryAIData {
+  sectionHeading?: string;
+  images?: Array<{ alt: string; caption?: string }>;
+}
+
+interface TestimonialsAIData {
+  sectionHeading?: string;
+  testimonials?: Array<{ quote: string; author: string; role?: string }>;
+}
+
+interface CtaAIData {
+  heading?: string;
+  description?: string;
+  buttonText?: string;
+  buttonUrl?: string;
+}
+
+interface FooterAIData {
+  companyName?: string;
+  links?: Array<{ text: string; url: string }>;
+  copyright?: string;
+}
+
+type SectionAIData = NavbarAIData | HeroAIData | ContentAIData | FeaturesAIData | GalleryAIData | TestimonialsAIData | CtaAIData | FooterAIData;
+
+/**
  * Builds a structured prompt for OpenAI based on section variant and context
  */
 function buildSectionPrompt(variant: SectionVariant, context: string, request: string): string {
@@ -148,7 +200,7 @@ ${variantPrompts[variant]}`;
 /**
  * Builds a complete Section with Components from AI-generated data
  */
-function buildSectionFromAI(variant: SectionVariant, aiData: any, order: number): Section {
+function buildSectionFromAI(variant: SectionVariant, aiData: SectionAIData, order: number): Section {
   const section = createSection(variant, order);
   const template = getDefaultTemplate(variant);
 
@@ -205,7 +257,7 @@ function buildSectionFromAI(variant: SectionVariant, aiData: any, order: number)
 
 // Component builders for each section variant
 
-function buildNavbarComponents(data: any): Component[] {
+function buildNavbarComponents(data: NavbarAIData): Component[] {
   const components: Component[] = [];
 
   // Brand name
@@ -215,7 +267,7 @@ function buildNavbarComponents(data: any): Component[] {
 
   // Navigation links
   if (data.links && Array.isArray(data.links)) {
-    data.links.forEach((link: any) => {
+    data.links.forEach((link) => {
       components.push(createLink(link.text || 'Link', link.url || '#'));
     });
   }
@@ -228,7 +280,7 @@ function buildNavbarComponents(data: any): Component[] {
   return components;
 }
 
-function buildHeroComponents(data: any): Component[] {
+function buildHeroComponents(data: HeroAIData): Component[] {
   const components: Component[] = [];
 
   if (data.heading) {
@@ -246,7 +298,7 @@ function buildHeroComponents(data: any): Component[] {
   return components;
 }
 
-function buildContentComponents(data: any): Component[] {
+function buildContentComponents(data: ContentAIData): Component[] {
   const components: Component[] = [];
 
   if (data.heading) {
@@ -262,7 +314,7 @@ function buildContentComponents(data: any): Component[] {
   return components;
 }
 
-function buildFeaturesComponents(data: any): Component[] {
+function buildFeaturesComponents(data: FeaturesAIData): Component[] {
   const components: Component[] = [];
 
   // Main section heading
@@ -274,7 +326,7 @@ function buildFeaturesComponents(data: any): Component[] {
 
   // Feature items
   if (data.features && Array.isArray(data.features)) {
-    data.features.forEach((feature: any) => {
+    data.features.forEach((feature) => {
       components.push(createHeading(feature.title || 'Feature', 3));
       components.push(createText(feature.description || ''));
     });
@@ -283,7 +335,7 @@ function buildFeaturesComponents(data: any): Component[] {
   return components;
 }
 
-function buildGalleryComponents(data: any): Component[] {
+function buildGalleryComponents(data: GalleryAIData): Component[] {
   const components: Component[] = [];
 
   // Optional section heading
@@ -295,7 +347,7 @@ function buildGalleryComponents(data: any): Component[] {
 
   // Gallery images
   if (data.images && Array.isArray(data.images)) {
-    data.images.forEach((img: any, index: number) => {
+    data.images.forEach((img, index: number) => {
       components.push(
         createImage(
           `https://picsum.photos/seed/${index}/600/400`,
@@ -310,7 +362,7 @@ function buildGalleryComponents(data: any): Component[] {
   return components;
 }
 
-function buildTestimonialsComponents(data: any): Component[] {
+function buildTestimonialsComponents(data: TestimonialsAIData): Component[] {
   const components: Component[] = [];
 
   if (data.sectionHeading) {
@@ -318,7 +370,7 @@ function buildTestimonialsComponents(data: any): Component[] {
   }
 
   if (data.testimonials && Array.isArray(data.testimonials)) {
-    data.testimonials.forEach((testimonial: any) => {
+    data.testimonials.forEach((testimonial) => {
       const testimonialText = `"${testimonial.quote}" - ${testimonial.author}${testimonial.role ? `, ${testimonial.role}` : ''}`;
       components.push(createText(testimonialText));
     });
@@ -327,7 +379,7 @@ function buildTestimonialsComponents(data: any): Component[] {
   return components;
 }
 
-function buildCtaComponents(data: any): Component[] {
+function buildCtaComponents(data: CtaAIData): Component[] {
   const components: Component[] = [];
 
   if (data.heading) {
@@ -345,7 +397,7 @@ function buildCtaComponents(data: any): Component[] {
   return components;
 }
 
-function buildFooterComponents(data: any): Component[] {
+function buildFooterComponents(data: FooterAIData): Component[] {
   const components: Component[] = [];
 
   // Company name
@@ -355,7 +407,7 @@ function buildFooterComponents(data: any): Component[] {
 
   // Footer links
   if (data.links && Array.isArray(data.links)) {
-    data.links.forEach((link: any) => {
+    data.links.forEach((link) => {
       components.push(createLink(link.text || 'Link', link.url || '#'));
     });
   }

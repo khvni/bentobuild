@@ -54,6 +54,7 @@ import {
 } from '@/lib/security/sanitize';
 
 // Type definitions
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface GenerateBlockContentRequest {
   contextPrompt: string;
   blockType: string;

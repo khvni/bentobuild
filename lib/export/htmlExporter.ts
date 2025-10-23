@@ -7,7 +7,7 @@
  * @module lib/export/htmlExporter
  */
 
-import { Page, Section, Component } from '@/types/canvas.types';
+import { Page, Section, Component, LayoutConfig, Position, StyleConfig } from '@/types/canvas.types';
 
 /**
  * Export a complete Page to standalone HTML
@@ -60,7 +60,7 @@ function renderSection(section: Section): string {
 /**
  * Render a Component to HTML
  */
-function renderComponent(component: Component, parentLayout: any): string {
+function renderComponent(component: Component, parentLayout: LayoutConfig): string {
   const positionStyle = getPositionStyle(component.position, parentLayout);
   const componentStyles = getComponentStyles(component.style);
   const styleAttr = [positionStyle, componentStyles].filter(Boolean).join('; ');
@@ -107,7 +107,7 @@ function renderComponent(component: Component, parentLayout: any): string {
 /**
  * Get layout CSS class based on layout configuration
  */
-function getLayoutClass(layout: any): string {
+function getLayoutClass(layout: LayoutConfig): string {
   if (layout.type === 'stack') {
     return `layout-stack layout-stack-${layout.direction || 'vertical'}`;
   } else if (layout.type === 'grid') {
@@ -462,7 +462,7 @@ ${customStyles}
 /**
  * Extract custom styles from page sections and components
  */
-function extractCustomStyles(page: Page): string {
+function extractCustomStyles(_page: Page): string {
   // This can be expanded to generate custom CSS classes
   // based on unique style combinations in the page
   return '/* Custom component styles */';
@@ -501,7 +501,7 @@ function generateGoogleFontsLink(page: Page): string {
 /**
  * Get position-specific inline styles
  */
-function getPositionStyle(position: any, parentLayout: any): string {
+function getPositionStyle(position: Position, parentLayout: LayoutConfig): string {
   const styles: string[] = [];
 
   if (position.type === 'absolute' && position.absolute) {
@@ -525,7 +525,7 @@ function getPositionStyle(position: any, parentLayout: any): string {
 /**
  * Get component-specific inline styles
  */
-function getComponentStyles(style: any): string {
+function getComponentStyles(style: StyleConfig): string {
   const styles: string[] = [];
 
   if (style.backgroundColor) styles.push(`background-color: ${style.backgroundColor}`);
@@ -543,7 +543,7 @@ function getComponentStyles(style: any): string {
 /**
  * Get section-specific inline styles
  */
-function getInlineStyles(style: any): string {
+function getInlineStyles(style: StyleConfig): string {
   const styles: string[] = [];
 
   if (style.backgroundColor) styles.push(`background-color: ${style.backgroundColor}`);

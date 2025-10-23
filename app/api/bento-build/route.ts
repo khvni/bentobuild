@@ -46,6 +46,7 @@ import {
   sanitizeBlockContent,
 } from '@/lib/security/sanitize';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface BentoBuildRequest {
   contextPrompt: string;
 }

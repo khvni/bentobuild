@@ -4,8 +4,14 @@
  * Utility functions to migrate from the old Block-based architecture
  * to the new Page/Section/Component architecture.
  *
+ * NOTE: This is a migration utility file. The use of 'any' types is acceptable
+ * here as we're dealing with unknown legacy data structures.
+ *
  * @module lib/migration/legacyToNew
  */
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { v4 as uuid } from 'uuid';
 import {
