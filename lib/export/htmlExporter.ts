@@ -7,7 +7,7 @@
  * @module lib/export/htmlExporter
  */
 
-import { Page, Section, Component, LayoutConfig, Position, StyleConfig } from '@/types/canvas.types';
+import { Page, Section, Component, LayoutConfig, StyleConfig } from '@/types/canvas.types';
 
 /**
  * Export a complete Page to standalone HTML
@@ -501,7 +501,7 @@ function generateGoogleFontsLink(page: Page): string {
 /**
  * Get position-specific inline styles
  */
-function getPositionStyle(position: Position, parentLayout: LayoutConfig): string {
+function getPositionStyle(position: Component['position'], parentLayout: LayoutConfig): string {
   const styles: string[] = [];
 
   if (position.type === 'absolute' && position.absolute) {

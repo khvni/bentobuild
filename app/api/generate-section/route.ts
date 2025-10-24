@@ -216,39 +216,39 @@ function buildSectionFromAI(variant: SectionVariant, aiData: SectionAIData, orde
   // Build components based on variant and AI data
   switch (variant) {
     case 'navbar':
-      section.children = buildNavbarComponents(aiData);
+      section.children = buildNavbarComponents(aiData as NavbarAIData);
       break;
 
     case 'hero':
-      section.children = buildHeroComponents(aiData);
+      section.children = buildHeroComponents(aiData as HeroAIData);
       break;
 
     case 'content':
-      section.children = buildContentComponents(aiData);
+      section.children = buildContentComponents(aiData as ContentAIData);
       break;
 
     case 'features':
-      section.children = buildFeaturesComponents(aiData);
+      section.children = buildFeaturesComponents(aiData as FeaturesAIData);
       section.layout.type = 'grid';
       section.layout.columns = 3;
       break;
 
     case 'gallery':
-      section.children = buildGalleryComponents(aiData);
+      section.children = buildGalleryComponents(aiData as GalleryAIData);
       section.layout.type = 'grid';
       section.layout.columns = 3;
       break;
 
     case 'testimonials':
-      section.children = buildTestimonialsComponents(aiData);
+      section.children = buildTestimonialsComponents(aiData as TestimonialsAIData);
       break;
 
     case 'cta':
-      section.children = buildCtaComponents(aiData);
+      section.children = buildCtaComponents(aiData as CtaAIData);
       break;
 
     case 'footer':
-      section.children = buildFooterComponents(aiData);
+      section.children = buildFooterComponents(aiData as FooterAIData);
       break;
   }
 
