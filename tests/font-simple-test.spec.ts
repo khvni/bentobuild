@@ -15,7 +15,7 @@ test.describe('Simple Font Test', () => {
       const computed = window.getComputedStyle(testDiv);
       const result = {
         fontFamily: computed.fontFamily,
-        className: testDiv.className
+        className: testDiv.className,
       };
 
       document.body.removeChild(testDiv);

@@ -11,8 +11,12 @@ test.describe('Bento Build E2E Workflow', () => {
 
     // Step 2: Enter photographer context
     const textarea = page.locator('textarea[placeholder*="Describe your website"]');
-    await textarea.fill('I am a freelance photographer specializing in landscape and portrait photography');
-    await expect(textarea).toHaveValue('I am a freelance photographer specializing in landscape and portrait photography');
+    await textarea.fill(
+      'I am a freelance photographer specializing in landscape and portrait photography'
+    );
+    await expect(textarea).toHaveValue(
+      'I am a freelance photographer specializing in landscape and portrait photography'
+    );
 
     // Step 3: Verify Bento Build button is enabled
     const bentoBuildButton = page.locator('button:has-text("Bento Build")');
@@ -52,8 +56,16 @@ test.describe('Bento Build E2E Workflow', () => {
     const lowerCaseText = canvasText?.toLowerCase() || '';
 
     // Should contain photography-related terms
-    const photographyTerms = ['photo', 'portrait', 'landscape', 'image', 'capture', 'gallery', 'work'];
-    const hasRelevantTerm = photographyTerms.some(term => lowerCaseText.includes(term));
+    const photographyTerms = [
+      'photo',
+      'portrait',
+      'landscape',
+      'image',
+      'capture',
+      'gallery',
+      'work',
+    ];
+    const hasRelevantTerm = photographyTerms.some((term) => lowerCaseText.includes(term));
     expect(hasRelevantTerm).toBe(true);
   });
 
@@ -98,7 +110,7 @@ test.describe('Bento Build E2E Workflow', () => {
     // Verify new content is relevant to coffee shop
     const lowerCaseText = secondContent?.toLowerCase() || '';
     const coffeeTerms = ['coffee', 'café', 'cafe', 'brew', 'brooklyn', 'drink', 'menu'];
-    const hasRelevantTerm = coffeeTerms.some(term => lowerCaseText.includes(term));
+    const hasRelevantTerm = coffeeTerms.some((term) => lowerCaseText.includes(term));
     expect(hasRelevantTerm).toBe(true);
   });
 
@@ -252,7 +264,8 @@ test.describe('Bento Build E2E Workflow', () => {
     expect(hasNav).toBe(true);
 
     // Should have some form of CTA or button
-    const hasCTA = canvasHTML.toLowerCase().includes('button') || canvasHTML.toLowerCase().includes('contact');
+    const hasCTA =
+      canvasHTML.toLowerCase().includes('button') || canvasHTML.toLowerCase().includes('contact');
     expect(hasCTA).toBe(true);
   });
 });

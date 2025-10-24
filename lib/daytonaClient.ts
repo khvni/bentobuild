@@ -4,11 +4,11 @@ import { Block, BlockType, FontFamily } from '@/types/block.types';
 
 // Font family mapping for HTML/CSS
 const FONT_MAP: Record<FontFamily, string> = {
-  'Inter': "'Inter', sans-serif",
+  Inter: "'Inter', sans-serif",
   'Instrument Serif': "'Instrument Serif', serif",
   'Noto Sans': "'Noto Sans', sans-serif",
-  'Lexend': "'Lexend', sans-serif",
-  'Manrope': "'Manrope', sans-serif",
+  Lexend: "'Lexend', sans-serif",
+  Manrope: "'Manrope', sans-serif",
   'EB Garamond': "'EB Garamond', serif",
   'Playfair Display': "'Playfair Display', serif",
 };
@@ -33,17 +33,25 @@ function getFontFamilyCSS(font: FontFamily | undefined, blockType: BlockType): s
 function getFontSizeCSS(size?: string, type: 'heading' | 'body' = 'heading'): string {
   if (type === 'heading') {
     switch (size) {
-      case 'small': return 'font-size: 1.875rem;'; // text-3xl
-      case 'large': return 'font-size: 4.5rem;'; // text-7xl
-      case 'xlarge': return 'font-size: 6rem;'; // text-8xl
-      default: return 'font-size: 3rem;'; // text-5xl (medium)
+      case 'small':
+        return 'font-size: 1.875rem;'; // text-3xl
+      case 'large':
+        return 'font-size: 4.5rem;'; // text-7xl
+      case 'xlarge':
+        return 'font-size: 6rem;'; // text-8xl
+      default:
+        return 'font-size: 3rem;'; // text-5xl (medium)
     }
   } else {
     switch (size) {
-      case 'small': return 'font-size: 1rem;'; // text-base
-      case 'large': return 'font-size: 1.25rem;'; // text-xl
-      case 'xlarge': return 'font-size: 1.5rem;'; // text-2xl
-      default: return 'font-size: 1.125rem;'; // text-lg (medium)
+      case 'small':
+        return 'font-size: 1rem;'; // text-base
+      case 'large':
+        return 'font-size: 1.25rem;'; // text-xl
+      case 'xlarge':
+        return 'font-size: 1.5rem;'; // text-2xl
+      default:
+        return 'font-size: 1.125rem;'; // text-lg (medium)
     }
   }
 }
@@ -144,7 +152,8 @@ export function generateStaticHTML(blocks: Block[], contextPrompt: string): stri
             const textColor = block.content.textColor || '#FFFFFF';
             const borderColor = block.content.borderColor || backgroundColor;
             const fontFamily = getFontFamilyCSS(block.content.fontFamily, 'button');
-            let buttonClass = 'inline-block px-6 py-3 rounded-lg font-semibold transition-all duration-200';
+            let buttonClass =
+              'inline-block px-6 py-3 rounded-lg font-semibold transition-all duration-200';
             let styleAttr = '';
 
             if (buttonStyle === 'filled') {
@@ -196,9 +205,12 @@ export function generateStaticHTML(blocks: Block[], contextPrompt: string): stri
             const linkHoverColor = block.content.linkHoverColor || '#3B82F6';
             const fontFamily = getFontFamilyCSS(block.content.fontFamily, 'navbar');
 
-            const linksHTML = links.map(link =>
-              `<a href="${escapeHTML(link.url)}" class="font-medium transition-colors" style="color: ${linkColor}; font-family: ${fontFamily};" onmouseover="this.style.color='${linkHoverColor}'" onmouseout="this.style.color='${linkColor}'">${escapeHTML(link.text)}</a>`
-            ).join('\n            ');
+            const linksHTML = links
+              .map(
+                (link) =>
+                  `<a href="${escapeHTML(link.url)}" class="font-medium transition-colors" style="color: ${linkColor}; font-family: ${fontFamily};" onmouseover="this.style.color='${linkHoverColor}'" onmouseout="this.style.color='${linkColor}'">${escapeHTML(link.text)}</a>`
+              )
+              .join('\n            ');
 
             return `
     <nav class="border-b-2 border-gray-200 shadow-sm sticky top-0 z-50" style="background-color: ${bgColor}; font-family: ${fontFamily};">
@@ -218,7 +230,7 @@ export function generateStaticHTML(blocks: Block[], contextPrompt: string): stri
           </button>
           <div class="hidden md:hidden absolute top-16 left-0 right-0 border-b border-gray-200 shadow-lg p-4" style="background-color: ${bgColor};">
             <div class="flex flex-col gap-3">
-              ${links.map(link => `<a href="${escapeHTML(link.url)}" class="font-medium py-2 transition-colors" style="color: ${linkColor};" onmouseover="this.style.color='${linkHoverColor}'" onmouseout="this.style.color='${linkColor}'">${escapeHTML(link.text)}</a>`).join('\n              ')}
+              ${links.map((link) => `<a href="${escapeHTML(link.url)}" class="font-medium py-2 transition-colors" style="color: ${linkColor};" onmouseover="this.style.color='${linkHoverColor}'" onmouseout="this.style.color='${linkColor}'">${escapeHTML(link.text)}</a>`).join('\n              ')}
             </div>
           </div>
         </div>
@@ -233,9 +245,12 @@ export function generateStaticHTML(blocks: Block[], contextPrompt: string): stri
             const linkColor = block.content.linkColor || '#9CA3AF';
             const fontFamily = getFontFamilyCSS(block.content.fontFamily, 'footer');
 
-            const socialLinksHTML = socialLinks.map(link =>
-              `<a href="${escapeHTML(link.url)}" class="transition-colors hover:underline" style="color: ${linkColor};">${escapeHTML(link.platform)}</a>`
-            ).join('\n            ');
+            const socialLinksHTML = socialLinks
+              .map(
+                (link) =>
+                  `<a href="${escapeHTML(link.url)}" class="transition-colors hover:underline" style="color: ${linkColor};">${escapeHTML(link.platform)}</a>`
+              )
+              .join('\n            ');
 
             return `
     <footer class="border-t-4 border-yellow-400" style="background-color: ${bgColor}; color: ${textColor}; font-family: ${fontFamily};">
@@ -308,9 +323,7 @@ export function generateStaticHTML(blocks: Block[], contextPrompt: string): stri
 function escapeHTML(str: string | undefined): string {
   if (!str) return '';
 
-  const div = typeof document !== 'undefined'
-    ? document.createElement('div')
-    : null;
+  const div = typeof document !== 'undefined' ? document.createElement('div') : null;
 
   if (div) {
     div.textContent = str;
@@ -408,7 +421,11 @@ interface DeployOptions {
   fallbackBaseUrl: string;
 }
 
-async function deploySandbox({ html, contextPrompt, fallbackBaseUrl }: DeployOptions): Promise<PreviewResult> {
+async function deploySandbox({
+  html,
+  contextPrompt,
+  fallbackBaseUrl,
+}: DeployOptions): Promise<PreviewResult> {
   const apiKey = process.env.DAYTONA_API_KEY;
 
   // Enhanced logging for environment variable debugging
@@ -434,7 +451,9 @@ async function deploySandbox({ html, contextPrompt, fallbackBaseUrl }: DeployOpt
       console.log('✓ Daytona SDK initialized successfully');
     } catch (initError) {
       console.error('❌ Failed to initialize Daytona SDK:', initError);
-      throw new Error(`Daytona SDK initialization failed: ${initError instanceof Error ? initError.message : 'Unknown error'}`);
+      throw new Error(
+        `Daytona SDK initialization failed: ${initError instanceof Error ? initError.message : 'Unknown error'}`
+      );
     }
 
     console.log('📦 Creating Daytona sandbox for live preview...');
@@ -453,7 +472,9 @@ async function deploySandbox({ html, contextPrompt, fallbackBaseUrl }: DeployOpt
       console.log('Sandbox ID:', sandbox.id || 'N/A');
     } catch (createError) {
       console.error('❌ Failed to create sandbox:', createError);
-      throw new Error(`Sandbox creation failed: ${createError instanceof Error ? createError.message : 'Unknown error'}`);
+      throw new Error(
+        `Sandbox creation failed: ${createError instanceof Error ? createError.message : 'Unknown error'}`
+      );
     }
 
     console.log('📤 Uploading HTML content...');
@@ -472,20 +493,21 @@ async function deploySandbox({ html, contextPrompt, fallbackBaseUrl }: DeployOpt
       console.log('✓ Created public directory');
     } catch (folderError) {
       console.error('❌ Failed to create public directory:', folderError);
-      throw new Error(`Failed to create directory: ${folderError instanceof Error ? folderError.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to create directory: ${folderError instanceof Error ? folderError.message : 'Unknown error'}`
+      );
     }
 
     // Upload the HTML content to index.html
     try {
-      await sandbox.fs.uploadFile(
-        Buffer.from(html, 'utf-8'),
-        'public/index.html'
-      );
+      await sandbox.fs.uploadFile(Buffer.from(html, 'utf-8'), 'public/index.html');
       console.log('✓ Uploaded index.html');
       console.log('HTML size:', html.length, 'bytes');
     } catch (uploadError) {
       console.error('❌ Failed to upload HTML file:', uploadError);
-      throw new Error(`Failed to upload HTML: ${uploadError instanceof Error ? uploadError.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to upload HTML: ${uploadError instanceof Error ? uploadError.message : 'Unknown error'}`
+      );
     }
 
     // Create a simple HTTP server script to serve the HTML
@@ -518,14 +540,13 @@ server.listen(PORT, () => {
 
     // Upload the server script
     try {
-      await sandbox.fs.uploadFile(
-        Buffer.from(serverScript, 'utf-8'),
-        'server.js'
-      );
+      await sandbox.fs.uploadFile(Buffer.from(serverScript, 'utf-8'), 'server.js');
       console.log('✓ Uploaded server.js');
     } catch (uploadError) {
       console.error('❌ Failed to upload server script:', uploadError);
-      throw new Error(`Failed to upload server: ${uploadError instanceof Error ? uploadError.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to upload server: ${uploadError instanceof Error ? uploadError.message : 'Unknown error'}`
+      );
     }
 
     console.log('🚀 Starting web server in sandbox...');
@@ -539,12 +560,14 @@ server.listen(PORT, () => {
       console.log('✓ Server started with PID:', startResult.artifacts?.stdout?.trim() || 'Unknown');
     } catch (startError) {
       console.error('❌ Failed to start server:', startError);
-      throw new Error(`Failed to start server: ${startError instanceof Error ? startError.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to start server: ${startError instanceof Error ? startError.message : 'Unknown error'}`
+      );
     }
 
     // Wait a moment for the server to start and listen
     console.log('⏳ Waiting for server to initialize...');
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Get the preview URL for port 3000
     let previewLink;
@@ -553,7 +576,9 @@ server.listen(PORT, () => {
       console.log('✓ Preview link generated:', previewLink.url);
     } catch (linkError) {
       console.error('❌ Failed to get preview link:', linkError);
-      throw new Error(`Failed to get preview link: ${linkError instanceof Error ? linkError.message : 'Unknown error'}`);
+      throw new Error(
+        `Failed to get preview link: ${linkError instanceof Error ? linkError.message : 'Unknown error'}`
+      );
     }
 
     console.log('✅ Deployment successful! Preview URL:', previewLink.url);
@@ -582,7 +607,12 @@ server.listen(PORT, () => {
 
     console.error('================================');
 
-    return createFallbackPreview(html, contextPrompt, fallbackBaseUrl, error instanceof Error ? error.message : 'Unknown Daytona error');
+    return createFallbackPreview(
+      html,
+      contextPrompt,
+      fallbackBaseUrl,
+      error instanceof Error ? error.message : 'Unknown Daytona error'
+    );
   }
 }
 

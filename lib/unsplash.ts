@@ -46,7 +46,7 @@ export async function searchUnsplashImages(
       `${UNSPLASH_API_URL}/search/photos?query=${encodeURIComponent(query)}&per_page=${perPage}&orientation=landscape`,
       {
         headers: {
-          'Authorization': `Client-ID ${UNSPLASH_ACCESS_KEY}`,
+          Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
         },
       }
     );
@@ -103,7 +103,7 @@ export async function getRandomUnsplashImage(query?: string): Promise<UnsplashIm
       `${UNSPLASH_API_URL}/photos/random${queryParam}&orientation=landscape`,
       {
         headers: {
-          'Authorization': `Client-ID ${UNSPLASH_ACCESS_KEY}`,
+          Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
         },
       }
     );
@@ -211,7 +211,8 @@ export function extractImageKeywords(
   if (lower.includes('spa') || lower.includes('wellness')) return 'spa wellness relaxation';
   if (lower.includes('tech') || lower.includes('software')) return 'technology workspace';
   if (lower.includes('design') || lower.includes('creative')) return 'creative design workspace';
-  if (lower.includes('real estate') || lower.includes('property')) return 'modern architecture home';
+  if (lower.includes('real estate') || lower.includes('property'))
+    return 'modern architecture home';
   if (lower.includes('travel') || lower.includes('tour')) return 'travel destination landscape';
   if (lower.includes('fashion')) return 'fashion style clothing';
   if (lower.includes('coffee') || lower.includes('cafe')) return 'coffee shop cafe';

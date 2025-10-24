@@ -26,12 +26,14 @@ curl http://localhost:3000/api/debug-env
 ```
 
 This will show you:
+
 - Whether each environment variable is present
 - Length of each variable (NOT the actual value)
 - First 8 characters (safe for debugging)
 - Runtime environment information
 
 Example response:
+
 ```json
 {
   "success": true,
@@ -66,6 +68,7 @@ Since the debug endpoint only works in development mode, for production issues y
 Look for these key log sections:
 
 #### A. Environment Variable Check
+
 ```
 === Daytona Preview Debug Info ===
 Timestamp: 2025-10-10T...
@@ -77,22 +80,26 @@ API Key prefix: sk-proj-...
 ```
 
 **What to check:**
+
 - `API Key present`: Should be `true`
 - `API Key length`: Should be > 0 (typical Daytona keys are 64 characters)
 - `API Key prefix`: Should show first 8 characters (verify it matches your key)
 
 #### B. SDK Initialization
+
 ```
 🚀 Initializing Daytona SDK...
 ✓ Daytona SDK initialized successfully
 ```
 
 **If you see an error here:**
+
 - API key might be invalid or revoked
 - Network issues connecting to Daytona
 - SDK version compatibility issues
 
 #### C. Sandbox Creation
+
 ```
 📦 Creating Daytona sandbox for live preview...
 Config: { language: javascript, envVars: { NODE_ENV: production } }
@@ -101,12 +108,15 @@ Sandbox ID: xyz123
 ```
 
 **If you see an error here:**
+
 - API key might lack permissions
 - Daytona account might be out of credits/quota
 - Regional availability issues
 
 #### D. Error Details
+
 If deployment fails, you'll see:
+
 ```
 === Daytona Deployment Error ===
 Error type: Error
@@ -124,6 +134,7 @@ Error details: [JSON dump of error object]
 ### Issue 1: API Key Not Found in Vercel
 
 **Symptoms:**
+
 ```
 API Key present: false
 API Key length: 0
@@ -131,6 +142,7 @@ API Key length: 0
 ```
 
 **Solutions:**
+
 1. In Vercel dashboard, go to Settings > Environment Variables
 2. Add `DAYTONA_API_KEY` with your actual key
 3. Select which environments (Production, Preview, Development)
@@ -140,6 +152,7 @@ API Key length: 0
 ### Issue 2: API Key Present But Invalid
 
 **Symptoms:**
+
 ```
 API Key present: true
 API Key length: 64
@@ -147,6 +160,7 @@ API Key length: 64
 ```
 
 **Solutions:**
+
 1. Verify your API key is correct in Daytona dashboard
 2. Check if the key has been revoked or expired
 3. Ensure the key has proper permissions for sandbox creation
@@ -155,12 +169,14 @@ API Key length: 64
 ### Issue 3: Sandbox Creation Fails
 
 **Symptoms:**
+
 ```
 ✓ Daytona SDK initialized successfully
 ❌ Failed to create sandbox: [error details]
 ```
 
 **Solutions:**
+
 1. Check your Daytona account quotas/limits
 2. Verify your account is active and in good standing
 3. Check if there are any service outages on Daytona's status page
@@ -169,12 +185,14 @@ API Key length: 64
 ### Issue 4: Network/Timeout Issues
 
 **Symptoms:**
+
 ```
 ❌ Failed to create sandbox: timeout
 ❌ Failed to get preview link: network error
 ```
 
 **Solutions:**
+
 1. Check if Vercel can reach Daytona's API endpoints
 2. Verify no firewall rules are blocking the connection
 3. Increase timeout values if your sandboxes take longer to spin up
@@ -201,6 +219,7 @@ git push
 ```
 
 Or use Vercel CLI:
+
 ```bash
 vercel --prod
 ```
@@ -223,16 +242,19 @@ vercel logs [deployment-url] --follow
 ### Local Testing
 
 1. Create a `.env.local` file:
+
 ```bash
 DAYTONA_API_KEY=your_actual_key_here
 ```
 
 2. Start the dev server:
+
 ```bash
 npm run dev
 ```
 
 3. Check the debug endpoint:
+
 ```bash
 curl http://localhost:3000/api/debug-env
 ```

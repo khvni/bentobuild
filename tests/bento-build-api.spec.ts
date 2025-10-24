@@ -25,7 +25,9 @@ test.describe('Bento Build API', () => {
 
   test('should generate blocks for valid photographer context', async ({ request }) => {
     const response = await request.post('/api/bento-build', {
-      data: { contextPrompt: 'I am a freelance photographer specializing in landscape photography' },
+      data: {
+        contextPrompt: 'I am a freelance photographer specializing in landscape photography',
+      },
     });
 
     expect(response.status()).toBe(200);
@@ -105,7 +107,7 @@ test.describe('Bento Build API', () => {
 
     // Should contain jewelry-related terms (at least one)
     const jewelryTerms = ['jewelry', 'jewellery', 'handmade', 'craft', 'artisan', 'collection'];
-    const hasRelevantTerm = jewelryTerms.some(term => allContent.includes(term));
+    const hasRelevantTerm = jewelryTerms.some((term) => allContent.includes(term));
     expect(hasRelevantTerm).toBe(true);
   });
 
@@ -144,7 +146,8 @@ test.describe('Bento Build API', () => {
   });
 
   test('should handle long context prompts', async ({ request }) => {
-    const longContext = 'I am a freelance graphic designer specializing in brand identity, logo design, and marketing materials. I have 10 years of experience working with clients across various industries including tech startups, fashion brands, and non-profit organizations. My design philosophy emphasizes clean aesthetics and meaningful storytelling.';
+    const longContext =
+      'I am a freelance graphic designer specializing in brand identity, logo design, and marketing materials. I have 10 years of experience working with clients across various industries including tech startups, fashion brands, and non-profit organizations. My design philosophy emphasizes clean aesthetics and meaningful storytelling.';
 
     const response = await request.post('/api/bento-build', {
       data: { contextPrompt: longContext },

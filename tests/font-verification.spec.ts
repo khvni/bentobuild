@@ -36,11 +36,11 @@ test.describe('Google Fonts Verification', () => {
         '--font-manrope',
         '--font-instrument-serif',
         '--font-eb-garamond',
-        '--font-playfair-display'
+        '--font-playfair-display',
       ];
 
       const results: Record<string, string> = {};
-      vars.forEach(varName => {
+      vars.forEach((varName) => {
         const value = computed.getPropertyValue(varName);
         results[varName] = value || 'NOT_DEFINED';
       });
@@ -54,10 +54,10 @@ test.describe('Google Fonts Verification', () => {
       let fontFaceCount = 0;
       const fontFaces: string[] = [];
 
-      styleSheets.forEach(sheet => {
+      styleSheets.forEach((sheet) => {
         try {
           const rules = Array.from(sheet.cssRules || []);
-          rules.forEach(rule => {
+          rules.forEach((rule) => {
             if (rule instanceof CSSFontFaceRule) {
               fontFaceCount++;
               const fontFamily = rule.style.getPropertyValue('font-family');
@@ -87,7 +87,7 @@ test.describe('Google Fonts Verification', () => {
     // Take screenshot of initial state
     await page.screenshot({
       path: 'tests/screenshots/font-test-01-initial.png',
-      fullPage: true
+      fullPage: true,
     });
     console.log('Screenshot 1: Initial state saved');
 
@@ -119,9 +119,10 @@ test.describe('Google Fonts Verification', () => {
     }
 
     // Find the Font Family button (custom dropdown trigger)
-    const fontButton = page.locator('button:has-text("Instrument Serif")').or(
-      page.locator('label:has-text("Font Family")').locator('~ button')
-    ).first();
+    const fontButton = page
+      .locator('button:has-text("Instrument Serif")')
+      .or(page.locator('label:has-text("Font Family")').locator('~ button'))
+      .first();
 
     await expect(fontButton).toBeVisible();
     console.log('Font selector button found');
@@ -137,9 +138,12 @@ test.describe('Google Fonts Verification', () => {
       await page.waitForTimeout(300);
 
       // Click the font option
-      const fontOption = page.locator(`button:has-text("${fontName}")`).filter({
-        has: page.locator(`div:text-is("${fontName}")`)
-      }).first();
+      const fontOption = page
+        .locator(`button:has-text("${fontName}")`)
+        .filter({
+          has: page.locator(`div:text-is("${fontName}")`),
+        })
+        .first();
       await fontOption.click();
       await page.waitForTimeout(500);
     };
@@ -180,14 +184,14 @@ test.describe('Google Fonts Verification', () => {
       return {
         parentClasses,
         parentFont,
-        elementFont: elFont
+        elementFont: elFont,
       };
     });
     console.log('Font details after Lexend change:', lexendFont);
 
     await page.screenshot({
       path: 'tests/screenshots/font-test-02-lexend.png',
-      fullPage: true
+      fullPage: true,
     });
     console.log('Screenshot 2: Lexend font saved');
 
@@ -202,7 +206,7 @@ test.describe('Google Fonts Verification', () => {
 
     await page.screenshot({
       path: 'tests/screenshots/font-test-03-noto-sans.png',
-      fullPage: true
+      fullPage: true,
     });
     console.log('Screenshot 3: Noto Sans font saved');
 
@@ -217,7 +221,7 @@ test.describe('Google Fonts Verification', () => {
 
     await page.screenshot({
       path: 'tests/screenshots/font-test-04-playfair.png',
-      fullPage: true
+      fullPage: true,
     });
     console.log('Screenshot 4: Playfair Display font saved');
 
@@ -232,7 +236,7 @@ test.describe('Google Fonts Verification', () => {
     const consoleMessages: string[] = [];
     const consoleErrors: string[] = [];
 
-    page.on('console', msg => {
+    page.on('console', (msg) => {
       const text = msg.text();
       consoleMessages.push(text);
       if (msg.type() === 'error') {
@@ -246,10 +250,11 @@ test.describe('Google Fonts Verification', () => {
     await page.waitForTimeout(2000);
 
     // Check for font-related errors
-    const fontErrors = consoleErrors.filter(err =>
-      err.toLowerCase().includes('font') ||
-      err.toLowerCase().includes('googleapis') ||
-      err.toLowerCase().includes('gstatic')
+    const fontErrors = consoleErrors.filter(
+      (err) =>
+        err.toLowerCase().includes('font') ||
+        err.toLowerCase().includes('googleapis') ||
+        err.toLowerCase().includes('gstatic')
     );
 
     console.log(`Total console messages: ${consoleMessages.length}`);
@@ -258,7 +263,7 @@ test.describe('Google Fonts Verification', () => {
 
     if (fontErrors.length > 0) {
       console.log('Font errors found:');
-      fontErrors.forEach(err => console.log('  -', err));
+      fontErrors.forEach((err) => console.log('  -', err));
     }
 
     // Test should still pass even if there are errors, we just want to report them

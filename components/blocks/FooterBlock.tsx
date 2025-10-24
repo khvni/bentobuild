@@ -122,7 +122,12 @@ export default function FooterBlock({ block }: FooterBlockProps) {
               placeholder="Company Name"
             />
             <div className="text-sm">
-              <label className="block text-xs font-semibold mb-1" style={{ color: textColor, opacity: 0.7 }}>Contact:</label>
+              <label
+                className="block text-xs font-semibold mb-1"
+                style={{ color: textColor, opacity: 0.7 }}
+              >
+                Contact:
+              </label>
               <input
                 type="email"
                 className="w-full bg-transparent border-b border-transparent hover:border-gray-600 focus:border-bauhaus-blue focus:outline-none pb-1"
@@ -150,7 +155,12 @@ export default function FooterBlock({ block }: FooterBlockProps) {
 
           {/* Social Links */}
           <div>
-            <p className="text-sm font-semibold mb-3 uppercase tracking-wide" style={{ color: textColor, opacity: 0.7 }}>Connect</p>
+            <p
+              className="text-sm font-semibold mb-3 uppercase tracking-wide"
+              style={{ color: textColor, opacity: 0.7 }}
+            >
+              Connect
+            </p>
             <div className="space-y-2">
               {block.content.socialLinks.map((link, index) => (
                 <div key={index} className="flex items-center gap-2 group">
@@ -206,8 +216,14 @@ export default function FooterBlock({ block }: FooterBlockProps) {
       </footer>
 
       {/* Bauhaus geometric accent */}
-      <div className="absolute bottom-4 left-4 w-8 h-8 bg-bauhaus-red opacity-20 rounded-bauhaus-sm rotate-45" aria-hidden="true"></div>
-      <div className="absolute bottom-4 right-4 w-6 h-6 bg-bauhaus-blue opacity-20 rounded-full" aria-hidden="true"></div>
+      <div
+        className="absolute bottom-4 left-4 w-8 h-8 bg-bauhaus-red opacity-20 rounded-bauhaus-sm rotate-45"
+        aria-hidden="true"
+      ></div>
+      <div
+        className="absolute bottom-4 right-4 w-6 h-6 bg-bauhaus-blue opacity-20 rounded-full"
+        aria-hidden="true"
+      ></div>
     </motion.div>
   );
 }

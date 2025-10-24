@@ -7,10 +7,27 @@ import BlockEditorPanel from '@/components/ui/BlockEditorPanel';
 import PreviewButton from '@/components/ui/PreviewButton';
 import { HistoryControls } from '@/components/ui/HistoryControls';
 import GeometricDecoration from '@/components/ui/GeometricDecoration';
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { useBuilderStore } from '@/store/useBuilderStore';
-import { BlockType, HeroBlock, TextBlock, ImageBlock, ButtonBlock, LinkBlock, NavbarBlock, FooterBlock } from '@/types/block.types';
+import {
+  BlockType,
+  HeroBlock,
+  TextBlock,
+  ImageBlock,
+  ButtonBlock,
+  LinkBlock,
+  NavbarBlock,
+  FooterBlock,
+} from '@/types/block.types';
 
 export default function Home() {
   const { blocks, reorderBlocks, addBlock } = useBuilderStore();
@@ -30,7 +47,7 @@ export default function Home() {
     // Check if dragging from palette
     const isPaletteItem = typeof active.id === 'string' && active.id.startsWith('palette-');
 
-    if (isPaletteItem && (over.id === 'canvas-droppable' || blocks.some(b => b.id === over.id))) {
+    if (isPaletteItem && (over.id === 'canvas-droppable' || blocks.some((b) => b.id === over.id))) {
       // Add new block from palette
       const blockType = active.data.current?.blockType as BlockType;
       const template = active.data.current?.template;
@@ -107,7 +124,10 @@ export default function Home() {
         </div>
 
         {/* Accent Line */}
-        <div className="absolute left-0 bottom-0 h-1 w-full bg-gradient-to-r from-bauhaus-red via-bauhaus-yellow to-bauhaus-blue" aria-hidden="true"></div>
+        <div
+          className="absolute left-0 bottom-0 h-1 w-full bg-gradient-to-r from-bauhaus-red via-bauhaus-yellow to-bauhaus-blue"
+          aria-hidden="true"
+        ></div>
       </header>
 
       <ContextBar />

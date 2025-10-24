@@ -104,7 +104,7 @@ test.describe('Bento Build UI', () => {
 
   test('should display error message on API failure', async ({ page }) => {
     // Intercept the API call and make it fail
-    await page.route('/api/bento-build', route => {
+    await page.route('/api/bento-build', (route) => {
       route.fulfill({
         status: 500,
         contentType: 'application/json',
@@ -127,7 +127,7 @@ test.describe('Bento Build UI', () => {
 
   test('should handle network errors gracefully', async ({ page }) => {
     // Intercept and abort the API call to simulate network error
-    await page.route('/api/bento-build', route => route.abort());
+    await page.route('/api/bento-build', (route) => route.abort());
 
     await page.goto('/');
 
@@ -164,7 +164,10 @@ test.describe('Bento Build UI', () => {
     const bentoBuildButton = page.locator('button:has-text("Bento Build")');
 
     // Check for title attribute (tooltip)
-    await expect(bentoBuildButton).toHaveAttribute('title', 'Generate complete website layout with AI');
+    await expect(bentoBuildButton).toHaveAttribute(
+      'title',
+      'Generate complete website layout with AI'
+    );
 
     // Check for proper disabled styling when no context
     const disabledClasses = await bentoBuildButton.getAttribute('class');

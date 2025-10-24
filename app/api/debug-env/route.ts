@@ -74,21 +74,24 @@ export async function GET() {
   if (!envCheck.environmentVariables.OPENAI_API_KEY.present) {
     envCheck.recommendations.push({
       key: 'OPENAI_API_KEY',
-      message: 'Required for AI content generation. Get it from https://platform.openai.com/api-keys',
+      message:
+        'Required for AI content generation. Get it from https://platform.openai.com/api-keys',
     });
   }
 
   if (!envCheck.environmentVariables.DAYTONA_API_KEY.present) {
     envCheck.recommendations.push({
       key: 'DAYTONA_API_KEY',
-      message: 'Required for live preview deployment. Get it from https://www.daytona.io/dashboard. Preview will run in mock mode without it.',
+      message:
+        'Required for live preview deployment. Get it from https://www.daytona.io/dashboard. Preview will run in mock mode without it.',
     });
   }
 
   if (!envCheck.environmentVariables.UNSPLASH_ACCESS_KEY.present) {
     envCheck.recommendations.push({
       key: 'UNSPLASH_ACCESS_KEY',
-      message: 'Optional for better image suggestions. Get it from https://unsplash.com/developers. Falls back to Picsum Photos without it.',
+      message:
+        'Optional for better image suggestions. Get it from https://unsplash.com/developers. Falls back to Picsum Photos without it.',
     });
   }
 

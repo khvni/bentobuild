@@ -9,35 +9,41 @@ This project uses GitHub Actions for continuous integration and deployment. The 
 ### 1. CI Pipeline (`ci.yml`)
 
 **Triggers:**
+
 - Push to `main` branch
 - Pull requests to `main` branch
 
 **Jobs:**
 
 #### a. Lint & Type Check
+
 - Runs ESLint to catch code quality issues
 - Performs TypeScript type checking with `tsc --noEmit`
 - Validates code formatting with Prettier
 - **Duration:** ~1-2 minutes
 
 #### b. Security Audit
+
 - Runs `npm audit` to detect known vulnerabilities
 - Continues on moderate-level issues (warnings only)
 - **Duration:** ~30 seconds
 
 #### c. Build
+
 - Compiles the Next.js application
 - Uploads build artifacts (.next directory)
 - Verifies production build succeeds
 - **Duration:** ~2-3 minutes
 
 #### d. E2E Tests (Playwright)
+
 - Runs comprehensive E2E tests across 3 browsers (Chromium, Firefox, WebKit)
 - Uses matrix strategy for parallel browser testing
 - Uploads test results and traces on failure
 - **Duration:** ~5-8 minutes per browser
 
 #### e. All Checks Passed
+
 - Final gate that verifies all required jobs succeeded
 - Blocks merge if any critical job fails
 - **Duration:** ~5 seconds
@@ -45,16 +51,19 @@ This project uses GitHub Actions for continuous integration and deployment. The 
 ### 2. Deployment Preview (`deployment-preview.yml`)
 
 **Triggers:**
+
 - Pull requests to `main` branch (opened, synchronized, reopened)
 
 **Jobs:**
 
 #### a. Preview Deployment
+
 - Builds the project for preview
 - Comments on PR with deployment info
 - Ready for manual deployment to Vercel/Netlify/Daytona
 
 #### b. Bundle Size Analysis
+
 - Analyzes build output size
 - Uploads bundle report as artifact
 - Helps track bundle size over time
@@ -66,6 +75,7 @@ This project uses GitHub Actions for continuous integration and deployment. The 
 No environment variables are strictly required for CI to pass. However, for full functionality:
 
 **Optional (for AI features in tests):**
+
 ```yaml
 OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 DAYTONA_API_KEY: ${{ secrets.DAYTONA_API_KEY }}
@@ -77,6 +87,7 @@ Settings → Secrets and variables → Actions → New repository secret
 ### Required for Deployment
 
 For production deployment, ensure these secrets are set:
+
 - `OPENAI_API_KEY` - OpenAI API key for AI content generation
 - `DAYTONA_API_KEY` - (Optional) Daytona API key for preview deployments
 - `UNSPLASH_ACCESS_KEY` - (Optional) Unsplash API key for images
@@ -177,26 +188,31 @@ npm run build
 ### Common Issues
 
 **1. Playwright Tests Failing in CI but passing locally**
+
 - Ensure you're using the same Node.js version (22+)
 - Check for timing issues (CI is slower)
 - Review uploaded test traces in artifacts
 
 **2. Build Failures**
+
 - Check TypeScript errors with `npx tsc --noEmit`
 - Verify all environment variables are set
 - Review build logs in CI output
 
 **3. Lint Errors**
+
 - Run `npm run lint` locally
 - Fix issues or update ESLint config if needed
 
 **4. Format Check Failures**
+
 - Run `npx prettier --write "**/*.{js,jsx,ts,tsx,json,css,md}"` locally
 - Commit formatted files
 
 ### Skipping CI (Emergency Only)
 
 To skip CI on a commit (not recommended):
+
 ```bash
 git commit -m "your message [skip ci]"
 ```
@@ -206,17 +222,20 @@ git commit -m "your message [skip ci]"
 ### Recommended: Vercel (Zero-Config)
 
 **Automatic Setup:**
+
 1. Import GitHub repository in Vercel dashboard
 2. Vercel auto-detects Next.js
 3. Add environment variables in Vercel UI
 4. Deploy automatically on every push to main
 
 **Environment Variables:**
+
 - `OPENAI_API_KEY`
 - `DAYTONA_API_KEY` (optional)
 - `UNSPLASH_ACCESS_KEY` (optional)
 
 **Benefits:**
+
 - Zero-config Next.js deployments
 - Automatic preview deployments for PRs
 - Edge network with global CDN
@@ -225,6 +244,7 @@ git commit -m "your message [skip ci]"
 ### Alternative: Netlify
 
 **Setup:**
+
 1. Connect GitHub repository
 2. Build command: `npm run build`
 3. Publish directory: `.next`
@@ -235,6 +255,7 @@ git commit -m "your message [skip ci]"
 ### Alternative: Daytona (Built-in Integration)
 
 The app has native Daytona integration:
+
 - One-click preview from the app
 - Sandbox environments
 - Good for testing and demos
@@ -251,11 +272,13 @@ Add these to your README (update username/repo):
 ## Maintenance
 
 ### Weekly Tasks
+
 - Review Dependabot PRs
 - Check for security alerts
 - Monitor CI run times
 
 ### Monthly Tasks
+
 - Review artifact storage usage
 - Update Node.js version if needed
 - Check for GitHub Actions updates

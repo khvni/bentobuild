@@ -42,16 +42,16 @@ npx playwright test tests/example.spec.ts  # Run single test file
 
 ### Tech Stack
 
-| Layer | Tool |
-|-------|------|
-| Frontend | Next.js 15 (App Router), React, TypeScript |
-| Styling | TailwindCSS |
-| State | Zustand |
-| Drag & Drop | @dnd-kit/core |
-| AI | OpenAI GPT-4o-mini |
-| Animation | Framer Motion |
-| Testing | Playwright |
-| Deployment | Daytona Sandbox |
+| Layer       | Tool                                       |
+| ----------- | ------------------------------------------ |
+| Frontend    | Next.js 15 (App Router), React, TypeScript |
+| Styling     | TailwindCSS                                |
+| State       | Zustand                                    |
+| Drag & Drop | @dnd-kit/core                              |
+| AI          | OpenAI GPT-4o-mini                         |
+| Animation   | Framer Motion                              |
+| Testing     | Playwright                                 |
+| Deployment  | Daytona Sandbox                            |
 
 ### State Management (Zustand)
 
@@ -89,7 +89,7 @@ Blocks are the core building units ("bento blocks"). Each block:
 ```typescript
 interface BaseBlock {
   id: string;
-  type: "hero" | "text" | "image" | "gallery" | "contact";
+  type: 'hero' | 'text' | 'image' | 'gallery' | 'contact';
   order: number;
   content: Record<string, string>;
 }
@@ -137,6 +137,7 @@ Return concise, natural-sounding text as JSON:
 ```
 
 **Current State**: All AI features have been fully integrated into main branch:
+
 - `/api/generate-block-content` - Per-block AI content generation
 - `/api/bento-build` - Full-site AI generation with Bento Build button
 

@@ -3,6 +3,7 @@ import './globals.css';
 import { StateHydrator } from '@/components/StateHydrator';
 import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
+import SessionProvider from '@/components/providers/SessionProvider';
 import {
   inter,
   notoSans,
@@ -10,7 +11,7 @@ import {
   manrope,
   instrumentSerif,
   ebGaramond,
-  playfairDisplay
+  playfairDisplay,
 } from '@/lib/fonts';
 
 export const metadata: Metadata = {
@@ -37,10 +38,12 @@ export default function RootLayout({
       `}
     >
       <body className="antialiased">
-        <MantineProvider>
-          <StateHydrator />
-          {children}
-        </MantineProvider>
+        <SessionProvider>
+          <MantineProvider>
+            <StateHydrator />
+            {children}
+          </MantineProvider>
+        </SessionProvider>
       </body>
     </html>
   );

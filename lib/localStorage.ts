@@ -71,7 +71,7 @@ export function removeFromLocalStorage(key: string): void {
 export function clearAllStorage(): void {
   try {
     const keys = Object.keys(localStorage);
-    keys.forEach(key => {
+    keys.forEach((key) => {
       if (key.startsWith('bentobuild_')) {
         localStorage.removeItem(key);
       }

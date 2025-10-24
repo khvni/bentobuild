@@ -126,7 +126,17 @@ export interface FooterBlock extends BaseBlock {
   };
 }
 
-export type Block = HeroBlock | TextBlock | ImageBlock | ButtonBlock | LinkBlock | NavbarBlock | FooterBlock;
+export type Block =
+  | HeroBlock
+  | TextBlock
+  | ImageBlock
+  | ButtonBlock
+  | LinkBlock
+  | NavbarBlock
+  | FooterBlock;
+
+// Import canvas types for new Page-based architecture
+import { Page, Section, Component } from './canvas.types';
 
 export interface BuilderState {
   blocks: Block[];
@@ -147,4 +157,14 @@ export interface BuilderState {
   clearHistory: () => void;
   // Persistence action
   hydrate: () => void;
+  // New Page-based architecture
+  page: Page | null;
+  addSection: (section: Section) => void;
+  addSectionWithComponents: (section: Section) => void;
+  updateSection: (id: string, updates: Partial<Section>) => void;
+  deleteSection: (id: string) => void;
+  addComponent: (sectionId: string, component: Component) => void;
+  updateComponent: (sectionId: string, componentId: string, updates: Partial<Component>) => void;
+  deleteComponent: (sectionId: string, componentId: string) => void;
+  setPage: (page: Page) => void;
 }

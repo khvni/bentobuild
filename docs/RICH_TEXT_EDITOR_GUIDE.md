@@ -23,7 +23,9 @@ All Tiptap dependencies have been installed with version `^3.6.6`:
 ## New Files Created
 
 ### 1. `/lib/sanitizeHtml.ts`
+
 HTML sanitization utility that:
+
 - Strips dangerous tags (script, iframe, etc.)
 - Allows safe formatting tags (b, strong, i, em, u, span)
 - Preserves inline styles (font-size, color)
@@ -31,6 +33,7 @@ HTML sanitization utility that:
 - Validates HTML content before rendering
 
 **Key Functions:**
+
 - `isHtmlContent(content: string): boolean` - Detects if content contains HTML
 - `plainTextToHtml(text: string): string` - Converts plain text to HTML paragraphs
 - `stripHtml(html: string): string` - Removes all HTML tags
@@ -38,7 +41,9 @@ HTML sanitization utility that:
 - `validateHtmlContent(content: string): string` - Validates and ensures safe HTML
 
 ### 2. `/components/ui/RichTextEditor.tsx`
+
 Main rich text editor component built with Tiptap:
+
 - Full WYSIWYG editing experience
 - Integrates with RichTextToolbar
 - Auto-converts plain text to HTML
@@ -47,18 +52,20 @@ Main rich text editor component built with Tiptap:
 - Bauhaus design system integration
 
 **Props:**
+
 ```typescript
 interface RichTextEditorProps {
-  value: string;           // HTML content
+  value: string; // HTML content
   onChange: (html: string) => void;
-  placeholder?: string;    // Placeholder text
-  label?: string;          // Input label
-  minHeight?: string;      // Minimum editor height (default: '150px')
-  disabled?: boolean;      // Disable editing
+  placeholder?: string; // Placeholder text
+  label?: string; // Input label
+  minHeight?: string; // Minimum editor height (default: '150px')
+  disabled?: boolean; // Disable editing
 }
 ```
 
 **Usage Example:**
+
 ```tsx
 <RichTextEditor
   value={block.content.heading}
@@ -70,7 +77,9 @@ interface RichTextEditorProps {
 ```
 
 ### 3. `/components/ui/RichTextToolbar.tsx`
+
 Formatting toolbar with Bauhaus-styled controls:
+
 - **Bold** (Ctrl/Cmd + B)
 - **Italic** (Ctrl/Cmd + I)
 - **Underline** (Ctrl/Cmd + U)
@@ -79,6 +88,7 @@ Formatting toolbar with Bauhaus-styled controls:
 - **Clear Formatting** button
 
 **Features:**
+
 - Keyboard shortcuts
 - Active state indicators
 - Color picker popup integration
@@ -88,7 +98,9 @@ Formatting toolbar with Bauhaus-styled controls:
 ## Modified Files
 
 ### 1. `/components/ui/BlockEditorPanel.tsx`
+
 Replaced text inputs with RichTextEditor for:
+
 - **Hero Block:**
   - `heading` field (minHeight: 100px)
   - `subheading` field (minHeight: 80px)
@@ -103,6 +115,7 @@ Replaced text inputs with RichTextEditor for:
   - URL and alt text remain as regular inputs
 
 **Before:**
+
 ```tsx
 <input
   type="text"
@@ -112,6 +125,7 @@ Replaced text inputs with RichTextEditor for:
 ```
 
 **After:**
+
 ```tsx
 <RichTextEditor
   value={block.content.heading}
@@ -122,13 +136,16 @@ Replaced text inputs with RichTextEditor for:
 ```
 
 ### 2. `/components/blocks/HeroBlock.tsx`
+
 Updated to render HTML content:
+
 - Imports `validateHtmlContent` from sanitization utility
 - Replaces input fields with div elements
 - Uses `dangerouslySetInnerHTML` with sanitization
 - Preserves CTA input fields for direct editing
 
 **Before:**
+
 ```tsx
 <input
   type="text"
@@ -138,6 +155,7 @@ Updated to render HTML content:
 ```
 
 **After:**
+
 ```tsx
 <div
   className="w-full bg-transparent text-5xl font-bold mb-6 text-center"
@@ -147,20 +165,25 @@ Updated to render HTML content:
 ```
 
 ### 3. `/components/blocks/TextBlock.tsx`
+
 Updated to render HTML content:
+
 - Imports `validateHtmlContent` from sanitization utility
 - Replaces input/textarea with div elements
 - Uses `dangerouslySetInnerHTML` with sanitization
 - Adds `prose` classes for proper typography rendering
 
 ### 4. `/components/blocks/ImageBlock.tsx`
+
 Updated to render caption as HTML content:
+
 - Imports `validateHtmlContent` from sanitization utility
 - Replaces caption input with div element for display
 - Uses `dangerouslySetInnerHTML` with sanitization for caption
 - Preserves URL and alt text as regular inputs
 
 **Before:**
+
 ```tsx
 <textarea
   value={block.content.body}
@@ -169,6 +192,7 @@ Updated to render caption as HTML content:
 ```
 
 **After:**
+
 ```tsx
 <div
   className="w-full text-lg leading-relaxed prose prose-sm max-w-none"
@@ -178,7 +202,9 @@ Updated to render caption as HTML content:
 ```
 
 ### 5. `/lib/daytonaClient.ts`
+
 Updated HTML generation for preview:
+
 - Added `sanitizeHtmlForPreview()` function
 - Preserves rich text formatting in previews
 - Replaces `escapeHTML()` with `sanitizeHtmlForPreview()` for Hero/Text/Image blocks
@@ -186,6 +212,7 @@ Updated HTML generation for preview:
 - Image captions now render with rich text formatting
 
 **Changes:**
+
 ```typescript
 // Hero block heading - before
 ${escapeHTML(block.content.heading)}
@@ -203,12 +230,14 @@ ${sanitizeHtmlForPreview(block.content.caption)}
 ## Features Implemented
 
 ### ✅ Rich Text Formatting
+
 - Bold, italic, underline styles
 - Font size selection (10 preset sizes)
 - Text color customization
 - Clear formatting option
 
 ### ✅ User Experience
+
 - Intuitive toolbar with icons
 - Keyboard shortcuts (Ctrl/Cmd + B/I/U)
 - Active state indicators
@@ -216,6 +245,7 @@ ${sanitizeHtmlForPreview(block.content.caption)}
 - Focus management
 
 ### ✅ Security
+
 - HTML sanitization on input
 - XSS protection
 - Safe tag filtering
@@ -223,12 +253,14 @@ ${sanitizeHtmlForPreview(block.content.caption)}
 - Protocol validation (no javascript:, data:)
 
 ### ✅ Backward Compatibility
+
 - Auto-converts plain text to HTML
 - Works with existing blocks
 - No data migration needed
 - Graceful fallbacks
 
 ### ✅ Design System
+
 - Bauhaus aesthetic maintained
 - Rounded corners (`rounded-bauhaus-sm`)
 - Shadow effects (`shadow-bauhaus-sm`, `shadow-bauhaus-lg`)
@@ -236,6 +268,7 @@ ${sanitizeHtmlForPreview(block.content.caption)}
 - Responsive layout
 
 ### ✅ Accessibility
+
 - ARIA labels on all controls
 - Keyboard navigation
 - Screen reader support
@@ -243,6 +276,7 @@ ${sanitizeHtmlForPreview(block.content.caption)}
 - Semantic HTML
 
 ### ✅ Performance
+
 - Debounced updates
 - Lazy component loading
 - Optimized re-renders
@@ -281,7 +315,7 @@ import RichTextEditor from '@/components/ui/RichTextEditor';
   label="My Field"
   minHeight="150px"
   disabled={isLoading}
-/>
+/>;
 ```
 
 **Rendering HTML content safely:**
@@ -292,9 +326,9 @@ import { validateHtmlContent } from '@/lib/sanitizeHtml';
 <div
   className="content-area"
   dangerouslySetInnerHTML={{
-    __html: validateHtmlContent(content.myField)
+    __html: validateHtmlContent(content.myField),
   }}
-/>
+/>;
 ```
 
 ## TypeScript Integration
@@ -338,18 +372,21 @@ Content is stored as HTML strings in block content:
 ## Security Considerations
 
 ### Input Sanitization
+
 - All user HTML input is sanitized before storage
 - Dangerous tags removed: `<script>`, `<iframe>`, `<object>`
 - Event handlers stripped: `onclick`, `onload`, etc.
 - Dangerous protocols blocked: `javascript:`, `data:`
 
 ### Output Sanitization
+
 - HTML validated before rendering with `dangerouslySetInnerHTML`
 - Double sanitization: once on input, once on output
 - Preview generation uses `sanitizeHtmlForPreview()`
 - Server-side and client-side sanitization
 
 ### Allowed Elements
+
 - Text formatting: `<b>`, `<strong>`, `<i>`, `<em>`, `<u>`
 - Structure: `<p>`, `<br>`, `<div>`, `<span>`
 - Headings: `<h1>` through `<h6>`
@@ -358,6 +395,7 @@ Content is stored as HTML strings in block content:
 - Code: `<code>`, `<pre>`
 
 ### Allowed Attributes
+
 - `style` (with filtered properties)
 - `class`
 - `href` (validated, no javascript:)
@@ -366,6 +404,7 @@ Content is stored as HTML strings in block content:
 ## Browser Compatibility
 
 Tested and working on:
+
 - Chrome/Edge 90+
 - Firefox 88+
 - Safari 14+
@@ -389,6 +428,7 @@ Tested and working on:
 ## Future Enhancements
 
 Potential improvements:
+
 - [ ] Link insertion UI
 - [ ] Markdown shortcuts support
 - [ ] Collaboration features (Y.js integration)
@@ -402,6 +442,7 @@ Potential improvements:
 ## Testing
 
 ### Manual Testing Checklist
+
 - [x] Bold formatting works
 - [x] Italic formatting works
 - [x] Underline formatting works
@@ -419,6 +460,7 @@ Potential improvements:
 - [x] Accessibility (screen readers)
 
 ### Automated Testing
+
 Add to your test suite:
 
 ```typescript
@@ -443,23 +485,29 @@ describe('RichTextEditor', () => {
 ## Troubleshooting
 
 ### Issue: Cursor jumps when typing
+
 **Solution:** Ensure you're not updating the `value` prop on every keystroke. The editor manages its own state internally.
 
 ### Issue: Formatting not applying
+
 **Solution:** Check that the editor has focus. Click inside the editor before using toolbar buttons.
 
 ### Issue: Content not saving
+
 **Solution:** Verify `onChange` handler is connected to Zustand store update function.
 
 ### Issue: Preview shows escaped HTML
+
 **Solution:** Make sure you're using `sanitizeHtmlForPreview()` instead of `escapeHTML()` in `daytonaClient.ts`.
 
 ### Issue: Build errors
+
 **Solution:** Run `npm install` to ensure all Tiptap packages are installed.
 
 ## Support
 
 For issues or questions:
+
 1. Check this guide
 2. Review component source code
 3. Check Tiptap documentation: https://tiptap.dev/docs
@@ -468,6 +516,7 @@ For issues or questions:
 ## Changelog
 
 ### v1.0.0 (Current)
+
 - Initial rich text editor implementation
 - Tiptap integration
 - HTML sanitization
@@ -480,6 +529,7 @@ For issues or questions:
 ---
 
 **Built with:**
+
 - Tiptap v3.6.6
 - React 19.2.0
 - TypeScript 5.9.3

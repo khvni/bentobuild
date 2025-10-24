@@ -32,7 +32,8 @@ export default function ButtonBlock({ block }: ButtonBlockProps) {
   };
 
   const getButtonStyles = () => {
-    const baseStyles = 'bauhaus-button px-8 py-4 rounded-bauhaus-md font-bold uppercase tracking-wide text-center border-4 shadow-bauhaus-md hover:shadow-bauhaus-lg';
+    const baseStyles =
+      'bauhaus-button px-8 py-4 rounded-bauhaus-md font-bold uppercase tracking-wide text-center border-4 shadow-bauhaus-md hover:shadow-bauhaus-lg';
     const backgroundColor = block.content.backgroundColor || '#3B82F6';
     const textColor = block.content.textColor || '#FFFFFF';
     const borderColor = block.content.borderColor || backgroundColor;
@@ -108,11 +109,7 @@ export default function ButtonBlock({ block }: ButtonBlockProps) {
               viewBox="0 0 24 24"
               strokeWidth={2.5}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
           )}
         </button>
@@ -155,9 +152,7 @@ export default function ButtonBlock({ block }: ButtonBlockProps) {
           })()}
 
           <div className="w-full max-w-md">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Button URL
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Button URL</label>
             <input
               type="text"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -181,9 +176,7 @@ export default function ButtonBlock({ block }: ButtonBlockProps) {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Text Color
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Text Color</label>
               <input
                 type="color"
                 className="w-full h-10 rounded border border-gray-300"
@@ -193,9 +186,7 @@ export default function ButtonBlock({ block }: ButtonBlockProps) {
             </div>
             {block.content.style === 'outlined' && (
               <div className="col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Border Color
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Border Color</label>
                 <input
                   type="color"
                   className="w-full h-10 rounded border border-gray-300"
