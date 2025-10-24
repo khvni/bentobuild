@@ -9,10 +9,7 @@ const updateProjectSchema = z.object({
     .string()
     .min(1)
     .max(100)
-    .regex(
-      /^[a-z0-9-]+$/,
-      'Slug must contain only lowercase letters, numbers, and hyphens'
-    )
+    .regex(/^[a-z0-9-]+$/, 'Slug must contain only lowercase letters, numbers, and hyphens')
     .optional(),
   contextPrompt: z.string().optional(),
   blocks: z.array(z.any()).optional(),
@@ -29,18 +26,12 @@ interface RouteParams {
  * GET /api/projects/[id]
  * Get a single project by ID
  */
-export async function GET(
-  request: NextRequest,
-  { params }: RouteParams
-) {
+export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
     const { id } = await params;
 
     if (!id) {
-      return NextResponse.json(
-        { error: 'Project ID is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Project ID is required' }, { status: 400 });
     }
 
     // Use Prisma query (no raw SQL) for security
@@ -59,19 +50,13 @@ export async function GET(
     });
 
     if (!project) {
-      return NextResponse.json(
-        { error: 'Project not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
     }
 
     return NextResponse.json({ project }, { status: 200 });
   } catch (error) {
     console.error('Error fetching project:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch project' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch project' }, { status: 500 });
   }
 }
 
@@ -79,18 +64,12 @@ export async function GET(
  * PATCH /api/projects/[id]
  * Update a project
  */
-export async function PATCH(
-  request: NextRequest,
-  { params }: RouteParams
-) {
+export async function PATCH(request: NextRequest, { params }: RouteParams) {
   try {
     const { id } = await params;
 
     if (!id) {
-      return NextResponse.json(
-        { error: 'Project ID is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Project ID is required' }, { status: 400 });
     }
 
     const body = await request.json();
@@ -115,10 +94,7 @@ export async function PATCH(
     });
 
     if (!existingProject) {
-      return NextResponse.json(
-        { error: 'Project not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
     }
 
     if (existingProject.userId !== userId) {
@@ -149,10 +125,7 @@ export async function PATCH(
       });
 
       if (subdomainExists) {
-        return NextResponse.json(
-          { error: 'This subdomain is already taken' },
-          { status: 409 }
-        );
+        return NextResponse.json({ error: 'This subdomain is already taken' }, { status: 409 });
       }
     }
 
@@ -175,17 +148,11 @@ export async function PATCH(
         );
       }
       if (error.code === 'P2025') {
-        return NextResponse.json(
-          { error: 'Project not found' },
-          { status: 404 }
-        );
+        return NextResponse.json({ error: 'Project not found' }, { status: 404 });
       }
     }
 
-    return NextResponse.json(
-      { error: 'Failed to update project' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to update project' }, { status: 500 });
   }
 }
 
@@ -193,18 +160,12 @@ export async function PATCH(
  * DELETE /api/projects/[id]
  * Delete a project
  */
-export async function DELETE(
-  request: NextRequest,
-  { params }: RouteParams
-) {
+export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
     const { id } = await params;
 
     if (!id) {
-      return NextResponse.json(
-        { error: 'Project ID is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Project ID is required' }, { status: 400 });
     }
 
     // Get userId from request body or query params
@@ -212,10 +173,7 @@ export async function DELETE(
     const userId = searchParams.get('userId');
 
     if (!userId) {
-      return NextResponse.json(
-        { error: 'User ID is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
     }
 
     // Verify project exists and user owns it
@@ -224,10 +182,7 @@ export async function DELETE(
     });
 
     if (!existingProject) {
-      return NextResponse.json(
-        { error: 'Project not found' },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: 'Project not found' }, { status: 404 });
     }
 
     if (existingProject.userId !== userId) {
@@ -243,26 +198,17 @@ export async function DELETE(
       where: { id },
     });
 
-    return NextResponse.json(
-      { message: 'Project deleted successfully' },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: 'Project deleted successfully' }, { status: 200 });
   } catch (error) {
     console.error('Error deleting project:', error);
 
     // Handle Prisma-specific errors
     if (error && typeof error === 'object' && 'code' in error) {
       if (error.code === 'P2025') {
-        return NextResponse.json(
-          { error: 'Project not found' },
-          { status: 404 }
-        );
+        return NextResponse.json({ error: 'Project not found' }, { status: 404 });
       }
     }
 
-    return NextResponse.json(
-      { error: 'Failed to delete project' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to delete project' }, { status: 500 });
   }
 }

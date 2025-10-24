@@ -13,9 +13,11 @@ This document describes the ReactFlow foundation that has been set up for the Be
 ### 2. Core Files Created
 
 #### `/components/canvas/ReactFlowCanvas.tsx`
+
 The main ReactFlow canvas component that will serve as the visual editing surface.
 
 **Features:**
+
 - Pan and zoom controls
 - Grid/dot background
 - Snap-to-grid enabled (20px grid)
@@ -24,10 +26,12 @@ The main ReactFlow canvas component that will serve as the visual editing surfac
 - Bauhaus-themed styling integration
 
 **Current Node Types:**
+
 - `section`: Displays section information (variant, order, child count)
 - `component`: Displays component type
 
 **Usage:**
+
 ```typescript
 import ReactFlowCanvas from '@/components/canvas/ReactFlowCanvas';
 
@@ -37,6 +41,7 @@ function MyPage() {
 ```
 
 #### `/lib/canvas/canvasUtils.ts`
+
 Utility functions for converting between Bentoblocks data structures and ReactFlow nodes.
 
 **Functions:**
@@ -60,12 +65,15 @@ Utility functions for converting between Bentoblocks data structures and ReactFl
    - Useful for auto-fit functionality
 
 #### `/store/useBuilderStore.ts` (Updated)
+
 Extended Zustand store with new Page-based architecture actions.
 
 **New State:**
+
 - `page: Page | null` - Current page data
 
 **New Actions:**
+
 - `setPage(page: Page)` - Set entire page
 - `addSection(section: Section)` - Add section to page
 - `updateSection(id, updates)` - Update section properties
@@ -75,6 +83,7 @@ Extended Zustand store with new Page-based architecture actions.
 - `deleteComponent(sectionId, componentId)` - Remove component
 
 **Example:**
+
 ```typescript
 const { addSection, page } = useBuilderStore();
 
@@ -83,9 +92,11 @@ addSection(heroSection);
 ```
 
 #### `/app/globals.css` (Updated)
+
 Added Bauhaus-themed ReactFlow custom styles.
 
 **Styling:**
+
 - Selected nodes show yellow ring (`#EAB308`)
 - Controls have geometric shadows
 - Buttons have hover states with yellow background
@@ -93,9 +104,11 @@ Added Bauhaus-themed ReactFlow custom styles.
 - Attribution hidden
 
 #### `/app/canvas-test/page.tsx`
+
 Test page demonstrating ReactFlow integration.
 
 **Features:**
+
 - Creates sample sections (hero and content)
 - Adds components to sections
 - Displays ReactFlow canvas
@@ -106,6 +119,7 @@ Test page demonstrating ReactFlow integration.
 ### 3. Type System Integration
 
 Updated `/types/block.types.ts` to include:
+
 - Imported Page, Section, Component types from canvas.types
 - Extended BuilderState interface with page-based actions
 - Maintained backward compatibility with existing Block types
@@ -123,6 +137,7 @@ User Action → ReactFlow → Node Changes → Zustand Store → Page Structure
 ### Node Structure
 
 **Section Nodes:**
+
 ```typescript
 {
   id: section.id,
@@ -135,6 +150,7 @@ User Action → ReactFlow → Node Changes → Zustand Store → Page Structure
 ```
 
 **Component Nodes:**
+
 ```typescript
 {
   id: component.id,
@@ -153,6 +169,7 @@ User Action → ReactFlow → Node Changes → Zustand Store → Page Structure
 ### Manual Testing Checklist
 
 1. **Navigate to `/canvas-test`**
+
    ```bash
    npm run dev
    # Open http://localhost:3000/canvas-test
@@ -181,6 +198,7 @@ User Action → ReactFlow → Node Changes → Zustand Store → Page Structure
 ### Type Safety
 
 TypeScript compilation passes:
+
 ```bash
 npm run type-check
 # ✓ No errors
@@ -189,13 +207,16 @@ npm run type-check
 ## Integration Points for Other Agents
 
 ### Group 2 Agent 2: Custom Node Components
+
 **What to build:**
+
 - Replace placeholder node renderers in `nodeTypes` object
 - Create `SectionNode.tsx` with full section rendering
 - Create `ComponentNode.tsx` with component-specific rendering
 - Add resize handles, delete buttons, and inline editing
 
 **Where to integrate:**
+
 ```typescript
 // In ReactFlowCanvas.tsx
 import SectionNode from './nodes/SectionNode';
@@ -208,19 +229,24 @@ const nodeTypes = {
 ```
 
 ### Group 2 Agent 3: Drag-and-Drop Integration
+
 **What to build:**
+
 - Connect BlockPalette to ReactFlow drop zone
 - Handle dropping sections onto canvas
 - Handle dropping components into sections
 - Update positions in Zustand store
 
 **Where to integrate:**
+
 - Use `pageToReactFlow()` to convert store data to nodes
 - Listen to ReactFlow `onNodesChange` to update positions
 - Use `reactFlowToPage()` to save changes back to store
 
 ### Group 2 Agent 4: Selection and Editing
+
 **What to build:**
+
 - Handle node selection events
 - Open BlockEditor panel when node selected
 - Sync selected node with `selectedBlockId` in store
@@ -328,15 +354,19 @@ setPage(updatedPage);
 ## Troubleshooting
 
 ### "ReactFlow is not a valid JSX component"
+
 **Solution:** Import ReactFlow with curly braces: `import { ReactFlow } from '@xyflow/react'`
 
 ### Type errors with node data
+
 **Solution:** Use double assertion: `data: section as unknown as Record<string, unknown>`
 
 ### Nodes not appearing
+
 **Solution:** Ensure sections have valid position coordinates and children array
 
 ### Canvas not responding
+
 **Solution:** Verify ReactFlowProvider wraps ReactFlow component
 
 ## Testing Commands

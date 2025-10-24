@@ -15,10 +15,7 @@ import { useEffect, RefObject } from 'react';
  * const modalRef = useRef<HTMLDivElement>(null);
  * useFocusTrap(modalRef, isModalOpen);
  */
-export function useFocusTrap(
-  containerRef: RefObject<HTMLElement>,
-  isActive: boolean
-) {
+export function useFocusTrap(containerRef: RefObject<HTMLElement>, isActive: boolean) {
   useEffect(() => {
     if (!isActive || !containerRef.current) return;
 
@@ -35,9 +32,7 @@ export function useFocusTrap(
         '[tabindex]:not([tabindex="-1"])',
       ].join(',');
 
-      return Array.from(
-        container.querySelectorAll<HTMLElement>(selector)
-      ).filter((el) => {
+      return Array.from(container.querySelectorAll<HTMLElement>(selector)).filter((el) => {
         // Filter out elements that are not visible
         const style = window.getComputedStyle(el);
         return (

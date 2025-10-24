@@ -15,9 +15,7 @@ import { test, expect } from '@playwright/test';
 const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 
 test.describe('Security: Rate Limiting', () => {
-  test('should rate limit AI endpoints after exceeding limit', async ({
-    request,
-  }) => {
+  test('should rate limit AI endpoints after exceeding limit', async ({ request }) => {
     // Note: This test requires Redis to be configured
     // If Redis is not configured, rate limiting will be disabled
 
@@ -41,13 +39,9 @@ test.describe('Security: Rate Limiting', () => {
 
     // Count how many requests succeeded vs failed
     const successCount = responses.filter((r) => r.ok()).length;
-    const rateLimitedCount = responses.filter(
-      (r) => r.status() === 429
-    ).length;
+    const rateLimitedCount = responses.filter((r) => r.status() === 429).length;
 
-    console.log(
-      `Success: ${successCount}, Rate Limited: ${rateLimitedCount}`
-    );
+    console.log(`Success: ${successCount}, Rate Limited: ${rateLimitedCount}`);
 
     // If Redis is configured, some requests should be rate limited
     // If not configured, all should succeed (rate limiting disabled)
@@ -63,17 +57,13 @@ test.describe('Security: Rate Limiting', () => {
         expect(headers['x-ratelimit-limit']).toBeDefined();
       }
     } else {
-      console.log(
-        '⚠ Rate limiting is disabled (Redis not configured)'
-      );
+      console.log('⚠ Rate limiting is disabled (Redis not configured)');
     }
   });
 });
 
 test.describe('Security: Input Validation', () => {
-  test('should reject invalid AI generation requests', async ({
-    request,
-  }) => {
+  test('should reject invalid AI generation requests', async ({ request }) => {
     const endpoint = `${BASE_URL}/api/generate-block-content`;
 
     // Test missing contextPrompt
@@ -151,9 +141,7 @@ test.describe('Security: Input Validation', () => {
 });
 
 test.describe('Security: Prompt Injection Prevention', () => {
-  test('should sanitize prompt injection attempts in AI requests', async ({
-    request,
-  }) => {
+  test('should sanitize prompt injection attempts in AI requests', async ({ request }) => {
     const endpoint = `${BASE_URL}/api/generate-block-content`;
 
     // Test various prompt injection patterns
@@ -228,9 +216,7 @@ test.describe('Security: XSS Prevention', () => {
 });
 
 test.describe('Security: Error Handling', () => {
-  test('should not leak sensitive information in error messages', async ({
-    request,
-  }) => {
+  test('should not leak sensitive information in error messages', async ({ request }) => {
     const endpoint = `${BASE_URL}/api/generate-block-content`;
 
     // Trigger various error conditions

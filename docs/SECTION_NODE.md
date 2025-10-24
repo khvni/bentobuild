@@ -36,6 +36,7 @@ The component extends ReactFlow's `NodeProps` and expects a `Section` object as 
 ### 1. Drag Handle
 
 Located at the top center of the section node:
+
 - Yellow background (`bg-bauhaus-yellow`)
 - GripVertical icon for visual affordance
 - `cursor-grab` and `cursor-grabbing` states
@@ -44,12 +45,14 @@ Located at the top center of the section node:
 ### 2. Section Header
 
 **Left Side:**
+
 - Variant icon in colored circle
 - Section order badge ("Section 1", "Section 2", etc.)
 - Section variant badge (hero, navbar, content, etc.)
 - Child component count
 
 **Right Side:**
+
 - Layout toggle button (Layers icon for stack, Grid3x3 for grid)
 - Add component button (blue, Plus icon)
 - Delete section button (red, Trash2 icon)
@@ -59,16 +62,19 @@ Located at the top center of the section node:
 Shows visual representation of the section's layout:
 
 **Stack Layout:**
+
 - Horizontal or vertical flex layout
 - 3 placeholder rectangles
 - Direction indicator in label
 
 **Grid Layout:**
+
 - CSS Grid with configured columns
 - 4-8 placeholder rectangles (based on column count)
 - Column count in label
 
 **Empty State:**
+
 - "Drop components here or click + to add" message
 
 ### 4. Accent Line
@@ -140,8 +146,8 @@ Called when clicking anywhere on the section node. Updates Zustand store with se
 ### Stack Layout
 
 ```typescript
-type: 'stack'
-direction: 'vertical' | 'horizontal'
+type: 'stack';
+direction: 'vertical' | 'horizontal';
 ```
 
 Flexbox-based linear layout. Visual preview shows 3 rectangles arranged in the specified direction.
@@ -149,8 +155,8 @@ Flexbox-based linear layout. Visual preview shows 3 rectangles arranged in the s
 ### Grid Layout
 
 ```typescript
-type: 'grid'
-columns: number
+type: 'grid';
+columns: number;
 ```
 
 CSS Grid-based 2D layout. Visual preview shows rectangles in a grid with the specified column count.
@@ -160,17 +166,18 @@ CSS Grid-based 2D layout. Visual preview shows rectangles in a grid with the spe
 Each section variant has a unique accent color:
 
 | Variant      | Color     | Hex       |
-|-------------|-----------|-----------|
-| navbar      | Blue      | `#2563EB` |
-| hero        | Red       | `#E63946` |
-| content     | Gray      | `#4B5563` |
-| features    | Purple    | `#8B5CF6` |
-| gallery     | Green     | `#10B981` |
-| testimonials| Orange    | `#F59E0B` |
-| cta         | Pink      | `#EC4899` |
-| footer      | Dark Gray | `#1F2937` |
+| ------------ | --------- | --------- |
+| navbar       | Blue      | `#2563EB` |
+| hero         | Red       | `#E63946` |
+| content      | Gray      | `#4B5563` |
+| features     | Purple    | `#8B5CF6` |
+| gallery      | Green     | `#10B981` |
+| testimonials | Orange    | `#F59E0B` |
+| cta          | Pink      | `#EC4899` |
+| footer       | Dark Gray | `#1F2937` |
 
 These colors are used for:
+
 - Variant icon background (20% opacity)
 - Variant icon color
 - Variant badge background
@@ -199,6 +206,7 @@ These colors are used for:
 ### Transitions
 
 All interactive elements use `bauhaus-transition` class:
+
 - Duration: 200ms
 - Easing: `cubic-bezier(0.4, 0, 0.2, 1)`
 
@@ -240,18 +248,24 @@ style={{
 All buttons follow consistent patterns:
 
 **Layout Toggle:**
+
 ```typescript
-className="p-2 bg-gray-100 hover:bg-bauhaus-yellow border-2 border-black rounded-bauhaus-sm transition-colors bauhaus-transition"
+className =
+  'p-2 bg-gray-100 hover:bg-bauhaus-yellow border-2 border-black rounded-bauhaus-sm transition-colors bauhaus-transition';
 ```
 
 **Add Component:**
+
 ```typescript
-className="p-2 bg-bauhaus-blue hover:bg-blue-600 text-white border-2 border-black rounded-bauhaus-sm transition-colors bauhaus-transition"
+className =
+  'p-2 bg-bauhaus-blue hover:bg-blue-600 text-white border-2 border-black rounded-bauhaus-sm transition-colors bauhaus-transition';
 ```
 
 **Delete:**
+
 ```typescript
-className="p-2 bg-bauhaus-red hover:bg-red-600 text-white border-2 border-black rounded-bauhaus-sm transition-colors bauhaus-transition"
+className =
+  'p-2 bg-bauhaus-red hover:bg-red-600 text-white border-2 border-black rounded-bauhaus-sm transition-colors bauhaus-transition';
 ```
 
 ## Integration Points
@@ -279,6 +293,7 @@ The component integrates with ReactFlow through:
 ### Future Integration (Agent 3)
 
 The `handleAddComponent` function will be enhanced to:
+
 1. Open a component palette/modal
 2. Allow selecting component type
 3. Create and add component to section's children array
@@ -293,6 +308,7 @@ The `handleAddComponent` function will be enhanced to:
 ### ARIA Labels
 
 Buttons have descriptive `title` attributes:
+
 - Layout toggle: `Layout: stack` or `Layout: grid`
 - Add component: `Add Component`
 - Delete section: `Delete Section`
@@ -363,6 +379,7 @@ const SectionNode = memo(({ data, selected }: SectionNodeProps) => {
 ```
 
 Re-renders only occur when:
+
 - `data` (Section object) changes
 - `selected` state changes
 
@@ -408,6 +425,7 @@ const [title, setTitle] = useState(data.variant);
 ### Layout Configuration
 
 Future versions may include detailed layout controls:
+
 - Gap adjustment slider
 - Alignment controls
 - Padding controls
@@ -443,14 +461,14 @@ Future versions may include toggle to preview mobile/tablet layouts.
 
 All icons from `lucide-react`:
 
-| Icon          | Purpose              |
-|---------------|---------------------|
-| Menu          | Section variant icon|
-| Grid3x3       | Grid layout icon    |
-| Layers        | Stack layout icon   |
-| Plus          | Add component       |
-| Trash2        | Delete section      |
-| GripVertical  | Drag handle         |
+| Icon         | Purpose              |
+| ------------ | -------------------- |
+| Menu         | Section variant icon |
+| Grid3x3      | Grid layout icon     |
+| Layers       | Stack layout icon    |
+| Plus         | Add component        |
+| Trash2       | Delete section       |
+| GripVertical | Drag handle          |
 
 ## Conclusion
 

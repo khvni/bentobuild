@@ -31,52 +31,59 @@ export default function RichTextInput({
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
   // Handle keyboard shortcuts
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const isMod = e.metaKey || e.ctrlKey;
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const isMod = e.metaKey || e.ctrlKey;
 
-    if (!isMod) return;
+      if (!isMod) return;
 
-    const target = e.currentTarget;
-    const start = target.selectionStart ?? 0;
-    const end = target.selectionEnd ?? 0;
-    const selectedText = value.substring(start, end);
+      const target = e.currentTarget;
+      const start = target.selectionStart ?? 0;
+      const end = target.selectionEnd ?? 0;
+      const selectedText = value.substring(start, end);
 
-    if (!selectedText) return; // No selection
+      if (!selectedText) return; // No selection
 
-    let wrapper = '';
-    switch (e.key.toLowerCase()) {
-      case 'b':
-        e.preventDefault();
-        wrapper = '**';
-        break;
-      case 'i':
-        e.preventDefault();
-        wrapper = '*';
-        break;
-      case 'u':
-        e.preventDefault();
-        wrapper = '__';
-        break;
-      default:
-        return;
-    }
-
-    // Wrap the selected text
-    const newValue = value.substring(0, start) + wrapper + selectedText + wrapper + value.substring(end);
-    onChange(newValue);
-
-    // Restore selection after React re-render
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.focus();
-        inputRef.current.setSelectionRange(start + wrapper.length, end + wrapper.length);
+      let wrapper = '';
+      switch (e.key.toLowerCase()) {
+        case 'b':
+          e.preventDefault();
+          wrapper = '**';
+          break;
+        case 'i':
+          e.preventDefault();
+          wrapper = '*';
+          break;
+        case 'u':
+          e.preventDefault();
+          wrapper = '__';
+          break;
+        default:
+          return;
       }
-    }, 0);
-  }, [value, onChange]);
 
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    onChange(e.target.value);
-  }, [onChange]);
+      // Wrap the selected text
+      const newValue =
+        value.substring(0, start) + wrapper + selectedText + wrapper + value.substring(end);
+      onChange(newValue);
+
+      // Restore selection after React re-render
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus();
+          inputRef.current.setSelectionRange(start + wrapper.length, end + wrapper.length);
+        }
+      }, 0);
+    },
+    [value, onChange]
+  );
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      onChange(e.target.value);
+    },
+    [onChange]
+  );
 
   if (multiline) {
     return (

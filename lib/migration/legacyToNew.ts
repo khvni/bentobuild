@@ -42,14 +42,7 @@ import {
 /**
  * Legacy block types from the old architecture
  */
-type LegacyBlockType =
-  | 'hero'
-  | 'text'
-  | 'image'
-  | 'button'
-  | 'link'
-  | 'navbar'
-  | 'footer';
+type LegacyBlockType = 'hero' | 'text' | 'image' | 'button' | 'link' | 'navbar' | 'footer';
 
 /**
  * Legacy base block interface
@@ -207,17 +200,12 @@ type LegacyBlock =
  * const newPage = migrateBlocksToPage(oldBlocks, 'My portfolio site');
  * ```
  */
-export function migrateBlocksToPage(
-  blocks: LegacyBlock[],
-  contextPrompt: string = ''
-): Page {
+export function migrateBlocksToPage(blocks: LegacyBlock[], contextPrompt: string = ''): Page {
   // Sort blocks by order
   const sortedBlocks = [...blocks].sort((a, b) => a.order - b.order);
 
   // Convert blocks to sections
-  const sections = sortedBlocks.map((block, index) =>
-    migrateLegacyBlockToSection(block, index)
-  );
+  const sections = sortedBlocks.map((block, index) => migrateLegacyBlockToSection(block, index));
 
   // Create page structure
   const page: Page = {
@@ -244,10 +232,7 @@ export function migrateBlocksToPage(
  * @param order - Section order
  * @returns A new Section instance
  */
-function migrateLegacyBlockToSection(
-  block: LegacyBlock,
-  order: number
-): Section {
+function migrateLegacyBlockToSection(block: LegacyBlock, order: number): Section {
   switch (block.type) {
     case 'hero':
       return migrateHeroBlock(block, order);
@@ -398,17 +383,12 @@ function migrateImageBlock(block: LegacyImageBlock, order: number): Section {
   section.style = { ...section.style, ...sectionStyle };
 
   // Create image component
-  const imageComponent = createImage(
-    block.content.src,
-    block.content.alt,
-    'relative',
-    {
-      caption: block.content.caption,
-      style: {
-        fontFamily: block.content.fontFamily as any,
-      },
-    }
-  );
+  const imageComponent = createImage(block.content.src, block.content.alt, 'relative', {
+    caption: block.content.caption,
+    style: {
+      fontFamily: block.content.fontFamily as any,
+    },
+  });
 
   section.children = [imageComponent];
   return section;
@@ -463,18 +443,13 @@ function migrateLinkBlock(block: LegacyLinkBlock, order: number): Section {
   section.style = { ...section.style, ...sectionStyle };
 
   // Create link component
-  const linkComponent = createLink(
-    block.content.text,
-    block.content.url,
-    'relative',
-    {
-      description: block.content.description,
-      style: {
-        textColor: block.content.linkColor || block.content.textColor,
-        fontFamily: block.content.fontFamily as any,
-      },
-    }
-  );
+  const linkComponent = createLink(block.content.text, block.content.url, 'relative', {
+    description: block.content.description,
+    style: {
+      textColor: block.content.linkColor || block.content.textColor,
+      fontFamily: block.content.fontFamily as any,
+    },
+  });
 
   section.children = [linkComponent];
   return section;

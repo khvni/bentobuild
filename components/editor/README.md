@@ -8,7 +8,7 @@ A comprehensive right-side editing panel for modifying selected sections and com
 import BlockEditorPanel from '@/components/editor/BlockEditorPanel';
 
 // In your layout
-<BlockEditorPanel />
+<BlockEditorPanel />;
 ```
 
 ## Architecture
@@ -38,11 +38,13 @@ components/editor/
 ## Features
 
 ### Real-Time Updates
+
 - All changes apply immediately (no Save button)
 - Updates propagate through Zustand store
 - Undo/redo support via history middleware
 
 ### Section Editing
+
 - Layout type (Stack, Grid, Absolute)
 - Direction (Vertical/Horizontal for stack)
 - Column count (for grid layouts)
@@ -51,6 +53,7 @@ components/editor/
 - Delete with confirmation
 
 ### Component Editing
+
 - Type-specific editors for each component type
 - Typography controls (font, size, weight, color)
 - Content editing (text, URLs, images)
@@ -58,6 +61,7 @@ components/editor/
 - Delete with confirmation
 
 ### Bauhaus Design System
+
 - Bold borders and clear hierarchy
 - Primary colors: Blue (active), Yellow (AI), Red (destructive)
 - Consistent spacing and typography
@@ -66,9 +70,11 @@ components/editor/
 ## Component Types Supported
 
 ### Sections
+
 All section variants (navbar, hero, content, features, gallery, etc.)
 
 ### Components
+
 - **Heading**: Text, level (H1-H6), typography
 - **Text**: Rich text content, typography
 - **Button**: Text, URL, variant (filled/outlined/text)
@@ -82,13 +88,8 @@ All section variants (navbar, hero, content, features, gallery, etc.)
 Uses Zustand store actions:
 
 ```tsx
-const {
-  updateSection,
-  deleteSection,
-  updateComponent,
-  deleteComponent,
-  selectBlock
-} = useBuilderStore();
+const { updateSection, deleteSection, updateComponent, deleteComponent, selectBlock } =
+  useBuilderStore();
 ```
 
 Always spread existing properties to avoid overwriting:
@@ -96,18 +97,20 @@ Always spread existing properties to avoid overwriting:
 ```tsx
 updateComponent(sectionId, componentId, {
   content: { ...component.content, text: 'New text' },
-  style: { ...component.style, textColor: '#000' }
+  style: { ...component.style, textColor: '#000' },
 });
 ```
 
 ## Integration with Canvas
 
 ### Old System (Legacy)
+
 - Uses `/components/ui/Canvas.tsx`
 - Works with block types (hero, text, image, etc.)
 - Has its own editor at `/components/ui/BlockEditorPanel.tsx`
 
 ### New System (Current Architecture)
+
 - Uses `/components/canvas/ReactFlowCanvas.tsx`
 - Works with Section/Component architecture
 - **Uses this editor** at `/components/editor/BlockEditorPanel.tsx`
@@ -117,6 +120,7 @@ updateComponent(sectionId, componentId, {
 See comprehensive testing checklist in `/docs/BLOCK_EDITOR.md`
 
 Key scenarios:
+
 1. Select section → editor shows section controls
 2. Change properties → canvas updates in real-time
 3. Select component → shows component-specific editor
@@ -126,9 +130,11 @@ Key scenarios:
 ## Documentation
 
 Full documentation available at:
+
 - `/docs/BLOCK_EDITOR.md` - Comprehensive guide (513 lines)
 
 Includes:
+
 - Architecture overview
 - API reference
 - Design system details
@@ -156,13 +162,14 @@ export default function Page() {
     <div className="flex h-screen">
       <Palette />
       <Canvas />
-      <BlockEditorPanel />  {/* 320px width (w-80) */}
+      <BlockEditorPanel /> {/* 320px width (w-80) */}
     </div>
   );
 }
 ```
 
 The panel will:
+
 1. Show "No Selection" placeholder if nothing selected
 2. Show SectionEditor if a section is selected
 3. Show ComponentEditor if a component is selected

@@ -93,9 +93,23 @@ export default function RichTextToolbar({ editor }: RichTextToolbarProps) {
         isActive={editor.isActive('bold')}
         title="Bold (Ctrl+B)"
       >
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M6 4h8a4 4 0 014 4 4 4 0 01-4 4H6z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M6 12h9a4 4 0 014 4 4 4 0 01-4 4H6z" />
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={3}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 4h8a4 4 0 014 4 4 4 0 01-4 4H6z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 12h9a4 4 0 014 4 4 4 0 01-4 4H6z"
+          />
         </svg>
       </ToolbarButton>
 
@@ -105,7 +119,13 @@ export default function RichTextToolbar({ editor }: RichTextToolbarProps) {
         isActive={editor.isActive('italic')}
         title="Italic (Ctrl+I)"
       >
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2.5}
+        >
           <line x1="19" y1="4" x2="10" y2="4" />
           <line x1="14" y1="20" x2="5" y2="20" />
           <line x1="15" y1="4" x2="9" y2="20" />
@@ -118,8 +138,18 @@ export default function RichTextToolbar({ editor }: RichTextToolbarProps) {
         isActive={editor.isActive('underline')}
         title="Underline (Ctrl+U)"
       >
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M6 3v7a6 6 0 0012 0V3m-6 15h6M6 24h12" />
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2.5}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 3v7a6 6 0 0012 0V3m-6 15h6M6 24h12"
+          />
         </svg>
       </ToolbarButton>
 
@@ -137,8 +167,18 @@ export default function RichTextToolbar({ editor }: RichTextToolbarProps) {
           aria-expanded={showFontSizeDropdown}
           aria-haspopup="listbox"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 4h12M6 8h8m-8 4h12m-8 4h8m-8 4h12" />
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 4h12M6 8h8m-8 4h12m-8 4h8m-8 4h12"
+            />
           </svg>
           <span className="font-mono">{getCurrentFontSize()}</span>
           <svg
@@ -195,7 +235,13 @@ export default function RichTextToolbar({ editor }: RichTextToolbarProps) {
           aria-expanded={showColorPicker}
           aria-haspopup="dialog"
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -230,12 +276,14 @@ export default function RichTextToolbar({ editor }: RichTextToolbarProps) {
         onClick={() => editor.chain().focus().clearNodes().unsetAllMarks().run()}
         title="Clear Formatting"
       >
-        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M6 18L18 6M6 6l12 12"
-          />
+        <svg
+          className="w-4 h-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </ToolbarButton>
     </div>

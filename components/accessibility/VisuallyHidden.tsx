@@ -15,10 +15,7 @@ interface VisuallyHiddenProps {
   as?: keyof React.JSX.IntrinsicElements;
 }
 
-export function VisuallyHidden({
-  children,
-  as: Component = 'span'
-}: VisuallyHiddenProps) {
+export function VisuallyHidden({ children, as: Component = 'span' }: VisuallyHiddenProps) {
   return (
     <Component
       style={{

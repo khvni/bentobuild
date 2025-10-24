@@ -51,6 +51,7 @@ const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
 ```
 
 The `data` object contains:
+
 - **For sections**: `{ type: 'section', variant: SectionVariant }`
 - **For components**: `{ type: 'component', componentType: ComponentType }`
 
@@ -86,16 +87,13 @@ Sections are created at the exact drop position:
 ```typescript
 if (dragData.type === 'section') {
   const sectionCount = page?.sections.length || 0;
-  const newSection = createSection(
-    dragData.variant,
-    sectionCount,
-    dropPosition
-  );
+  const newSection = createSection(dragData.variant, sectionCount, dropPosition);
   addSection(newSection);
 }
 ```
 
 The `createSection` factory function:
+
 - Generates a unique ID using `uuid()`
 - Sets position to drop coordinates
 - Applies variant-specific layout defaults
@@ -117,7 +115,7 @@ if (dragData.type === 'component') {
   const targetSection = page.sections.reduce((closest, section) => {
     const distance = Math.sqrt(
       Math.pow(section.position.x - dropPosition.x, 2) +
-      Math.pow(section.position.y - dropPosition.y, 2)
+        Math.pow(section.position.y - dropPosition.y, 2)
     );
     if (!closest || distance < closest.distance) {
       return { section, distance };
@@ -188,7 +186,7 @@ import {
   createHeading,
   createText,
   createButton,
-  createImage
+  createImage,
 } from '@/lib/factories/componentFactory';
 
 const heading = createHeading('Welcome', 1);
@@ -207,8 +205,8 @@ ReactFlow's `screenToFlowPosition` converts screen coordinates to canvas space:
 const { screenToFlowPosition } = useReactFlow();
 
 const canvasPos = screenToFlowPosition({
-  x: event.clientX,  // Browser viewport X
-  y: event.clientY,  // Browser viewport Y
+  x: event.clientX, // Browser viewport X
+  y: event.clientY, // Browser viewport Y
 });
 // Returns: { x: canvasX, y: canvasY } accounting for zoom and pan
 ```
@@ -224,8 +222,7 @@ function findNearestSection(sections: Section[], dropPos: Position): Section | n
 
   for (const section of sections) {
     const distance = Math.sqrt(
-      Math.pow(section.position.x - dropPos.x, 2) +
-      Math.pow(section.position.y - dropPos.y, 2)
+      Math.pow(section.position.x - dropPos.x, 2) + Math.pow(section.position.y - dropPos.y, 2)
     );
 
     if (distance < minDistance) {
@@ -252,6 +249,7 @@ The canvas uses @dnd-kit's collision detection:
 ```
 
 **Collision Detection Options**:
+
 - `closestCenter`: Default, based on center point
 - `closestCorners`: Based on corners
 - `rectIntersection`: Based on bounding box overlap
@@ -391,6 +389,7 @@ export default function BuilderPage() {
 ### With Instructions Panel
 
 See `/app/canvas-demo/page.tsx` for a complete example with:
+
 - Instructions toggle
 - Usage tips
 - Visual feedback
@@ -526,7 +525,7 @@ describe('Canvas Drag and Drop', () => {
 ### CanvasPalette Component
 
 ```typescript
-export default function CanvasPalette(): JSX.Element
+export default function CanvasPalette(): JSX.Element;
 ```
 
 **Props**: None
@@ -535,7 +534,7 @@ export default function CanvasPalette(): JSX.Element
 ### ReactFlowCanvas Component
 
 ```typescript
-export default function ReactFlowCanvas(): JSX.Element
+export default function ReactFlowCanvas(): JSX.Element;
 ```
 
 **Props**: None

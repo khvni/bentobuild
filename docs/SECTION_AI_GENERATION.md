@@ -38,9 +38,11 @@ The section-level AI generation system provides a streamlined way to populate en
 ## Supported Section Variants
 
 ### 1. Navbar
+
 **Structure**: Brand name + navigation links + optional CTA button
 
 **Generated Components**:
+
 - Heading (brand name)
 - Multiple Link components (navigation)
 - Button (optional CTA)
@@ -50,9 +52,11 @@ The section-level AI generation system provides a streamlined way to populate en
 **Example Use Case**: "Include links to Home, About, Services, and Contact with a Get Started button"
 
 ### 2. Hero
+
 **Structure**: Headline + subheading + call-to-action
 
 **Generated Components**:
+
 - Heading (H1 - main headline)
 - Text (subheading/value proposition)
 - Button (primary CTA)
@@ -62,9 +66,11 @@ The section-level AI generation system provides a streamlined way to populate en
 **Example Use Case**: "Emphasize fast delivery and premium quality for our design agency"
 
 ### 3. Content
+
 **Structure**: Section heading + 2-3 paragraphs
 
 **Generated Components**:
+
 - Heading (H2 - section heading)
 - Multiple Text components (paragraphs)
 
@@ -73,9 +79,11 @@ The section-level AI generation system provides a streamlined way to populate en
 **Example Use Case**: "Explain our company history and mission in 2-3 paragraphs"
 
 ### 4. Features
+
 **Structure**: Main heading + 3 feature items (each with heading + description)
 
 **Generated Components**:
+
 - Heading (H2 - section heading, spans full width)
 - 3x Heading (H3 - feature titles)
 - 3x Text (feature descriptions)
@@ -85,9 +93,11 @@ The section-level AI generation system provides a streamlined way to populate en
 **Example Use Case**: "Highlight 3 key benefits: speed, reliability, and support"
 
 ### 5. Gallery
+
 **Structure**: Optional heading + 4-6 images with captions
 
 **Generated Components**:
+
 - Heading (H2 - optional section heading)
 - Multiple Image components with captions
 
@@ -96,9 +106,11 @@ The section-level AI generation system provides a streamlined way to populate en
 **Example Use Case**: "Showcase 6 recent project images from our portfolio"
 
 ### 6. Testimonials
+
 **Structure**: Section heading + 2-3 testimonials
 
 **Generated Components**:
+
 - Heading (H2 - section heading)
 - Multiple Text components (formatted testimonials with attribution)
 
@@ -107,9 +119,11 @@ The section-level AI generation system provides a streamlined way to populate en
 **Example Use Case**: "Include 3 customer testimonials about our excellent service"
 
 ### 7. CTA (Call-to-Action)
+
 **Structure**: Compelling heading + description + action button
 
 **Generated Components**:
+
 - Heading (H2 - action-oriented)
 - Text (reason to act)
 - Button (primary action)
@@ -119,9 +133,11 @@ The section-level AI generation system provides a streamlined way to populate en
 **Example Use Case**: "Encourage visitors to sign up for our free trial"
 
 ### 8. Footer
+
 **Structure**: Company name + links + copyright
 
 **Generated Components**:
+
 - Heading (H4 - company/brand name)
 - Multiple Link components (footer navigation)
 - Text (copyright notice)
@@ -195,7 +211,7 @@ Generates a complete section with AI-populated components.
         "content": {
           "text": "Transform Your Body and Mind",
           "level": 1
-        },
+        }
         // ... component details
       },
       {
@@ -231,9 +247,9 @@ The system uses pre-defined templates to ensure consistent layouts for each sect
 interface SectionTemplate {
   variant: SectionVariant;
   layout: 'stack' | 'grid';
-  columns?: number;              // For grid layouts
-  direction?: 'vertical' | 'horizontal';  // For stack layouts
-  components: ComponentType[];   // Ordered list of component types
+  columns?: number; // For grid layouts
+  direction?: 'vertical' | 'horizontal'; // For stack layouts
+  components: ComponentType[]; // Ordered list of component types
   description: string;
 }
 ```
@@ -306,6 +322,7 @@ const template = getTemplate('hero-with-image');
 ### Input Sanitization
 
 All user inputs are sanitized to prevent:
+
 - Prompt injection attacks
 - XSS attacks
 - Malicious content
@@ -379,22 +396,27 @@ All user inputs are sanitized to prevent:
 ### Common Issues
 
 **Issue**: Section generates with empty components
+
 - **Cause**: Invalid or too-short context prompt
 - **Solution**: Provide more detailed context (minimum 10 characters)
 
 **Issue**: Generation fails with 500 error
+
 - **Cause**: OpenAI API key not configured
 - **Solution**: Set `OPENAI_API_KEY` in environment variables
 
 **Issue**: Generated content doesn't match context
+
 - **Cause**: Generic or unclear context prompt
 - **Solution**: Be specific about website purpose and audience
 
 **Issue**: Components have incorrect layout
+
 - **Cause**: Template mismatch
 - **Solution**: Check section variant matches intended layout
 
 **Issue**: Rate limit exceeded
+
 - **Cause**: Too many generation requests
 - **Solution**: Wait 1 minute before retrying
 
@@ -409,6 +431,7 @@ All user inputs are sanitized to prevent:
 ## Support
 
 For issues or questions:
+
 1. Check this documentation
 2. Review API response errors
 3. Verify environment configuration

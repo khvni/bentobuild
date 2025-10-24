@@ -28,10 +28,7 @@ export function useHistory() {
       }
 
       // Redo: Ctrl+Y or Cmd+Y or Ctrl+Shift+Z or Cmd+Shift+Z
-      if (
-        event.key === 'y' ||
-        (event.key === 'z' && event.shiftKey)
-      ) {
+      if (event.key === 'y' || (event.key === 'z' && event.shiftKey)) {
         event.preventDefault();
         if (canRedo) {
           redo();

@@ -275,7 +275,7 @@ async function handlePOST(request: NextRequest): Promise<NextResponse<BentoBuild
     } else {
       // Try to find any array in the response
       const values = Object.values(parsedContent);
-      const arrayValue = values.find(val => Array.isArray(val));
+      const arrayValue = values.find((val) => Array.isArray(val));
       if (arrayValue && Array.isArray(arrayValue)) {
         blocksArray = arrayValue;
       } else {
@@ -309,7 +309,12 @@ async function handlePOST(request: NextRequest): Promise<NextResponse<BentoBuild
           content: sanitizedContent,
         } as Block;
         // Fetch image if needed
-        if (sanitizedBlock.type === 'image' && (!sanitizedContent.src || (typeof sanitizedContent.src === 'string' && sanitizedContent.src.includes('placeholder')))) {
+        if (
+          sanitizedBlock.type === 'image' &&
+          (!sanitizedContent.src ||
+            (typeof sanitizedContent.src === 'string' &&
+              sanitizedContent.src.includes('placeholder')))
+        ) {
           try {
             const keywords = extractImageKeywords(sanitizedContextPrompt, 'image');
             const imageUrl = await getContextualImageUrl(keywords);

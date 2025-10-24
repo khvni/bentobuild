@@ -74,19 +74,13 @@ export default function HeadingEditor({ component, sectionId }: Props) {
       {/* Font Family */}
       <div>
         <label className="block text-sm font-bold text-gray-900 mb-2 uppercase">Font</label>
-        <FontPicker
-          value={component.style.fontFamily}
-          onChange={handleFontChange}
-        />
+        <FontPicker value={component.style.fontFamily} onChange={handleFontChange} />
       </div>
 
       {/* Text Color */}
       <div>
         <label className="block text-sm font-bold text-gray-900 mb-2 uppercase">Color</label>
-        <ColorPicker
-          value={component.style.textColor || '#000000'}
-          onChange={handleColorChange}
-        />
+        <ColorPicker value={component.style.textColor || '#000000'} onChange={handleColorChange} />
       </div>
 
       {/* Font Size */}
@@ -95,9 +89,11 @@ export default function HeadingEditor({ component, sectionId }: Props) {
         <input
           type="text"
           value={component.style.fontSize || ''}
-          onChange={(e) => updateComponent(sectionId, component.id, {
-            style: { ...component.style, fontSize: e.target.value }
-          })}
+          onChange={(e) =>
+            updateComponent(sectionId, component.id, {
+              style: { ...component.style, fontSize: e.target.value },
+            })
+          }
           placeholder="e.g., 32px, 2rem"
           className="w-full px-3 py-2 border-2 border-black rounded-bauhaus-md text-sm"
         />
@@ -108,9 +104,11 @@ export default function HeadingEditor({ component, sectionId }: Props) {
         <label className="block text-sm font-bold text-gray-900 mb-2 uppercase">Weight</label>
         <select
           value={component.style.fontWeight || 400}
-          onChange={(e) => updateComponent(sectionId, component.id, {
-            style: { ...component.style, fontWeight: parseInt(e.target.value) }
-          })}
+          onChange={(e) =>
+            updateComponent(sectionId, component.id, {
+              style: { ...component.style, fontWeight: parseInt(e.target.value) },
+            })
+          }
           className="w-full px-3 py-2 border-2 border-black rounded-bauhaus-md text-sm font-bold bg-white"
         >
           <option value={100}>Thin (100)</option>

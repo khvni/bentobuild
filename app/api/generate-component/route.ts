@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { openai, CONTENT_GENERATION_CONFIG } from '@/lib/openai';
 import { secureApi } from '@/lib/middleware/apiWrapper';
-import { validateInput, schemas, sanitizeAIPrompt, sanitizeHtml, sanitizeText, sanitizeUrl } from '@/lib/security/sanitize';
+import {
+  validateInput,
+  schemas,
+  sanitizeAIPrompt,
+  sanitizeHtml,
+  sanitizeText,
+  sanitizeUrl,
+} from '@/lib/security/sanitize';
 import { ComponentType } from '@/types/canvas.types';
 
 /**
@@ -43,7 +50,8 @@ async function handlePOST(request: NextRequest) {
       messages: [
         {
           role: 'system',
-          content: 'You are a professional web copywriter. Generate concise, benefit-focused content as JSON. Always return valid JSON matching the requested schema exactly.',
+          content:
+            'You are a professional web copywriter. Generate concise, benefit-focused content as JSON. Always return valid JSON matching the requested schema exactly.',
         },
         {
           role: 'user',
@@ -59,7 +67,10 @@ async function handlePOST(request: NextRequest) {
     }
 
     const parsedContent = JSON.parse(rawContent);
-    const validatedContent = validateComponentContent(componentType as ComponentType, parsedContent);
+    const validatedContent = validateComponentContent(
+      componentType as ComponentType,
+      parsedContent
+    );
 
     return NextResponse.json({
       success: true,
@@ -83,14 +94,8 @@ async function handlePOST(request: NextRequest) {
  * - Expected JSON structure
  * - Content constraints (length, format, etc.)
  */
-function buildComponentPrompt(
-  type: ComponentType,
-  context: string,
-  blockPrompt: string
-): string {
-  const contextSection = context
-    ? `Website context: "${context}"\n`
-    : '';
+function buildComponentPrompt(type: ComponentType, context: string, blockPrompt: string): string {
+  const contextSection = context ? `Website context: "${context}"\n` : '';
 
   const basePrompt = `${contextSection}Specific request: "${blockPrompt}"\n\n`;
 
@@ -204,11 +209,20 @@ Return JSON with this exact structure:
  * - Meets length and format requirements
  * - Uses safe URLs
  */
-function validateComponentContent(type: ComponentType, content: Record<string, unknown>): Record<string, string | number | undefined> {
+function validateComponentContent(
+  type: ComponentType,
+  content: Record<string, unknown>
+): Record<string, string | number | undefined> {
   switch (type) {
     case 'heading': {
       const text = sanitizeText(String(content.text || '').slice(0, 60));
-      const level = Math.min(6, Math.max(1, parseInt(String(content.level || 2), 10))) as 1 | 2 | 3 | 4 | 5 | 6;
+      const level = Math.min(6, Math.max(1, parseInt(String(content.level || 2), 10))) as
+        | 1
+        | 2
+        | 3
+        | 4
+        | 5
+        | 6;
 
       if (!text) {
         throw new Error('Heading text is required');

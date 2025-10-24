@@ -17,6 +17,7 @@ This feature provides comprehensive state management with undo/redo functionalit
 ### Core Components
 
 #### 1. LocalStorage Utilities (`lib/localStorage.ts`)
+
 Provides type-safe localStorage operations with versioning:
 
 ```typescript
@@ -30,6 +31,7 @@ const data = loadFromLocalStorage<MyType>('my-key');
 ```
 
 #### 2. History Middleware (`store/middleware/historyMiddleware.ts`)
+
 Zustand middleware that adds undo/redo functionality:
 
 - Maintains past and future state stacks
@@ -38,6 +40,7 @@ Zustand middleware that adds undo/redo functionality:
 - Provides `canUndo` and `canRedo` computed properties
 
 #### 3. Persistence Middleware (`store/middleware/persistenceMiddleware.ts`)
+
 Zustand middleware that persists state to localStorage:
 
 - Debounced saves (default: 500ms)
@@ -46,6 +49,7 @@ Zustand middleware that persists state to localStorage:
 - Excludes history-related state from persistence
 
 #### 4. useHistory Hook (`hooks/useHistory.ts`)
+
 React hook that provides undo/redo functionality with keyboard shortcuts:
 
 ```typescript
@@ -149,7 +153,7 @@ export function StatusBar() {
 historyMiddleware(config, {
   maxHistorySize: 50, // Maximum number of states to keep
   excludeActions: [], // Action names to exclude from history
-})
+});
 ```
 
 ### Persistence Middleware Options
@@ -159,7 +163,7 @@ persistenceMiddleware(config, {
   key: 'custom-storage-key', // localStorage key
   excludeKeys: ['selectedBlockId'], // Keys to exclude from persistence
   debounceMs: 500, // Debounce delay for saves
-})
+});
 ```
 
 ## Store Integration
@@ -222,16 +226,19 @@ export interface BuilderState {
 ## Troubleshooting
 
 ### State not persisting
+
 - Check if localStorage is available: `isLocalStorageAvailable()`
 - Check browser's localStorage quota
 - Verify excludeKeys configuration
 
 ### Undo/Redo not working
+
 - Ensure actions are using the `set` function from Zustand
 - Check maxHistorySize isn't set to 0
 - Verify middleware is applied in correct order
 
 ### Keyboard shortcuts conflicting
+
 - The shortcuts only work when no input is focused
 - Check for other keyboard event listeners
 

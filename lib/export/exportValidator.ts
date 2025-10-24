@@ -152,7 +152,9 @@ function validateComponent(
       if (!component.content.url) {
         errors.push(`Button component at ${componentId} has no URL`);
       } else if (!isValidUrl(component.content.url)) {
-        warnings.push(`Button component at ${componentId} has invalid URL: ${component.content.url}`);
+        warnings.push(
+          `Button component at ${componentId} has invalid URL: ${component.content.url}`
+        );
       }
       break;
 
@@ -161,7 +163,9 @@ function validateComponent(
         errors.push(`Image component at ${componentId} has no source URL`);
       }
       if (!component.content.alt) {
-        warnings.push(`Image component at ${componentId} has no alt text (important for accessibility)`);
+        warnings.push(
+          `Image component at ${componentId} has no alt text (important for accessibility)`
+        );
       }
       break;
 

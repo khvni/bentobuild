@@ -32,9 +32,7 @@ import { auth } from '@/lib/auth';
 /**
  * API handler function type (simple routes without params)
  */
-type ApiHandler = (
-  req: NextRequest
-) => Promise<NextResponse> | NextResponse;
+type ApiHandler = (req: NextRequest) => Promise<NextResponse> | NextResponse;
 
 /**
  * Security options for API wrapper
@@ -89,15 +87,8 @@ interface SecurityOptions {
  * );
  * ```
  */
-export function secureApi(
-  handler: ApiHandler,
-  options: SecurityOptions = {}
-): ApiHandler {
-  const {
-    rateLimit: rateLimitType = 'api',
-    requireAuth = false,
-    logRequests = true,
-  } = options;
+export function secureApi(handler: ApiHandler, options: SecurityOptions = {}): ApiHandler {
+  const { rateLimit: rateLimitType = 'api', requireAuth = false, logRequests = true } = options;
 
   return async (req: NextRequest) => {
     const startTime = Date.now();
@@ -105,9 +96,7 @@ export function secureApi(
     try {
       // Log request if enabled
       if (logRequests) {
-        console.log(
-          `[API] ${req.method} ${req.nextUrl.pathname} - Starting`
-        );
+        console.log(`[API] ${req.method} ${req.nextUrl.pathname} - Starting`);
       }
 
       // Apply rate limiting
@@ -115,9 +104,7 @@ export function secureApi(
         const rateLimitResponse = await rateLimit(req, rateLimitType);
         if (rateLimitResponse) {
           if (logRequests) {
-            console.log(
-              `[API] ${req.method} ${req.nextUrl.pathname} - Rate limited`
-            );
+            console.log(`[API] ${req.method} ${req.nextUrl.pathname} - Rate limited`);
           }
           return rateLimitResponse;
         }
@@ -129,9 +116,7 @@ export function secureApi(
 
         if (!session || !session.user) {
           if (logRequests) {
-            console.log(
-              `[API] ${req.method} ${req.nextUrl.pathname} - Unauthorized`
-            );
+            console.log(`[API] ${req.method} ${req.nextUrl.pathname} - Unauthorized`);
           }
           return NextResponse.json(
             {
@@ -152,18 +137,13 @@ export function secureApi(
       // Log successful completion
       if (logRequests) {
         const duration = Date.now() - startTime;
-        console.log(
-          `[API] ${req.method} ${req.nextUrl.pathname} - Completed in ${duration}ms`
-        );
+        console.log(`[API] ${req.method} ${req.nextUrl.pathname} - Completed in ${duration}ms`);
       }
 
       return response;
     } catch (error) {
       // Log error
-      console.error(
-        `[API] ${req.method} ${req.nextUrl.pathname} - Error:`,
-        error
-      );
+      console.error(`[API] ${req.method} ${req.nextUrl.pathname} - Error:`, error);
 
       // Don't leak internal error details to clients in production
       const isDevelopment = process.env.NODE_ENV === 'development';

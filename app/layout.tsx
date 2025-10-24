@@ -11,7 +11,7 @@ import {
   manrope,
   instrumentSerif,
   ebGaramond,
-  playfairDisplay
+  playfairDisplay,
 } from '@/lib/fonts';
 
 export const metadata: Metadata = {

@@ -36,9 +36,7 @@ import {
  * }
  * ```
  */
-export function isHeadingComponent(
-  component: Component
-): component is HeadingComponent {
+export function isHeadingComponent(component: Component): component is HeadingComponent {
   return component.type === 'heading';
 }
 
@@ -56,9 +54,7 @@ export function isHeadingComponent(
  * }
  * ```
  */
-export function isTextComponent(
-  component: Component
-): component is TextComponent {
+export function isTextComponent(component: Component): component is TextComponent {
   return component.type === 'text';
 }
 
@@ -76,9 +72,7 @@ export function isTextComponent(
  * }
  * ```
  */
-export function isButtonComponent(
-  component: Component
-): component is ButtonComponent {
+export function isButtonComponent(component: Component): component is ButtonComponent {
   return component.type === 'button';
 }
 
@@ -96,9 +90,7 @@ export function isButtonComponent(
  * }
  * ```
  */
-export function isImageComponent(
-  component: Component
-): component is ImageComponent {
+export function isImageComponent(component: Component): component is ImageComponent {
   return component.type === 'image';
 }
 
@@ -116,9 +108,7 @@ export function isImageComponent(
  * }
  * ```
  */
-export function isLinkComponent(
-  component: Component
-): component is LinkComponent {
+export function isLinkComponent(component: Component): component is LinkComponent {
   return component.type === 'link';
 }
 
@@ -136,9 +126,7 @@ export function isLinkComponent(
  * }
  * ```
  */
-export function isSpacerComponent(
-  component: Component
-): component is SpacerComponent {
+export function isSpacerComponent(component: Component): component is SpacerComponent {
   return component.type === 'spacer';
 }
 
@@ -156,9 +144,7 @@ export function isSpacerComponent(
  * }
  * ```
  */
-export function isDividerComponent(
-  component: Component
-): component is DividerComponent {
+export function isDividerComponent(component: Component): component is DividerComponent {
   return component.type === 'divider';
 }
 
@@ -191,9 +177,7 @@ export function hasTextContent(
  * @param component - The component to check
  * @returns True if component has URL content
  */
-export function hasUrlContent(
-  component: Component
-): component is ButtonComponent | LinkComponent {
+export function hasUrlContent(component: Component): component is ButtonComponent | LinkComponent {
   return isButtonComponent(component) || isLinkComponent(component);
 }
 
@@ -217,9 +201,7 @@ export function isInteractiveComponent(
  * @param component - The component to check
  * @returns True if component displays media
  */
-export function isMediaComponent(
-  component: Component
-): component is ImageComponent {
+export function isMediaComponent(component: Component): component is ImageComponent {
   return isImageComponent(component);
 }
 
@@ -257,10 +239,7 @@ export function filterComponentsByType<T extends Component['type']>(
   components: Component[],
   type: T
 ): Extract<Component, { type: T }>[] {
-  return components.filter((c) => c.type === type) as Extract<
-    Component,
-    { type: T }
-  >[];
+  return components.filter((c) => c.type === type) as Extract<Component, { type: T }>[];
 }
 
 /**
@@ -282,9 +261,7 @@ export function findComponentByType<T extends Component['type']>(
   components: Component[],
   type: T
 ): Extract<Component, { type: T }> | undefined {
-  return components.find((c) => c.type === type) as
-    | Extract<Component, { type: T }>
-    | undefined;
+  return components.find((c) => c.type === type) as Extract<Component, { type: T }> | undefined;
 }
 
 /**
@@ -301,10 +278,7 @@ export function findComponentByType<T extends Component['type']>(
  * }
  * ```
  */
-export function hasComponentType(
-  components: Component[],
-  type: Component['type']
-): boolean {
+export function hasComponentType(components: Component[], type: Component['type']): boolean {
   return components.some((c) => c.type === type);
 }
 
@@ -337,9 +311,7 @@ export function getComponentTypes(components: Component[]): Component['type'][] 
  * console.log(counts.get('button')); // 2
  * ```
  */
-export function countComponentsByType(
-  components: Component[]
-): Map<Component['type'], number> {
+export function countComponentsByType(components: Component[]): Map<Component['type'], number> {
   const counts = new Map<Component['type'], number>();
 
   components.forEach((component) => {
@@ -372,9 +344,7 @@ export function assertComponentType<T extends Component['type']>(
   type: T
 ): asserts component is Extract<Component, { type: T }> {
   if (component.type !== type) {
-    throw new Error(
-      `Expected component type ${type}, but got ${component.type}`
-    );
+    throw new Error(`Expected component type ${type}, but got ${component.type}`);
   }
 }
 
@@ -397,7 +367,5 @@ export function safeComponentCast<T extends Component['type']>(
   component: Component,
   type: T
 ): Extract<Component, { type: T }> | null {
-  return component.type === type
-    ? (component as Extract<Component, { type: T }>)
-    : null;
+  return component.type === type ? (component as Extract<Component, { type: T }>) : null;
 }

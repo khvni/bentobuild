@@ -22,9 +22,19 @@ const sectionTemplates = [
   { variant: 'navbar' as SectionVariant, label: 'Navigation', icon: Menu, color: '#2563EB' },
   { variant: 'hero' as SectionVariant, label: 'Hero', icon: Target, color: '#E63946' },
   { variant: 'content' as SectionVariant, label: 'Content', icon: FileText, color: '#4B5563' },
-  { variant: 'features' as SectionVariant, label: 'Features', icon: LayoutDashboard, color: '#8B5CF6' },
+  {
+    variant: 'features' as SectionVariant,
+    label: 'Features',
+    icon: LayoutDashboard,
+    color: '#8B5CF6',
+  },
   { variant: 'gallery' as SectionVariant, label: 'Gallery', icon: ImageIcon, color: '#10B981' },
-  { variant: 'testimonials' as SectionVariant, label: 'Testimonials', icon: FileText, color: '#F59E0B' },
+  {
+    variant: 'testimonials' as SectionVariant,
+    label: 'Testimonials',
+    icon: FileText,
+    color: '#F59E0B',
+  },
   { variant: 'cta' as SectionVariant, label: 'Call to Action', icon: Target, color: '#EC4899' },
   { variant: 'footer' as SectionVariant, label: 'Footer', icon: LayoutDashboard, color: '#1F2937' },
 ];
@@ -105,9 +115,7 @@ export default function CanvasPalette() {
 
       {/* Sections Category */}
       <div className="mb-6">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-gray-600 mb-3">
-          Sections
-        </h3>
+        <h3 className="text-xs font-bold uppercase tracking-wider text-gray-600 mb-3">Sections</h3>
         <div className="space-y-2">
           {sectionTemplates.map((template) => (
             <DraggableItem

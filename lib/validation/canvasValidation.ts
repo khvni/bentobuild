@@ -315,10 +315,7 @@ function validateLayout(layout: unknown): string[] {
 
   // Validate stack-specific properties
   if (layoutConfig.type === 'stack') {
-    if (
-      layoutConfig.direction &&
-      !['vertical', 'horizontal'].includes(layoutConfig.direction)
-    ) {
+    if (layoutConfig.direction && !['vertical', 'horizontal'].includes(layoutConfig.direction)) {
       errors.push(`Invalid stack direction: ${layoutConfig.direction}`);
     }
   }
@@ -403,8 +400,7 @@ function validateComponentContent(component: Component): string[] {
     case 'divider':
       if (
         component.content.thickness !== undefined &&
-        (typeof component.content.thickness !== 'number' ||
-          component.content.thickness < 0)
+        (typeof component.content.thickness !== 'number' || component.content.thickness < 0)
       ) {
         errors.push('Divider thickness must be a non-negative number');
       }
@@ -429,9 +425,7 @@ export function validateSectionOrder(sections: Section[]): string[] {
   const orders = sections.map((s) => s.order);
 
   // Check for duplicate orders
-  const duplicates = orders.filter(
-    (order, index) => orders.indexOf(order) !== index
-  );
+  const duplicates = orders.filter((order, index) => orders.indexOf(order) !== index);
   if (duplicates.length > 0) {
     errors.push(`Duplicate section orders found: ${duplicates.join(', ')}`);
   }

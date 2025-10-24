@@ -3,6 +3,7 @@
 ## Panel States
 
 ### State 1: No Selection
+
 ```
 ┌─────────────────────────────────┐
 │  Block Editor Panel             │
@@ -25,6 +26,7 @@
 ```
 
 ### State 2: Section Selected
+
 ```
 ┌─────────────────────────────────┐
 │  Section Settings           [X] │
@@ -60,6 +62,7 @@
 ```
 
 ### State 3: Heading Component Selected
+
 ```
 ┌─────────────────────────────────┐
 │  HEADING Settings           [X] │
@@ -92,6 +95,7 @@
 ```
 
 ### State 4: Image Component Selected
+
 ```
 ┌─────────────────────────────────┐
 │  IMAGE Settings             [X] │
@@ -124,6 +128,7 @@
 ```
 
 ### State 5: Button Component Selected
+
 ```
 ┌─────────────────────────────────┐
 │  BUTTON Settings            [X] │
@@ -200,6 +205,7 @@ Visual feedback (instant!)
 ## Layout Breakdown
 
 ### Full App Layout
+
 ```
 ┌────────────────────────────────────────────────────────────────┐
 │                          Header                                │
@@ -325,6 +331,7 @@ BlockEditorPanel
 ## Interaction Patterns
 
 ### Edit Pattern
+
 ```
 1. Click component/section
 2. Panel opens with editor
@@ -334,6 +341,7 @@ BlockEditorPanel
 ```
 
 ### Delete Pattern
+
 ```
 1. Click Delete button
 2. Confirm dialog appears
@@ -343,6 +351,7 @@ BlockEditorPanel
 ```
 
 ### Navigation Pattern
+
 ```
 1. Click different component
 2. Previous editor closes
@@ -382,6 +391,7 @@ Panel is fixed width (320px) but content scrolls:
 ## Screen Reader Support
 
 All controls have proper labels:
+
 - Input labels use `<label>` elements
 - Color pickers have aria-label
 - Buttons have descriptive text

@@ -137,7 +137,9 @@ test.describe('Rich Text Editor - Block Selection and Editing', () => {
     await page.locator('button[title*="Italic"]').first().click();
 
     // Verify italic applied
-    await expect(bodyEditor.locator('.ProseMirror em, .ProseMirror i')).toContainText('Italic and underlined text');
+    await expect(bodyEditor.locator('.ProseMirror em, .ProseMirror i')).toContainText(
+      'Italic and underlined text'
+    );
 
     // Click underline button
     await page.locator('button[title*="Underline"]').first().click();

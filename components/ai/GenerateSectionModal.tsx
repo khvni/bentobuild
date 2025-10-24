@@ -59,7 +59,8 @@ export default function GenerateSectionModal({
 
   const getPlaceholder = () => {
     const placeholders: Record<SectionVariant, string> = {
-      navbar: 'e.g., "Include links to Home, About, Services, and Contact with a Get Started button"',
+      navbar:
+        'e.g., "Include links to Home, About, Services, and Contact with a Get Started button"',
       hero: 'e.g., "Emphasize fast delivery and premium quality for our design agency"',
       content: 'e.g., "Explain our company history and mission in 2-3 paragraphs"',
       features: 'e.g., "Highlight 3 key benefits: speed, reliability, and support"',
@@ -132,9 +133,7 @@ export default function GenerateSectionModal({
         {(contextPrompt || page?.metadata?.description) && (
           <div className="bg-gray-100 rounded-bauhaus-md p-3 mb-4 border-2 border-gray-300">
             <p className="text-xs font-bold text-gray-600 uppercase mb-1">Website Context:</p>
-            <p className="text-sm text-gray-800">
-              {contextPrompt || page?.metadata?.description}
-            </p>
+            <p className="text-sm text-gray-800">{contextPrompt || page?.metadata?.description}</p>
           </div>
         )}
 
@@ -152,9 +151,7 @@ export default function GenerateSectionModal({
             disabled={isLoading}
             autoFocus
           />
-          <p className="text-xs text-gray-600 mt-1">
-            Leave blank to use the website context above
-          </p>
+          <p className="text-xs text-gray-600 mt-1">Leave blank to use the website context above</p>
         </div>
 
         {/* Error Message */}

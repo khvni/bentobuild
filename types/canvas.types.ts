@@ -27,13 +27,7 @@ export type StackDirection = 'vertical' | 'horizontal';
 /**
  * Alignment options for flexbox and grid layouts
  */
-export type Alignment =
-  | 'start'
-  | 'center'
-  | 'end'
-  | 'space-between'
-  | 'space-around'
-  | 'stretch';
+export type Alignment = 'start' | 'center' | 'end' | 'space-between' | 'space-around' | 'stretch';
 
 // ============================================================================
 // POSITION TYPES
@@ -170,14 +164,14 @@ export interface Breakpoints {
  * Each variant has default layout and styling
  */
 export type SectionVariant =
-  | 'navbar'       // Top navigation bar
-  | 'hero'         // Hero/banner section
-  | 'content'      // General content section
-  | 'features'     // Features grid
-  | 'gallery'      // Image gallery
+  | 'navbar' // Top navigation bar
+  | 'hero' // Hero/banner section
+  | 'content' // General content section
+  | 'features' // Features grid
+  | 'gallery' // Image gallery
   | 'testimonials' // Testimonials/reviews
-  | 'cta'          // Call-to-action section
-  | 'footer';      // Footer section
+  | 'cta' // Call-to-action section
+  | 'footer'; // Footer section
 
 /**
  * Section interface - the main container for components
@@ -220,13 +214,13 @@ export interface Section {
  * All available component types
  */
 export type ComponentType =
-  | 'heading'   // Heading (h1-h6)
-  | 'text'      // Rich text paragraph
-  | 'button'    // Call-to-action button
-  | 'image'     // Image with optional caption
-  | 'link'      // Hyperlink
-  | 'spacer'    // Vertical spacing element
-  | 'divider';  // Horizontal divider line
+  | 'heading' // Heading (h1-h6)
+  | 'text' // Rich text paragraph
+  | 'button' // Call-to-action button
+  | 'image' // Image with optional caption
+  | 'link' // Hyperlink
+  | 'spacer' // Vertical spacing element
+  | 'divider'; // Horizontal divider line
 
 /**
  * Base component interface
@@ -452,12 +446,7 @@ export type FontFamily =
  * Type guard for checking if a value is a Section
  */
 export function isSectionType(obj: unknown): obj is Section {
-  return (
-    typeof obj === 'object' &&
-    obj !== null &&
-    'type' in obj &&
-    obj.type === 'section'
-  );
+  return typeof obj === 'object' && obj !== null && 'type' in obj && obj.type === 'section';
 }
 
 /**
@@ -471,7 +460,7 @@ export function isComponentType(obj: unknown): obj is Component {
     'image',
     'link',
     'spacer',
-    'divider'
+    'divider',
   ];
 
   return (

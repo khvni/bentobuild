@@ -9,10 +9,7 @@ const createProjectSchema = z.object({
     .string()
     .min(1, 'Slug is required')
     .max(100)
-    .regex(
-      /^[a-z0-9-]+$/,
-      'Slug must contain only lowercase letters, numbers, and hyphens'
-    ),
+    .regex(/^[a-z0-9-]+$/, 'Slug must contain only lowercase letters, numbers, and hyphens'),
   contextPrompt: z.string().optional().default(''),
   userId: z.string().min(1, 'User ID is required'),
   blocks: z.array(z.any()).optional().default([]),
@@ -30,10 +27,7 @@ export async function GET(request: NextRequest) {
     const userId = searchParams.get('userId');
 
     if (!userId) {
-      return NextResponse.json(
-        { error: 'User ID is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'User ID is required' }, { status: 400 });
     }
 
     // Use Prisma query (no raw SQL) for security
@@ -60,10 +54,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ projects }, { status: 200 });
   } catch (error) {
     console.error('Error fetching projects:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch projects' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch projects' }, { status: 500 });
   }
 }
 
@@ -109,10 +100,7 @@ export async function POST(request: NextRequest) {
       });
 
       if (existingSubdomain) {
-        return NextResponse.json(
-          { error: 'This subdomain is already taken' },
-          { status: 409 }
-        );
+        return NextResponse.json({ error: 'This subdomain is already taken' }, { status: 409 });
       }
     }
 
@@ -142,16 +130,10 @@ export async function POST(request: NextRequest) {
         );
       }
       if (error.code === 'P2003') {
-        return NextResponse.json(
-          { error: 'Invalid user ID' },
-          { status: 400 }
-        );
+        return NextResponse.json({ error: 'Invalid user ID' }, { status: 400 });
       }
     }
 
-    return NextResponse.json(
-      { error: 'Failed to create project' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to create project' }, { status: 500 });
   }
 }

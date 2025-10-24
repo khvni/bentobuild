@@ -39,10 +39,7 @@ export default function CanvasDemoPage() {
       </header>
 
       {/* Instructions Panel (Hidden by default) */}
-      <div
-        id="instructions"
-        className="hidden bg-bauhaus-yellow border-b-4 border-black p-6"
-      >
+      <div id="instructions" className="hidden bg-bauhaus-yellow border-b-4 border-black p-6">
         <div className="max-w-4xl mx-auto">
           <h2 className="bauhaus-h3 mb-4">How to Use the Canvas</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -54,8 +51,8 @@ export default function CanvasDemoPage() {
                 <h3 className="font-bold text-lg">Add Sections</h3>
               </div>
               <p className="text-sm text-gray-700">
-                Drag section templates from the palette onto the canvas. Sections are the
-                main containers for your content.
+                Drag section templates from the palette onto the canvas. Sections are the main
+                containers for your content.
               </p>
             </div>
 
@@ -67,8 +64,8 @@ export default function CanvasDemoPage() {
                 <h3 className="font-bold text-lg">Add Components</h3>
               </div>
               <p className="text-sm text-gray-700">
-                Drag components (text, buttons, images, etc.) onto the canvas. They will
-                be added to the nearest section.
+                Drag components (text, buttons, images, etc.) onto the canvas. They will be added to
+                the nearest section.
               </p>
             </div>
 
@@ -80,8 +77,8 @@ export default function CanvasDemoPage() {
                 <h3 className="font-bold text-lg">Arrange & Edit</h3>
               </div>
               <p className="text-sm text-gray-700">
-                Move sections around by dragging. Click on sections to edit their
-                properties and rearrange components.
+                Move sections around by dragging. Click on sections to edit their properties and
+                rearrange components.
               </p>
             </div>
           </div>
@@ -95,22 +92,22 @@ export default function CanvasDemoPage() {
               <li className="flex items-start gap-2">
                 <MousePointer2 className="w-4 h-4 mt-0.5 flex-shrink-0 text-bauhaus-blue" />
                 <span>
-                  <strong>Add sections first:</strong> You need at least one section before
-                  you can add components
+                  <strong>Add sections first:</strong> You need at least one section before you can
+                  add components
                 </span>
               </li>
               <li className="flex items-start gap-2">
                 <MousePointer2 className="w-4 h-4 mt-0.5 flex-shrink-0 text-bauhaus-blue" />
                 <span>
-                  <strong>Drop position matters:</strong> Sections appear where you drop
-                  them, components go to the nearest section
+                  <strong>Drop position matters:</strong> Sections appear where you drop them,
+                  components go to the nearest section
                 </span>
               </li>
               <li className="flex items-start gap-2">
                 <MousePointer2 className="w-4 h-4 mt-0.5 flex-shrink-0 text-bauhaus-blue" />
                 <span>
-                  <strong>Use the controls:</strong> Zoom in/out and pan around the canvas
-                  using the bottom-left controls
+                  <strong>Use the controls:</strong> Zoom in/out and pan around the canvas using the
+                  bottom-left controls
                 </span>
               </li>
             </ul>

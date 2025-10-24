@@ -64,10 +64,7 @@ export interface BuilderStore {
    * Initializes a new page with default structure
    * @param metadata - Optional page metadata
    */
-  initializePage: (metadata?: {
-    title?: string;
-    description?: string;
-  }) => void;
+  initializePage: (metadata?: { title?: string; description?: string }) => void;
 
   /**
    * Loads a page from storage or API
@@ -126,10 +123,7 @@ export interface BuilderStore {
    * @param sectionId - The section ID to update
    * @param layout - Partial layout configuration to update
    */
-  updateSectionLayout: (
-    sectionId: string,
-    layout: Partial<LayoutConfig>
-  ) => void;
+  updateSectionLayout: (sectionId: string, layout: Partial<LayoutConfig>) => void;
 
   /**
    * Updates a section's style configuration
@@ -364,9 +358,7 @@ export interface BuilderSelectors {
   /**
    * Gets a component by ID (searches all sections)
    */
-  getComponentById: (
-    componentId: string
-  ) => { section: Section; component: Component } | null;
+  getComponentById: (componentId: string) => { section: Section; component: Component } | null;
 
   /**
    * Gets all sections sorted by order

@@ -69,14 +69,13 @@ export default function SectionEditor({ section, onClose }: Props) {
       {/* Layout Controls */}
       <div className="mb-6">
         <label className="block text-sm font-bold text-gray-900 mb-2 uppercase">Layout</label>
-        <LayoutPicker
-          value={section.layout.type}
-          onChange={handleLayoutChange}
-        />
+        <LayoutPicker value={section.layout.type} onChange={handleLayoutChange} />
 
         {section.layout.type === 'stack' && (
           <div className="mt-3">
-            <label className="block text-xs font-bold text-gray-700 mb-2 uppercase">Direction</label>
+            <label className="block text-xs font-bold text-gray-700 mb-2 uppercase">
+              Direction
+            </label>
             <div className="flex gap-2">
               <button
                 onClick={() => handleDirectionChange('vertical')}
@@ -110,9 +109,11 @@ export default function SectionEditor({ section, onClose }: Props) {
               min="1"
               max="4"
               value={section.layout.columns || 2}
-              onChange={(e) => updateSection(section.id, {
-                layout: { ...section.layout, columns: parseInt(e.target.value) }
-              })}
+              onChange={(e) =>
+                updateSection(section.id, {
+                  layout: { ...section.layout, columns: parseInt(e.target.value) },
+                })
+              }
               className="w-full px-3 py-2 border-2 border-black rounded-bauhaus-md text-sm"
             />
           </div>
@@ -127,9 +128,11 @@ export default function SectionEditor({ section, onClose }: Props) {
           min="0"
           max="100"
           value={section.layout.gap || 16}
-          onChange={(e) => updateSection(section.id, {
-            layout: { ...section.layout, gap: parseInt(e.target.value) }
-          })}
+          onChange={(e) =>
+            updateSection(section.id, {
+              layout: { ...section.layout, gap: parseInt(e.target.value) },
+            })
+          }
           className="w-full px-3 py-2 border-2 border-black rounded-bauhaus-md text-sm"
         />
         <p className="text-xs text-gray-600 mt-1">Spacing between components (px)</p>
@@ -152,9 +155,7 @@ export default function SectionEditor({ section, onClose }: Props) {
 
       {/* Actions */}
       <div className="space-y-2">
-        <button
-          className="w-full px-4 py-2 bg-bauhaus-yellow hover:bg-yellow-400 text-black font-bold uppercase text-sm rounded-bauhaus-md border-2 border-black transition-colors flex items-center justify-center gap-2"
-        >
+        <button className="w-full px-4 py-2 bg-bauhaus-yellow hover:bg-yellow-400 text-black font-bold uppercase text-sm rounded-bauhaus-md border-2 border-black transition-colors flex items-center justify-center gap-2">
           <Sparkles className="w-4 h-4" />
           Generate Content
         </button>

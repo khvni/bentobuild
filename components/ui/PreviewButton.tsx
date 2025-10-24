@@ -154,7 +154,7 @@ export default function PreviewButton() {
             ? 'bg-gray-200 text-gray-500 border-gray-300 cursor-not-allowed'
             : 'bg-blue-600 text-white border-black shadow-bauhaus-md hover:shadow-bauhaus-lg hover:bg-blue-700 active:scale-95'
         }`}
-        title={hasContent ? "Preview or export your site" : "Add content first"}
+        title={hasContent ? 'Preview or export your site' : 'Add content first'}
         aria-label="Preview Menu"
         aria-expanded={showMenu}
         aria-haspopup="true"
@@ -168,7 +168,9 @@ export default function PreviewButton() {
           <>
             <Eye className="w-5 h-5" />
             <span className="hidden sm:inline">Preview</span>
-            <ChevronDown className={`w-4 h-4 transition-transform ${showMenu ? 'rotate-180' : ''}`} />
+            <ChevronDown
+              className={`w-4 h-4 transition-transform ${showMenu ? 'rotate-180' : ''}`}
+            />
           </>
         )}
       </button>

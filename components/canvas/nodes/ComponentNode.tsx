@@ -114,9 +114,7 @@ const ComponentNode = memo(({ data, selected }: ComponentNodeProps) => {
       </div>
 
       {/* Render Component Content */}
-      <div className="mt-2">
-        {renderComponent()}
-      </div>
+      <div className="mt-2">{renderComponent()}</div>
     </div>
   );
 });

@@ -94,21 +94,24 @@ Located in `/lib/export/htmlExporter.ts`
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Bentoblocks Site</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    /* ... embedded CSS ... */
-  </style>
-</head>
-<body>
-  <section class="layout-stack layout-stack-vertical section-hero">
-    <h1>Welcome to My Site</h1>
-    <div class="text-content">This is my homepage.</div>
-  </section>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Bentoblocks Site</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ... embedded CSS ... */
+    </style>
+  </head>
+  <body>
+    <section class="layout-stack layout-stack-vertical section-hero">
+      <h1>Welcome to My Site</h1>
+      <div class="text-content">This is my homepage.</div>
+    </section>
+  </body>
 </html>
 ```
 
@@ -116,15 +119,15 @@ Located in `/lib/export/htmlExporter.ts`
 
 Each component type has a dedicated rendering function:
 
-| Component Type | HTML Output | Special Features |
-|---------------|-------------|------------------|
-| Heading | `<h1>` - `<h6>` | Dynamic level based on content |
-| Text | `<div class="text-content">` | Supports rich HTML content |
-| Button | `<a class="btn">` | Variant classes (filled/outlined/text) |
-| Image | `<figure>` + `<img>` | Optional caption, object-fit |
-| Link | `<a class="link-component">` | Optional description |
-| Spacer | `<div class="spacer">` | Custom height |
-| Divider | `<hr>` | Custom color and thickness |
+| Component Type | HTML Output                  | Special Features                       |
+| -------------- | ---------------------------- | -------------------------------------- |
+| Heading        | `<h1>` - `<h6>`              | Dynamic level based on content         |
+| Text           | `<div class="text-content">` | Supports rich HTML content             |
+| Button         | `<a class="btn">`            | Variant classes (filled/outlined/text) |
+| Image          | `<figure>` + `<img>`         | Optional caption, object-fit           |
+| Link           | `<a class="link-component">` | Optional description                   |
+| Spacer         | `<div class="spacer">`       | Custom height                          |
+| Divider        | `<hr>`                       | Custom color and thickness             |
 
 ### HTML Escaping
 
@@ -180,9 +183,15 @@ Bentoblocks uses three layout types:
   padding: 2rem;
 }
 
-.layout-grid-2 { grid-template-columns: repeat(2, 1fr); }
-.layout-grid-3 { grid-template-columns: repeat(3, 1fr); }
-.layout-grid-4 { grid-template-columns: repeat(4, 1fr); }
+.layout-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+.layout-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.layout-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
 ```
 
 **Use case**: Features grids, galleries, card layouts
@@ -228,9 +237,7 @@ Each section variant has default styling:
 Component-specific styles are applied inline:
 
 ```html
-<h1 style="color: #3B82F6; font-size: 3rem; font-family: 'Inter', sans-serif;">
-  My Heading
-</h1>
+<h1 style="color: #3B82F6; font-size: 3rem; font-family: 'Inter', sans-serif;">My Heading</h1>
 ```
 
 This allows per-component customization while maintaining semantic class structure.
@@ -244,6 +251,7 @@ This allows per-component customization while maintaining semantic class structu
 Located in `/lib/previewCache.ts`
 
 **Features**:
+
 - In-memory Map storage (global singleton)
 - 30-minute TTL (time-to-live)
 - Automatic cleanup of expired entries
@@ -282,6 +290,7 @@ https://bentoblocks.com/preview/a1b2c3d4e5f6g7h8
 **Route**: `/app/preview/[slug]/route.ts`
 
 **Response**:
+
 - Content-Type: `text/html; charset=utf-8`
 - Cache-Control: `no-store, max-age=0`
 
@@ -299,27 +308,29 @@ The validator checks for:
 ### Validation Rules
 
 #### Page Level
+
 - ✅ Page exists and is not null
 - ✅ At least one section exists
 - ⚠️ Page has title (warning if missing)
 - ⚠️ Page has meta description (warning if missing)
 
 #### Section Level
+
 - ✅ Section has ID
 - ✅ Section has layout configuration
 - ⚠️ Section has at least one component (warning if empty)
 
 #### Component Level
 
-| Component | Required Fields | Warnings |
-|-----------|----------------|----------|
-| Heading | `text`, `level` (1-6) | Empty text |
-| Text | `body` | Empty body |
-| Button | `text`, `url` | Empty text, invalid URL |
-| Image | `src` | Missing alt text |
-| Link | `text`, `url` | Empty text, invalid URL |
-| Spacer | `height` (> 0) | - |
-| Divider | - | Invalid thickness |
+| Component | Required Fields       | Warnings                |
+| --------- | --------------------- | ----------------------- |
+| Heading   | `text`, `level` (1-6) | Empty text              |
+| Text      | `body`                | Empty body              |
+| Button    | `text`, `url`         | Empty text, invalid URL |
+| Image     | `src`                 | Missing alt text        |
+| Link      | `text`, `url`         | Empty text, invalid URL |
+| Spacer    | `height` (> 0)        | -                       |
+| Divider   | -                     | Invalid thickness       |
 
 ### Usage
 
@@ -379,9 +390,7 @@ Generate preview URL from Page data.
 {
   "success": false,
   "error": "Page validation failed",
-  "errors": [
-    "Page has no sections. Add at least one section to export."
-  ]
+  "errors": ["Page has no sections. Add at least one section to export."]
 }
 ```
 
@@ -394,6 +403,7 @@ Retrieve preview HTML by slug.
 **Response**: Raw HTML document
 
 **Errors**:
+
 - 404: Preview expired or not found
 
 ---
@@ -443,10 +453,10 @@ fs.writeFileSync('output.html', html);
 
 Bentoblocks uses two responsive breakpoints:
 
-| Breakpoint | Size | Adjustments |
-|------------|------|-------------|
+| Breakpoint | Size    | Adjustments                          |
+| ---------- | ------- | ------------------------------------ |
 | **Tablet** | ≤ 810px | Single column grids, stacked layouts |
-| **Mobile** | ≤ 480px | Reduced padding, smaller typography |
+| **Mobile** | ≤ 480px | Reduced padding, smaller typography  |
 
 ### Responsive Behavior
 
@@ -478,16 +488,28 @@ Horizontal stacks become vertical on smaller screens.
 
 ```css
 /* Desktop */
-h1 { font-size: 3rem; }
-h2 { font-size: 2.25rem; }
+h1 {
+  font-size: 3rem;
+}
+h2 {
+  font-size: 2.25rem;
+}
 
 /* Tablet (≤810px) */
-h1 { font-size: 2.25rem; }
-h2 { font-size: 1.875rem; }
+h1 {
+  font-size: 2.25rem;
+}
+h2 {
+  font-size: 1.875rem;
+}
 
 /* Mobile (≤480px) */
-h1 { font-size: 1.875rem; }
-h2 { font-size: 1.5rem; }
+h1 {
+  font-size: 1.875rem;
+}
+h2 {
+  font-size: 1.5rem;
+}
 ```
 
 ### Testing Responsive Export
@@ -507,6 +529,7 @@ h2 { font-size: 1.5rem; }
 The export engine automatically detects fonts used in your design and generates the appropriate Google Fonts link.
 
 **Supported Fonts**:
+
 - Inter
 - Instrument Serif
 - Noto Sans
@@ -523,12 +546,16 @@ The export engine automatically detects fonts used in your design and generates 
 ### Font Loading Strategy
 
 ```html
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+  rel="stylesheet"
+/>
 ```
 
 **Features**:
+
 - Preconnect for faster loading
 - Weight variants: 400 (regular), 600 (semibold), 700 (bold)
 - `display=swap` to prevent invisible text flash
@@ -538,9 +565,7 @@ The export engine automatically detects fonts used in your design and generates 
 Fonts are applied via inline styles:
 
 ```html
-<h1 style="font-family: 'Inter', sans-serif;">
-  Heading with Inter font
-</h1>
+<h1 style="font-family: 'Inter', sans-serif;">Heading with Inter font</h1>
 ```
 
 **Fallback Stack**: All custom fonts include `sans-serif` fallback.

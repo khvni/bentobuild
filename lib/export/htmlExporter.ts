@@ -18,7 +18,7 @@ import { Page, Section, Component, LayoutConfig, StyleConfig } from '@/types/can
 export function exportToHTML(page: Page): string {
   const sections = page.sections.sort((a, b) => a.order - b.order);
 
-  const sectionsHTML = sections.map(section => renderSection(section)).join('\n\n');
+  const sectionsHTML = sections.map((section) => renderSection(section)).join('\n\n');
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -43,7 +43,7 @@ export function exportToHTML(page: Page): string {
 function renderSection(section: Section): string {
   const layoutClass = getLayoutClass(section.layout);
   const componentsHTML = section.children
-    .map(c => renderComponent(c, section.layout))
+    .map((c) => renderComponent(c, section.layout))
     .join('\n    ');
 
   const sectionStyles = getInlineStyles(section.style);
@@ -475,12 +475,12 @@ function generateGoogleFontsLink(page: Page): string {
   const fonts = new Set<string>();
 
   // Collect all unique fonts from the page
-  page.sections.forEach(section => {
+  page.sections.forEach((section) => {
     if (section.style.fontFamily) {
       fonts.add(section.style.fontFamily);
     }
 
-    section.children.forEach(component => {
+    section.children.forEach((component) => {
       if (component.style.fontFamily) {
         fonts.add(component.style.fontFamily);
       }
@@ -489,9 +489,9 @@ function generateGoogleFontsLink(page: Page): string {
 
   if (fonts.size === 0) return '';
 
-  const families = Array.from(fonts).map(f =>
-    `family=${f.replace(/ /g, '+')}:wght@400;600;700`
-  ).join('&');
+  const families = Array.from(fonts)
+    .map((f) => `family=${f.replace(/ /g, '+')}:wght@400;600;700`)
+    .join('&');
 
   return `<link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

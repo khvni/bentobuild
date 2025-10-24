@@ -101,9 +101,7 @@ export async function rateLimit(
 ): Promise<NextResponse | null> {
   // Skip rate limiting if Redis is not configured (development mode)
   if (!isRedisConfigured()) {
-    console.warn(
-      '[Rate Limit] Redis not configured - rate limiting is disabled'
-    );
+    console.warn('[Rate Limit] Redis not configured - rate limiting is disabled');
     return null;
   }
 
@@ -119,8 +117,7 @@ export async function rateLimit(
     const identifier = `${ip}:${request.nextUrl.pathname}`;
 
     // Check rate limit
-    const { success, limit, reset } =
-      await rateLimiters[type].limit(identifier);
+    const { success, limit, reset } = await rateLimiters[type].limit(identifier);
 
     // If rate limit exceeded, return 429 response
     if (!success) {
@@ -182,9 +179,7 @@ export async function getRateLimitInfo(
       'anonymous';
 
     const identifier = `${ip}:${request.nextUrl.pathname}`;
-    const { limit, remaining, reset } = await rateLimiters[type].limit(
-      identifier
-    );
+    const { limit, remaining, reset } = await rateLimiters[type].limit(identifier);
 
     return { limit, remaining, reset };
   } catch (error) {

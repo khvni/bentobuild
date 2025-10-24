@@ -119,6 +119,7 @@ page.sections = [...page.sections, newSection];
 ## Available Templates
 
 ### Sections (8 types)
+
 - **navbar**: Top navigation bar
 - **hero**: Hero/banner section
 - **content**: General content section
@@ -129,6 +130,7 @@ page.sections = [...page.sections, newSection];
 - **footer**: Footer section
 
 ### Components (7 types)
+
 - **heading**: h1-h6 headings
 - **text**: Rich text paragraphs
 - **button**: CTA buttons (filled/outlined/text)
@@ -187,11 +189,13 @@ console.log(page.sections.length);
 The system provides rich visual feedback:
 
 ### Cursor Changes
+
 - **Grab cursor**: When hovering over palette items
 - **Grabbing cursor**: When actively dragging
 - **Default cursor**: When over drop zones
 
 ### Drag State
+
 - **Opacity 50%**: Item being dragged
 - **Scale 95%**: Item shrinks slightly
 - **Smooth transitions**: All changes animated
@@ -222,8 +226,12 @@ All styling follows the Bauhaus design system:
 
 ```css
 /* Grab cursors */
-.cursor-grab { cursor: grab; }
-.cursor-grabbing { cursor: grabbing; }
+.cursor-grab {
+  cursor: grab;
+}
+.cursor-grabbing {
+  cursor: grabbing;
+}
 
 /* Dragging state */
 [data-dnd-dragging='true'] {
@@ -232,9 +240,7 @@ All styling follows the Bauhaus design system:
 }
 
 /* Bauhaus colors */
---bauhaus-red: #E63946
---bauhaus-yellow: #F1C40F
---bauhaus-blue: #2563EB
+--bauhaus-red: #e63946 --bauhaus-yellow: #f1c40f --bauhaus-blue: #2563eb;
 ```
 
 ## Testing
@@ -256,12 +262,12 @@ All styling follows the Bauhaus design system:
 describe('Drag and Drop', () => {
   it('adds section at drop position', async () => {
     render(<CanvasDemoPage />);
-    
+
     const heroItem = screen.getByLabelText('Drag Hero to add to canvas');
     const canvas = screen.getByRole('region');
-    
+
     await user.dragAndDrop(heroItem, canvas);
-    
+
     expect(screen.getByText('1 Sections')).toBeInTheDocument();
   });
 });
@@ -291,11 +297,13 @@ describe('Drag and Drop', () => {
 ## Next Steps
 
 ### Immediate Use
+
 - Integrate into main builder page
 - Add to user tutorials
 - Create video walkthrough
 
 ### Future Enhancements
+
 - Visual drop zones with highlights
 - Custom drag preview overlays
 - Multi-select drag operations
@@ -315,6 +323,7 @@ describe('Drag and Drop', () => {
 ## Support
 
 For questions or issues:
+
 1. Check `docs/DRAG_AND_DROP.md` for detailed technical info
 2. Review `DRAG_DROP_IMPLEMENTATION.md` for implementation details
 3. See demo at `/canvas-demo` for working examples

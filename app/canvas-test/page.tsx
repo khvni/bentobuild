@@ -17,10 +17,13 @@ export default function CanvasTestPage() {
 
       // Create test sections
       const navbar = createSection('navbar', 0, { x: 100, y: 50 });
-      navbar.layout = { type: 'stack', direction: 'horizontal', align: 'center', justify: 'space-between' };
-      navbar.children = [
-        createHeading('Bentoblocks', 3),
-      ];
+      navbar.layout = {
+        type: 'stack',
+        direction: 'horizontal',
+        align: 'center',
+        justify: 'space-between',
+      };
+      navbar.children = [createHeading('Bentoblocks', 3)];
 
       const hero = createSection('hero', 1, { x: 100, y: 350 });
       hero.layout = { type: 'stack', direction: 'vertical', align: 'center', gap: 24 };

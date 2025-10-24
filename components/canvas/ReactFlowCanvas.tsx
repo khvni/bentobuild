@@ -127,11 +127,7 @@ function ReactFlowCanvas() {
     if (dragData.type === 'section') {
       // Create new section
       const sectionCount = page?.sections.length || 0;
-      const newSection = createSection(
-        dragData.variant,
-        sectionCount,
-        dropPosition
-      );
+      const newSection = createSection(dragData.variant, sectionCount, dropPosition);
       addSection(newSection);
     } else if (dragData.type === 'component') {
       // Find which section to add component to
@@ -142,16 +138,19 @@ function ReactFlowCanvas() {
       }
 
       // Get the section closest to drop position
-      const targetSection = page.sections.reduce((closest, section) => {
-        const distance = Math.sqrt(
-          Math.pow(section.position.x - dropPosition.x, 2) +
-          Math.pow(section.position.y - dropPosition.y, 2)
-        );
-        if (!closest || distance < closest.distance) {
-          return { section, distance };
-        }
-        return closest;
-      }, null as { section: Section; distance: number } | null);
+      const targetSection = page.sections.reduce(
+        (closest, section) => {
+          const distance = Math.sqrt(
+            Math.pow(section.position.x - dropPosition.x, 2) +
+              Math.pow(section.position.y - dropPosition.y, 2)
+          );
+          if (!closest || distance < closest.distance) {
+            return { section, distance };
+          }
+          return closest;
+        },
+        null as { section: Section; distance: number } | null
+      );
 
       if (targetSection) {
         const component = createComponentByType(dragData.componentType);
@@ -183,7 +182,10 @@ function ReactFlowCanvas() {
             className="bg-white border-2 border-black rounded-lg shadow-bauhaus-md"
             showInteractive={false}
           />
-          <Panel position="top-left" className="bg-white border-2 border-black rounded-lg p-2 shadow-bauhaus-sm">
+          <Panel
+            position="top-left"
+            className="bg-white border-2 border-black rounded-lg p-2 shadow-bauhaus-sm"
+          >
             <div className="text-xs font-bold uppercase">Canvas</div>
             <div className="text-xs text-gray-600">{nodes.length} nodes</div>
           </Panel>

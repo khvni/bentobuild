@@ -33,7 +33,7 @@ export const KEY_CODES = {
  * Modifier keys
  */
 export const MODIFIER_KEYS = {
-  META: 'metaKey',  // Cmd on Mac, Win on Windows
+  META: 'metaKey', // Cmd on Mac, Win on Windows
   CTRL: 'ctrlKey',
   ALT: 'altKey',
   SHIFT: 'shiftKey',

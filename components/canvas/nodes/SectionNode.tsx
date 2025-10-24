@@ -4,15 +4,7 @@ import React, { memo, useState } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { Section } from '@/types/canvas.types';
 import { useBuilderStore } from '@/store/useBuilderStore';
-import {
-  Menu,
-  Grid3x3,
-  Layers,
-  Plus,
-  Trash2,
-  GripVertical,
-  Sparkles,
-} from 'lucide-react';
+import { Menu, Grid3x3, Layers, Plus, Trash2, GripVertical, Sparkles } from 'lucide-react';
 import InlineComponentRenderer from './InlineComponentRenderer';
 import GenerateSectionModal from '@/components/ai/GenerateSectionModal';
 import GenerateModal from '@/components/ai/GenerateModal';
@@ -182,8 +174,8 @@ const SectionNode = memo(({ data, selected }: SectionNodeProps) => {
               data.layout.type === 'stack'
                 ? `flex ${data.layout.direction === 'vertical' ? 'flex-col' : 'flex-row'}`
                 : data.layout.type === 'grid'
-                ? 'grid'
-                : 'relative'
+                  ? 'grid'
+                  : 'relative'
             }
             style={{
               gap: `${data.layout.gap || 16}px`,
@@ -205,7 +197,9 @@ const SectionNode = memo(({ data, selected }: SectionNodeProps) => {
           /* Empty state - show layout visualization */
           <>
             {data.layout.type === 'stack' && (
-              <div className={`flex ${data.layout.direction === 'vertical' ? 'flex-col' : 'flex-row'} gap-2`}>
+              <div
+                className={`flex ${data.layout.direction === 'vertical' ? 'flex-col' : 'flex-row'} gap-2`}
+              >
                 {[1, 2, 3].map((i) => (
                   <div key={i} className="bg-gray-200 rounded h-8 flex-1 border border-gray-300" />
                 ))}

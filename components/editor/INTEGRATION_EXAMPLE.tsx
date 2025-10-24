@@ -27,9 +27,7 @@ export default function CanvasPage() {
           <span className="text-black">Bento</span>
           <span className="text-bauhaus-red">blocks</span>
         </h1>
-        <div className="flex items-center gap-4">
-          {/* Add controls here */}
-        </div>
+        <div className="flex items-center gap-4">{/* Add controls here */}</div>
       </header>
 
       {/* Main Layout: Palette | Canvas | Editor */}

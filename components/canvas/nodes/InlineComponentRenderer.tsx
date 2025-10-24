@@ -106,9 +106,7 @@ export default function InlineComponentRenderer({ data, sectionId, selected, onG
       </div>
 
       {/* Render Component Content */}
-      <div className="scale-75 origin-top-left">
-        {renderComponent()}
-      </div>
+      <div className="scale-75 origin-top-left">{renderComponent()}</div>
     </div>
   );
 }

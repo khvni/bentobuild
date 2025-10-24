@@ -24,10 +24,7 @@ export async function fillAndVerify(page: Page, selector: string, value: string)
  * Click and wait for navigation
  */
 export async function clickAndNavigate(page: Page, selector: string) {
-  await Promise.all([
-    page.waitForNavigation(),
-    page.click(selector),
-  ]);
+  await Promise.all([page.waitForNavigation(), page.click(selector)]);
 }
 
 /**
@@ -78,7 +75,7 @@ export async function deleteSelectedBlock(page: Page) {
 export async function waitForLoading(page: Page, timeout = 10000) {
   await page.waitForSelector('[data-testid="loading-indicator"]', {
     state: 'hidden',
-    timeout
+    timeout,
   });
 }
 

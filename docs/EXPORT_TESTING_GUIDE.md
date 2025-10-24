@@ -26,6 +26,7 @@ This guide walks through testing the complete Preview/Export system for Bentoblo
 5. New tab should open with preview
 
 **Expected Results**:
+
 - Preview URL format: `http://localhost:3000/preview/[16-char-hash]`
 - Page displays correctly with all components
 - Styles match the canvas editor
@@ -33,6 +34,7 @@ This guide walks through testing the complete Preview/Export system for Bentoblo
 - Button is clickable link
 
 **Verify**:
+
 - Open browser DevTools
 - Check HTML structure is semantic
 - Check inline CSS is applied
@@ -52,11 +54,13 @@ This guide walks through testing the complete Preview/Export system for Bentoblo
 4. File should download as `bentoblocks-site.html` (or custom title)
 
 **Expected Results**:
+
 - HTML file downloads immediately
 - File size: ~5-10 KB for simple page
 - No errors in browser console
 
 **Verify**:
+
 - Open downloaded file in browser (double-click)
 - Page displays identically to preview
 - All styles are embedded (no external CSS)
@@ -80,12 +84,14 @@ This guide walks through testing the complete Preview/Export system for Bentoblo
 3. Preview and download
 
 **Expected Results**:
+
 - All sections render in correct order
 - Grid layouts display as 2 columns on desktop
 - Stack layouts respect direction (vertical/horizontal)
 - Section variants apply correct default styles
 
 **Verify**:
+
 - Inspect HTML: sections have correct class names
 - CSS includes all layout classes
 - Responsive: grids collapse to 1 column on mobile
@@ -108,13 +114,14 @@ This guide walks through testing the complete Preview/Export system for Bentoblo
 
 **Expected Results**:
 
-| Screen Size | Grid Behavior | Typography |
-|-------------|---------------|------------|
-| 1920px | 3 columns | h1: 3rem |
-| 810px | 1 column | h1: 2.25rem |
-| 480px | 1 column | h1: 1.875rem |
+| Screen Size | Grid Behavior | Typography   |
+| ----------- | ------------- | ------------ |
+| 1920px      | 3 columns     | h1: 3rem     |
+| 810px       | 1 column      | h1: 2.25rem  |
+| 480px       | 1 column      | h1: 1.875rem |
 
 **Verify**:
+
 - Use Chrome DevTools responsive mode
 - Grids collapse at 810px breakpoint
 - Font sizes scale down appropriately
@@ -136,14 +143,19 @@ This guide walks through testing the complete Preview/Export system for Bentoblo
 3. Open in browser
 
 **Expected Results**:
+
 - HTML `<head>` contains Google Fonts link
 - Link includes all 3 fonts
 - Fonts load and display correctly
 - Fallback to sans-serif if offline
 
 **Verify in HTML**:
+
 ```html
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=EB+Garamond:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=EB+Garamond:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap"
+  rel="stylesheet"
+/>
 ```
 
 ---
@@ -171,6 +183,7 @@ This guide walks through testing the complete Preview/Export system for Bentoblo
    - Expected: Error "Image component has no source URL"
 
 **Expected Results**:
+
 - All validation errors are caught before export
 - User receives clear error messages
 - Export/preview does not proceed on errors
@@ -190,6 +203,7 @@ This guide walks through testing the complete Preview/Export system for Bentoblo
 4. Revisit the URL
 
 **Expected Results**:
+
 - After 30 minutes: 404 "Preview expired or not found"
 - Cache cleanup happens automatically
 - New preview gets fresh URL
@@ -209,6 +223,7 @@ This guide walks through testing the complete Preview/Export system for Bentoblo
 3. Preview and download
 
 **Expected Results**:
+
 - Scripts do not execute
 - HTML is escaped:
   ```html
@@ -237,17 +252,18 @@ Create a page with one of each component type:
 
 **Expected HTML Output**:
 
-| Component | Expected HTML Element |
-|-----------|-----------------------|
-| Heading | `<h1>` - `<h6>` |
-| Text | `<div class="text-content">` |
-| Button | `<a class="btn btn-filled">` |
-| Image | `<figure><img></figure>` |
-| Link | `<a class="link-component">` |
-| Spacer | `<div class="spacer">` |
-| Divider | `<hr>` |
+| Component | Expected HTML Element        |
+| --------- | ---------------------------- |
+| Heading   | `<h1>` - `<h6>`              |
+| Text      | `<div class="text-content">` |
+| Button    | `<a class="btn btn-filled">` |
+| Image     | `<figure><img></figure>`     |
+| Link      | `<a class="link-component">` |
+| Spacer    | `<div class="spacer">`       |
+| Divider   | `<hr>`                       |
 
 **Verify**:
+
 - Each component renders with correct HTML tag
 - CSS classes are applied
 - Inline styles work
@@ -270,6 +286,7 @@ Create a page with one of each component type:
 3. Measure download time
 
 **Expected Results**:
+
 - Preview generation: < 2 seconds
 - Download: < 1 second
 - HTML file size: < 100 KB (without base64 images)
@@ -277,6 +294,7 @@ Create a page with one of each component type:
 - No memory leaks
 
 **Monitor**:
+
 - Network tab: Preview API call time
 - Console: Any performance warnings
 - Memory: Check for leaks after multiple exports
@@ -317,18 +335,23 @@ test('should preview page successfully', async ({ page }) => {
 ## Troubleshooting
 
 ### Issue: Preview returns 404
+
 **Solution**: Preview expired (30min TTL). Generate new preview.
 
 ### Issue: Fonts not loading
+
 **Solution**: Check internet connection. Fonts load from Google CDN.
 
 ### Issue: Layout broken on mobile
+
 **Solution**: Verify responsive CSS is included. Check breakpoints at 810px and 480px.
 
 ### Issue: Download not working
+
 **Solution**: Check browser pop-up blocker. Some browsers block automatic downloads.
 
 ### Issue: HTML file won't open
+
 **Solution**: Ensure file extension is `.html`. Try different browser.
 
 ---

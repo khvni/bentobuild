@@ -48,22 +48,26 @@ An AI-powered, drag-and-drop website builder that combines visual editing with i
 ### Installation
 
 1. **Clone the repository**:
+
 ```bash
 git clone https://github.com/yourusername/bentoblocks.git
 cd bentoblocks
 ```
 
 2. **Install dependencies**:
+
 ```bash
 npm install
 ```
 
 3. **Set up environment variables**:
+
 ```bash
 cp .env.example .env.local
 ```
 
 Then edit `.env.local` and add your API keys:
+
 ```bash
 OPENAI_API_KEY=sk-...                    # Required for AI features
 UNSPLASH_ACCESS_KEY=...                  # Optional for images (falls back to placeholders)
@@ -72,12 +76,14 @@ DAYTONA_API_URL=...                      # Optional for deployment
 ```
 
 **About Unsplash (Optional)**:
+
 - Free tier: 50 requests/hour
 - Get your key at: https://unsplash.com/developers
 - If not set, the app will use placeholder images from Picsum Photos
 - Provides high-quality, contextually relevant images for your blocks
 
 4. **Run the development server**:
+
 ```bash
 npm run dev
 ```
@@ -99,9 +105,11 @@ DIRECT_URL="postgresql://postgres.futpuaxcyezkvrnfflmd:[YOUR-PASSWORD]@aws-1-us-
 ```
 
 **Replace `[YOUR-PASSWORD]`** with your actual Supabase database password from:
+
 - Supabase Dashboard → Project Settings → Database → Connection String
 
 **Connection String Details**:
+
 - `DATABASE_URL`: Uses connection pooling (pgBouncer) - optimized for serverless environments
 - `DIRECT_URL`: Direct database connection - required for running Prisma migrations
 
@@ -119,6 +127,7 @@ npx prisma generate
 ```
 
 This will:
+
 1. Create the database tables (User, Project, DeployedSite, etc.)
 2. Generate the Prisma Client for TypeScript
 3. Apply all schema changes to your Supabase database
@@ -157,15 +166,18 @@ All relations include cascade deletes for data integrity.
 #### Troubleshooting
 
 **Error: "Environment variable not found: DATABASE_URL"**
+
 - Ensure `.env.local` exists and contains your database credentials
 - Restart your dev server after adding environment variables
 
 **Error: "Can't reach database server"**
+
 - Check your Supabase password is correct
 - Verify your Supabase project is active
 - Ensure you're using the correct connection string (pooled vs direct)
 
 **Migration conflicts**
+
 - If you encounter migration conflicts, you can reset the database:
   ```bash
   npx prisma migrate reset
@@ -409,6 +421,7 @@ State persists to localStorage and syncs across page reloads.
 Manage user projects with full CRUD operations.
 
 **GET** - List all projects for a user:
+
 ```json
 GET /api/projects?userId=user_123
 
@@ -430,6 +443,7 @@ Response:
 ```
 
 **POST** - Create a new project:
+
 ```json
 POST /api/projects
 {
@@ -453,6 +467,7 @@ Response:
 Manage individual projects.
 
 **GET** - Get a single project:
+
 ```json
 GET /api/projects/proj_123
 
@@ -473,6 +488,7 @@ Response:
 ```
 
 **PATCH** - Update a project:
+
 ```json
 PATCH /api/projects/proj_123
 {
@@ -489,6 +505,7 @@ Response:
 ```
 
 **DELETE** - Delete a project:
+
 ```json
 DELETE /api/projects/proj_123?userId=user_123
 
@@ -503,6 +520,7 @@ Response:
 Generate AI content for individual blocks.
 
 **Request**:
+
 ```json
 POST /api/generate-block-content
 {
@@ -513,6 +531,7 @@ POST /api/generate-block-content
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -530,6 +549,7 @@ POST /api/generate-block-content
 Generate a complete website layout with AI.
 
 **Request**:
+
 ```json
 POST /api/bento-build
 {
@@ -538,6 +558,7 @@ POST /api/bento-build
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -595,6 +616,7 @@ This project follows modern React/Next.js best practices with a clean separation
 - **`docs/`** - Detailed documentation (accessibility, state management, design system)
 
 Each folder includes an `index.ts` barrel export for clean imports:
+
 ```typescript
 import { BLOCK_TYPES, API_ENDPOINTS } from '@/constants';
 import { useBlockActions, useHistory } from '@/hooks';
@@ -604,6 +626,7 @@ import { checkContrast } from '@/utils';
 ## 📚 Documentation
 
 For detailed development guidance, see:
+
 - **[CLAUDE.md](./CLAUDE.md)** - Development guide for Claude Code (architecture, conventions, workflows)
 - **[docs/ACCESSIBILITY.md](./docs/ACCESSIBILITY.md)** - WCAG compliance and a11y best practices
 - **[docs/STATE_MANAGER.md](./docs/STATE_MANAGER.md)** - State architecture and undo/redo implementation
@@ -612,6 +635,7 @@ For detailed development guidance, see:
 ## 🤝 Contributing
 
 Contributions are welcome! This project follows a modular architecture with clear separation of concerns. Please ensure:
+
 - All new features include E2E tests
 - TypeScript strict mode compliance
 - ESLint passes without errors

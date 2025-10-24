@@ -26,7 +26,7 @@ export default function BlockEditorPanel() {
   }
 
   // Find selected item
-  const selectedSection = page.sections.find(s => s.id === selectedBlockId);
+  const selectedSection = page.sections.find((s) => s.id === selectedBlockId);
   if (selectedSection) {
     return (
       <aside className="w-80 bg-gray-50 border-l-4 border-black overflow-y-auto">
@@ -40,7 +40,7 @@ export default function BlockEditorPanel() {
   let parentSectionId = '';
 
   for (const section of page.sections) {
-    const component = section.children.find(c => c.id === selectedBlockId);
+    const component = section.children.find((c) => c.id === selectedBlockId);
     if (component) {
       selectedComponent = component;
       parentSectionId = section.id;

@@ -201,10 +201,7 @@ export const aiGenerateSchema = z.object({
     .string()
     .min(1, 'Context prompt is required')
     .max(2000, 'Context prompt is too long'),
-  blockType: z
-    .string()
-    .min(1, 'Block type is required')
-    .max(50, 'Block type is too long'),
+  blockType: z.string().min(1, 'Block type is required').max(50, 'Block type is too long'),
   existingFields: z.record(z.any()).optional(),
 });
 
@@ -216,14 +213,8 @@ export const componentGenerateSchema = z.object({
     .string()
     .min(1, 'Component type is required')
     .max(50, 'Component type is too long'),
-  contextPrompt: z
-    .string()
-    .max(2000, 'Context prompt is too long')
-    .default(''),
-  blockPrompt: z
-    .string()
-    .min(1, 'Block prompt is required')
-    .max(2000, 'Block prompt is too long'),
+  contextPrompt: z.string().max(2000, 'Context prompt is too long').default(''),
+  blockPrompt: z.string().min(1, 'Block prompt is required').max(2000, 'Block prompt is too long'),
   existingContent: z.record(z.any()).optional(),
 });
 
@@ -241,10 +232,7 @@ export const bentoBuildSchema = z.object({
  * Schema for project creation
  */
 export const projectCreateSchema = z.object({
-  name: z
-    .string()
-    .min(1, 'Project name is required')
-    .max(100, 'Project name is too long'),
+  name: z.string().min(1, 'Project name is required').max(100, 'Project name is too long'),
   contextPrompt: z.string().max(2000, 'Context is too long').optional(),
   slug: z
     .string()
@@ -297,9 +285,7 @@ export const previewSchema = z.object({
 export function validateInput<T>(
   schema: z.ZodSchema<T>,
   data: unknown
-):
-  | { success: true; data: T }
-  | { success: false; error: string; details?: z.ZodError } {
+): { success: true; data: T } | { success: false; error: string; details?: z.ZodError } {
   try {
     const validated = schema.parse(data);
     return { success: true, data: validated };
@@ -324,9 +310,7 @@ export function validateInput<T>(
  * @param content - Block content object
  * @returns Sanitized content object
  */
-export function sanitizeBlockContent(
-  content: Record<string, unknown>
-): Record<string, unknown> {
+export function sanitizeBlockContent(content: Record<string, unknown>): Record<string, unknown> {
   const sanitized: Record<string, unknown> = {};
 
   for (const [key, value] of Object.entries(content)) {
@@ -334,12 +318,7 @@ export function sanitizeBlockContent(
       // Sanitize text content
       if (key === 'url' || key.includes('Url') || key.includes('Link')) {
         sanitized[key] = sanitizeUrl(value);
-      } else if (
-        key === 'heading' ||
-        key === 'body' ||
-        key === 'text' ||
-        key === 'description'
-      ) {
+      } else if (key === 'heading' || key === 'body' || key === 'text' || key === 'description') {
         // Allow limited HTML in content fields
         sanitized[key] = sanitizeHtml(value);
       } else {
@@ -349,9 +328,7 @@ export function sanitizeBlockContent(
     } else if (Array.isArray(value)) {
       // Recursively sanitize arrays
       sanitized[key] = value.map((item) =>
-        typeof item === 'object' && item !== null
-          ? sanitizeBlockContent(item)
-          : item
+        typeof item === 'object' && item !== null ? sanitizeBlockContent(item) : item
       );
     } else if (typeof value === 'object' && value !== null) {
       // Recursively sanitize nested objects

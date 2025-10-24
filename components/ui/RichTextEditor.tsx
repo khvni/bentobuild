@@ -28,8 +28,8 @@ const FontSize = TextStyle.extend({
       ...this.parent?.(),
       fontSize: {
         default: null,
-        parseHTML: element => element.style.fontSize,
-        renderHTML: attributes => {
+        parseHTML: (element) => element.style.fontSize,
+        renderHTML: (attributes) => {
           if (!attributes.fontSize) {
             return {};
           }
@@ -135,9 +135,7 @@ export default function RichTextEditor({
   if (!editor) {
     return (
       <div className="animate-pulse">
-        {label && (
-          <div className="h-5 bg-gray-200 rounded w-24 mb-2"></div>
-        )}
+        {label && <div className="h-5 bg-gray-200 rounded w-24 mb-2"></div>}
         <div className="h-48 bg-gray-100 rounded-bauhaus-sm border-2 border-gray-300"></div>
       </div>
     );
@@ -145,11 +143,7 @@ export default function RichTextEditor({
 
   return (
     <div className={`rich-text-editor ${disabled ? 'opacity-60' : ''}`}>
-      {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          {label}
-        </label>
-      )}
+      {label && <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>}
 
       <MantineRichTextEditor
         editor={editor}
@@ -158,8 +152,8 @@ export default function RichTextEditor({
             disabled
               ? 'border-gray-300 bg-gray-50'
               : editor.isFocused
-              ? 'border-bauhaus-blue shadow-bauhaus-sm'
-              : 'border-gray-300 hover:border-gray-400'
+                ? 'border-bauhaus-blue shadow-bauhaus-sm'
+                : 'border-gray-300 hover:border-gray-400'
           }`,
           toolbar: 'bg-gray-50 border-b-2 border-gray-300 p-2',
           content: `bg-white ${disabled ? 'cursor-not-allowed' : 'cursor-text'}`,
@@ -196,7 +190,13 @@ export default function RichTextEditor({
                   aria-expanded={showColorPicker}
                   aria-haspopup="dialog"
                 >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -231,9 +231,7 @@ export default function RichTextEditor({
           </MantineRichTextEditor.Toolbar>
         )}
 
-        <MantineRichTextEditor.Content
-          aria-label={label || 'Rich text editor'}
-        />
+        <MantineRichTextEditor.Content aria-label={label || 'Rich text editor'} />
       </MantineRichTextEditor>
 
       <style jsx global>{`
@@ -241,7 +239,9 @@ export default function RichTextEditor({
           min-height: ${minHeight};
           max-height: 400px;
           overflow-y: auto;
-          ${fontFamily ? `font-family: var(--font-${fontFamily.toLowerCase().replace(/\s+/g, '-')});` : ''}
+          ${fontFamily
+            ? `font-family: var(--font-${fontFamily.toLowerCase().replace(/\s+/g, '-')});`
+            : ''}
         }
 
         .mantine-RichTextEditor-content .ProseMirror:focus {

@@ -5,7 +5,7 @@ import {
   Lexend,
   Manrope,
   EB_Garamond,
-  Playfair_Display
+  Playfair_Display,
 } from 'next/font/google';
 
 // Sans-serif fonts
@@ -61,10 +61,10 @@ export const playfairDisplay = Playfair_Display({
 
 // Font map for direct className usage
 export const fontMap = {
-  'Inter': inter,
+  Inter: inter,
   'Noto Sans': notoSans,
-  'Lexend': lexend,
-  'Manrope': manrope,
+  Lexend: lexend,
+  Manrope: manrope,
   'Instrument Serif': instrumentSerif,
   'EB Garamond': ebGaramond,
   'Playfair Display': playfairDisplay,

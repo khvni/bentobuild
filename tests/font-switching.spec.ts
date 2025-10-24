@@ -23,7 +23,7 @@ test.describe('Font Switching', () => {
     // Take screenshot with default font (Instrument Serif)
     await page.screenshot({
       path: '/Users/khani/Desktop/projs/bentobuild/tests/screenshots/font-default-instrument-serif.png',
-      fullPage: true
+      fullPage: true,
     });
 
     // Open font selector dropdown
@@ -38,7 +38,7 @@ test.describe('Font Switching', () => {
     // Take screenshot with Lexend
     await page.screenshot({
       path: '/Users/khani/Desktop/projs/bentobuild/tests/screenshots/font-lexend.png',
-      fullPage: true
+      fullPage: true,
     });
 
     // Get the computed font-family of the heading to verify change
@@ -62,7 +62,7 @@ test.describe('Font Switching', () => {
     // Take screenshot with Playfair Display
     await page.screenshot({
       path: '/Users/khani/Desktop/projs/bentobuild/tests/screenshots/font-playfair-display.png',
-      fullPage: true
+      fullPage: true,
     });
 
     // Verify font change
@@ -74,7 +74,9 @@ test.describe('Font Switching', () => {
     expect(playfairFontFamily).toContain('Playfair Display');
 
     // Open font selector again
-    const fontSelectorPlayfair = blockEditor.locator('button').filter({ hasText: 'Playfair Display' });
+    const fontSelectorPlayfair = blockEditor
+      .locator('button')
+      .filter({ hasText: 'Playfair Display' });
     await fontSelectorPlayfair.click();
     await page.waitForTimeout(300);
 
@@ -85,7 +87,7 @@ test.describe('Font Switching', () => {
     // Take screenshot with EB Garamond
     await page.screenshot({
       path: '/Users/khani/Desktop/projs/bentobuild/tests/screenshots/font-eb-garamond.png',
-      fullPage: true
+      fullPage: true,
     });
 
     // Verify font change
@@ -119,17 +121,28 @@ test.describe('Font Switching', () => {
     // Take screenshot of font selector dropdown
     await page.screenshot({
       path: '/Users/khani/Desktop/projs/bentobuild/tests/screenshots/font-selector-dropdown.png',
-      fullPage: true
+      fullPage: true,
     });
 
     // Verify each font option displays in its own font
-    const fontOptions = ['Inter', 'Noto Sans', 'Lexend', 'Manrope', 'Instrument Serif', 'EB Garamond', 'Playfair Display'];
+    const fontOptions = [
+      'Inter',
+      'Noto Sans',
+      'Lexend',
+      'Manrope',
+      'Instrument Serif',
+      'EB Garamond',
+      'Playfair Display',
+    ];
 
     for (const fontName of fontOptions) {
       const option = page.locator(`button:has-text("${fontName}")`).first();
-      const fontFamily = await option.locator('div').first().evaluate((el) => {
-        return window.getComputedStyle(el).fontFamily;
-      });
+      const fontFamily = await option
+        .locator('div')
+        .first()
+        .evaluate((el) => {
+          return window.getComputedStyle(el).fontFamily;
+        });
 
       console.log(`${fontName} preview font-family:`, fontFamily);
       // The font should be applied (though exact matching depends on how browsers report it)

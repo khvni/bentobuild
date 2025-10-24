@@ -37,9 +37,7 @@ function SignInContent() {
             <h1 className="text-3xl font-bold text-black uppercase tracking-wide mb-2">
               Bentoblocks
             </h1>
-            <p className="text-sm text-gray-600 font-semibold">
-              AI-Powered Website Builder
-            </p>
+            <p className="text-sm text-gray-600 font-semibold">AI-Powered Website Builder</p>
           </div>
 
           {/* Error message */}
@@ -55,9 +53,7 @@ function SignInContent() {
 
           {/* Sign-in message */}
           <div className="mb-6 text-center">
-            <p className="text-gray-700 font-semibold">
-              Sign in to save and manage your projects
-            </p>
+            <p className="text-gray-700 font-semibold">Sign in to save and manage your projects</p>
           </div>
 
           {/* OAuth Buttons */}
@@ -101,8 +97,8 @@ function SignInContent() {
           {/* Footer note */}
           <div className="mt-8 pt-6 border-t-2 border-gray-200">
             <p className="text-xs text-gray-500 text-center leading-relaxed">
-              By signing in, you agree to our Terms of Service and Privacy Policy.
-              Your projects are stored securely and are only accessible to you.
+              By signing in, you agree to our Terms of Service and Privacy Policy. Your projects are
+              stored securely and are only accessible to you.
             </p>
           </div>
         </div>

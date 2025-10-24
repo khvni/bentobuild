@@ -35,10 +35,7 @@ async function handlePOST(request: NextRequest) {
     // Validate page data
     if (!page || typeof page !== 'object') {
       console.error('Invalid request: page is missing or invalid');
-      return NextResponse.json(
-        { success: false, error: 'Invalid page data' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'Invalid page data' }, { status: 400 });
     }
 
     // Validate page structure
@@ -85,7 +82,6 @@ async function handlePOST(request: NextRequest) {
       slug,
       warnings: validation.warnings,
     });
-
   } catch (error) {
     console.error('=== Export Preview Error ===');
     console.error('Error type:', error instanceof Error ? error.constructor.name : typeof error);

@@ -8,13 +8,7 @@
  */
 
 import { v4 as uuid } from 'uuid';
-import {
-  Section,
-  SectionVariant,
-  LayoutConfig,
-  StyleConfig,
-  Position,
-} from '@/types/canvas.types';
+import { Section, SectionVariant, LayoutConfig, StyleConfig, Position } from '@/types/canvas.types';
 
 /**
  * Default layout configurations for each section variant
@@ -186,9 +180,7 @@ export function createSection(
  * @param variant - The section variant
  * @returns Partial layout configuration for tablet breakpoint
  */
-function getTabletLayoutOverride(
-  variant: SectionVariant
-): Partial<LayoutConfig> {
+function getTabletLayoutOverride(variant: SectionVariant): Partial<LayoutConfig> {
   switch (variant) {
     case 'features':
       return { columns: 2 }; // Reduce from 3 to 2 columns
@@ -210,9 +202,7 @@ function getTabletLayoutOverride(
  * @param variant - The section variant
  * @returns Partial layout configuration for mobile breakpoint
  */
-function getMobileLayoutOverride(
-  variant: SectionVariant
-): Partial<LayoutConfig> {
+function getMobileLayoutOverride(variant: SectionVariant): Partial<LayoutConfig> {
   switch (variant) {
     case 'navbar':
       return { direction: 'vertical', align: 'start' }; // Stack vertically
@@ -267,14 +257,7 @@ export function createDefaultWebsite(): Section[] {
  * @returns Array of sections for a portfolio site
  */
 export function createPortfolioWebsite(): Section[] {
-  return createSections([
-    'navbar',
-    'hero',
-    'content',
-    'gallery',
-    'testimonials',
-    'footer',
-  ]);
+  return createSections(['navbar', 'hero', 'content', 'gallery', 'testimonials', 'footer']);
 }
 
 /**
@@ -293,10 +276,7 @@ export function createLandingPage(): Section[] {
  * @param overrides - Optional property overrides
  * @returns A new Section instance
  */
-export function cloneSection(
-  section: Section,
-  overrides?: Partial<Section>
-): Section {
+export function cloneSection(section: Section, overrides?: Partial<Section>): Section {
   return {
     ...section,
     id: uuid(),

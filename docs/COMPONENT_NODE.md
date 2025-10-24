@@ -58,6 +58,7 @@ components/canvas/nodes/
 Universal wrapper for all component types when rendered as ReactFlow nodes.
 
 **Features**:
+
 - Selection state management
 - Drag handles (shows on hover/selection)
 - Quick actions (duplicate, delete)
@@ -65,6 +66,7 @@ Universal wrapper for all component types when rendered as ReactFlow nodes.
 - Delegates rendering to type-specific renderers
 
 **Props**:
+
 ```typescript
 interface ComponentNodeProps extends NodeProps {
   data: Component & { parentSectionId?: string };
@@ -72,6 +74,7 @@ interface ComponentNodeProps extends NodeProps {
 ```
 
 **Usage**:
+
 ```typescript
 import ComponentNode from './nodes/ComponentNode';
 
@@ -87,12 +90,14 @@ const nodeTypes = {
 Renders components inline within their parent section (current implementation).
 
 **Features**:
+
 - Scaled-down preview (75% scale)
 - Hover actions (delete button, type badge)
 - Selection highlighting
 - Click-to-select functionality
 
 **Props**:
+
 ```typescript
 interface Props {
   data: Component;
@@ -102,6 +107,7 @@ interface Props {
 ```
 
 **Usage**:
+
 ```typescript
 import InlineComponentRenderer from './InlineComponentRenderer';
 
@@ -122,12 +128,14 @@ Each component type has its own renderer that handles type-specific presentation
 Renders heading components (h1-h6).
 
 **Features**:
+
 - Dynamic heading level (1-6)
 - Responsive font sizes (text-4xl to text-base)
 - Custom font family and color support
 - Line clamping (max 2 lines)
 
 **Implementation**:
+
 ```typescript
 const sizeMap = {
   1: 'text-4xl',
@@ -146,6 +154,7 @@ const sizeMap = {
 Renders text/paragraph components with rich text support.
 
 **Features**:
+
 - HTML content rendering (dangerouslySetInnerHTML)
 - Line clamping (max 3 lines)
 - Prose typography styles
@@ -160,11 +169,13 @@ Renders text/paragraph components with rich text support.
 Renders button components with three variants.
 
 **Variants**:
+
 - **filled**: Solid background with border
 - **outlined**: Transparent background with border
 - **text**: Minimal styling, text only
 
 **Features**:
+
 - Variant-specific styling
 - Custom background and text colors
 - Click prevention (e.preventDefault)
@@ -177,6 +188,7 @@ Renders button components with three variants.
 Renders image components with optional captions.
 
 **Features**:
+
 - Placeholder icon when no src
 - Object-fit support (cover, contain, fill)
 - Optional caption below image
@@ -192,6 +204,7 @@ Renders image components with optional captions.
 Renders link components with external link icon.
 
 **Features**:
+
 - External link icon (lucide-react)
 - Optional description text
 - Custom text color support
@@ -205,6 +218,7 @@ Renders link components with external link icon.
 Renders spacer components for vertical spacing.
 
 **Features**:
+
 - Configurable height
 - Dashed border visualization
 - Height label display
@@ -219,6 +233,7 @@ Renders spacer components for vertical spacing.
 Renders horizontal divider lines.
 
 **Features**:
+
 - Configurable thickness
 - Configurable color
 - Padding above/below
@@ -265,6 +280,7 @@ SectionNode renders components inline using InlineComponentRenderer:
 Components use Bauhaus design tokens from `tailwind.config.ts`:
 
 **Colors**:
+
 - `bauhaus-red`: #E63946
 - `bauhaus-yellow`: #F1C40F (selection ring)
 - `bauhaus-blue`: #2563EB (primary actions)
@@ -272,11 +288,13 @@ Components use Bauhaus design tokens from `tailwind.config.ts`:
 - `bauhaus-white`: #FFFFFF
 
 **Border Radius**:
+
 - `bauhaus-sm`: 2px
 - `bauhaus-md`: 4px
 - `bauhaus-lg`: 6px
 
 **Shadows**:
+
 - `shadow-bauhaus-sm`: 2px 2px 0px rgba(0, 0, 0, 0.1)
 - `shadow-bauhaus-md`: 4px 4px 0px rgba(0, 0, 0, 0.15)
 - `shadow-bauhaus-lg`: 8px 8px 0px rgba(0, 0, 0, 0.2)
@@ -284,6 +302,7 @@ Components use Bauhaus design tokens from `tailwind.config.ts`:
 ### Component Styling
 
 **Selection State**:
+
 ```typescript
 className={`
   ${selected ? 'border-bauhaus-yellow ring-2 ring-bauhaus-yellow' : 'border-gray-300'}
@@ -291,13 +310,15 @@ className={`
 ```
 
 **Hover Effects**:
+
 ```typescript
-className="opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+className = 'opacity-0 group-hover:opacity-100 transition-opacity duration-200';
 ```
 
 ### CSS Classes
 
 **From globals.css**:
+
 ```css
 /* Line clamping */
 .line-clamp-2 {
@@ -372,10 +393,7 @@ Add to `/types/canvas.types.ts`:
 
 ```typescript
 // Add to ComponentType union
-export type ComponentType =
-  | 'heading'
-  | 'text'
-  | 'newtype';  // Add new type
+export type ComponentType = 'heading' | 'text' | 'newtype'; // Add new type
 
 // Create interface
 export interface NewTypeComponent extends BaseComponent {
@@ -388,9 +406,7 @@ export interface NewTypeComponent extends BaseComponent {
 }
 
 // Add to Component union
-export type Component =
-  | HeadingComponent
-  | NewTypeComponent;  // Add here
+export type Component = HeadingComponent | NewTypeComponent; // Add here
 ```
 
 ### 2. Create Factory
@@ -407,12 +423,7 @@ export function createNewType(
     style?: Partial<StyleConfig>;
   }
 ): NewTypeComponent {
-  const base = createBaseComponent(
-    'newtype',
-    positionType,
-    options?.absolute,
-    options?.grid
-  );
+  const base = createBaseComponent('newtype', positionType, options?.absolute, options?.grid);
 
   return {
     ...base,
@@ -592,6 +603,7 @@ hero.children = [
 To migrate components from inline rendering to ReactFlow nodes:
 
 1. Update `ReactFlowCanvas.tsx` to create component nodes:
+
    ```typescript
    const componentNodes = section.children.map((component) => ({
      id: component.id,
@@ -620,6 +632,7 @@ To migrate components from inline rendering to ReactFlow nodes:
 **Issue**: Component doesn't appear in section
 
 **Solutions**:
+
 1. Check component is in `section.children` array
 2. Verify component type matches a renderer case
 3. Check console for TypeScript errors
@@ -630,6 +643,7 @@ To migrate components from inline rendering to ReactFlow nodes:
 **Issue**: Custom styles don't show
 
 **Solutions**:
+
 1. Check `style` object is properly typed
 2. Verify CSS properties are valid
 3. Check inline styles in renderer
@@ -640,6 +654,7 @@ To migrate components from inline rendering to ReactFlow nodes:
 **Issue**: Can't select component
 
 **Solutions**:
+
 1. Check `selectBlock` is called with correct ID
 2. Verify `selectedBlockId` state is updating
 3. Check event propagation (stopPropagation)
@@ -650,6 +665,7 @@ To migrate components from inline rendering to ReactFlow nodes:
 **Issue**: Components not arranged correctly
 
 **Solutions**:
+
 1. Check parent section's layout config
 2. Verify CSS Grid/Flexbox properties
 3. Check gap and padding values
@@ -658,6 +674,7 @@ To migrate components from inline rendering to ReactFlow nodes:
 ## Support
 
 For questions or issues:
+
 - Check [CLAUDE.md](../CLAUDE.md) for project overview
 - Review [Canvas Types](../types/canvas.types.ts) for type reference
 - Test with `/canvas-test` page

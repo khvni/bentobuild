@@ -108,13 +108,17 @@ export default function ImageEditor({ component, sectionId }: Props) {
 
       {/* Border Radius */}
       <div>
-        <label className="block text-sm font-bold text-gray-900 mb-2 uppercase">Border Radius</label>
+        <label className="block text-sm font-bold text-gray-900 mb-2 uppercase">
+          Border Radius
+        </label>
         <input
           type="text"
           value={component.style.borderRadius || ''}
-          onChange={(e) => updateComponent(sectionId, component.id, {
-            style: { ...component.style, borderRadius: e.target.value }
-          })}
+          onChange={(e) =>
+            updateComponent(sectionId, component.id, {
+              style: { ...component.style, borderRadius: e.target.value },
+            })
+          }
           placeholder="e.g., 8px, 50%"
           className="w-full px-3 py-2 border-2 border-black rounded-bauhaus-md text-sm"
         />

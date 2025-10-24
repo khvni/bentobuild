@@ -41,16 +41,9 @@ export const STRUCTURAL_BLOCKS = [BLOCK_TYPES.NAVBAR, BLOCK_TYPES.FOOTER] as con
 /**
  * Block types that contain primarily content
  */
-export const CONTENT_BLOCKS = [
-  BLOCK_TYPES.HERO,
-  BLOCK_TYPES.TEXT,
-  BLOCK_TYPES.IMAGE,
-] as const;
+export const CONTENT_BLOCKS = [BLOCK_TYPES.HERO, BLOCK_TYPES.TEXT, BLOCK_TYPES.IMAGE] as const;
 
 /**
  * Block types that are interactive elements
  */
-export const INTERACTIVE_BLOCKS = [
-  BLOCK_TYPES.BUTTON,
-  BLOCK_TYPES.LINK,
-] as const;
+export const INTERACTIVE_BLOCKS = [BLOCK_TYPES.BUTTON, BLOCK_TYPES.LINK] as const;

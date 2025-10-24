@@ -220,14 +220,16 @@ Content-Type: application/json
 **Type**: `heading`
 
 **Generated Fields**:
+
 ```typescript
 {
-  text: string;      // Max 60 characters
-  level: 1 | 2 | 3 | 4 | 5 | 6;  // Heading level
+  text: string; // Max 60 characters
+  level: 1 | 2 | 3 | 4 | 5 | 6; // Heading level
 }
 ```
 
 **AI Prompt Template**:
+
 ```
 Generate a heading component.
 
@@ -244,6 +246,7 @@ Return JSON with this exact structure:
 ```
 
 **Example Prompts**:
+
 - "Main hero headline about our AI-powered web builder"
 - "Section title for testimonials from happy customers"
 - "Subheading emphasizing speed and simplicity"
@@ -255,13 +258,15 @@ Return JSON with this exact structure:
 **Type**: `text`
 
 **Generated Fields**:
+
 ```typescript
 {
-  body: string;      // Max 300 characters, allows HTML
+  body: string; // Max 300 characters, allows HTML
 }
 ```
 
 **AI Prompt Template**:
+
 ```
 Generate a text paragraph component.
 
@@ -278,6 +283,7 @@ Return JSON with this exact structure:
 ```
 
 **Example Prompts**:
+
 - "Paragraph explaining how our drag-and-drop builder works"
 - "Benefits of using AI for content generation"
 - "Short bio about my design philosophy"
@@ -289,15 +295,17 @@ Return JSON with this exact structure:
 **Type**: `button`
 
 **Generated Fields**:
+
 ```typescript
 {
-  text: string;      // Max 20 characters
-  url: string;       // Valid URL or placeholder
-  variant: "filled" | "outlined" | "text";
+  text: string; // Max 20 characters
+  url: string; // Valid URL or placeholder
+  variant: 'filled' | 'outlined' | 'text';
 }
 ```
 
 **AI Prompt Template**:
+
 ```
 Generate a button component.
 
@@ -319,6 +327,7 @@ Return JSON with this exact structure:
 ```
 
 **Example Prompts**:
+
 - "Primary CTA button for free trial signup"
 - "Secondary button to learn more about pricing"
 - "Subtle text button to view case studies"
@@ -330,6 +339,7 @@ Return JSON with this exact structure:
 **Type**: `image`
 
 **Generated Fields**:
+
 ```typescript
 {
   alt: string;       // Max 100 characters (required)
@@ -338,6 +348,7 @@ Return JSON with this exact structure:
 ```
 
 **AI Prompt Template**:
+
 ```
 Generate image metadata for a component.
 
@@ -354,6 +365,7 @@ Return JSON with this exact structure:
 ```
 
 **Example Prompts**:
+
 - "Hero image showing our web builder interface in action"
 - "Photo of me working on a design project"
 - "Screenshot of AI content generation feature"
@@ -365,6 +377,7 @@ Return JSON with this exact structure:
 **Type**: `link`
 
 **Generated Fields**:
+
 ```typescript
 {
   text: string;         // Max 50 characters
@@ -374,6 +387,7 @@ Return JSON with this exact structure:
 ```
 
 **AI Prompt Template**:
+
 ```
 Generate a hyperlink component.
 
@@ -391,6 +405,7 @@ Return JSON with this exact structure:
 ```
 
 **Example Prompts**:
+
 - "Link to my portfolio on Dribbble"
 - "Read our full case study on e-commerce redesign"
 - "Contact form for project inquiries"
@@ -402,13 +417,15 @@ Return JSON with this exact structure:
 **Type**: `spacer`
 
 **Generated Fields**:
+
 ```typescript
 {
-  height: number;    // 20-200 pixels
+  height: number; // 20-200 pixels
 }
 ```
 
 **AI Prompt Template**:
+
 ```
 Generate vertical spacing configuration.
 
@@ -424,6 +441,7 @@ Return JSON with this exact structure:
 ```
 
 **Example Prompts**:
+
 - "Small spacing between paragraphs"
 - "Large section separator"
 - "Medium gap for visual breathing room"
@@ -435,6 +453,7 @@ Return JSON with this exact structure:
 **Type**: `divider`
 
 **Generated Fields**:
+
 ```typescript
 {
   color?: string;      // Hex color (default: #e5e7eb)
@@ -443,6 +462,7 @@ Return JSON with this exact structure:
 ```
 
 **AI Prompt Template**:
+
 ```
 Generate a horizontal divider configuration.
 
@@ -459,6 +479,7 @@ Return JSON with this exact structure:
 ```
 
 **Example Prompts**:
+
 - "Subtle gray divider between sections"
 - "Bold black separator for emphasis"
 - "Light divider for minimal design"
@@ -512,8 +533,8 @@ Dangerous patterns are removed from prompts:
 ```typescript
 // Applied via secureApi wrapper
 export const POST = secureApi(handlePOST, {
-  rateLimit: 'ai',        // 10 requests/minute
-  requireAuth: false,     // Open for demo purposes
+  rateLimit: 'ai', // 10 requests/minute
+  requireAuth: false, // Open for demo purposes
 });
 ```
 
@@ -524,9 +545,7 @@ Production errors are sanitized to prevent information leakage:
 ```typescript
 // Development: Full error messages
 // Production: Generic "Internal server error"
-const errorMessage = isDevelopment
-  ? error.message
-  : 'Internal server error';
+const errorMessage = isDevelopment ? error.message : 'Internal server error';
 ```
 
 ---
@@ -535,20 +554,20 @@ const errorMessage = isDevelopment
 
 ### Client-Side Errors
 
-| Error | Cause | UI Feedback |
-|-------|-------|-------------|
-| Empty Prompt | User clicks Generate without entering text | "Please enter a prompt" in red box |
-| Network Error | API unreachable or timeout | "Network error. Please try again." |
-| Rate Limit | Too many requests | "Failed to generate content. Please try again." |
-| Generation Failed | AI model error | "Failed to generate content. Please try again." |
+| Error             | Cause                                      | UI Feedback                                     |
+| ----------------- | ------------------------------------------ | ----------------------------------------------- |
+| Empty Prompt      | User clicks Generate without entering text | "Please enter a prompt" in red box              |
+| Network Error     | API unreachable or timeout                 | "Network error. Please try again."              |
+| Rate Limit        | Too many requests                          | "Failed to generate content. Please try again." |
+| Generation Failed | AI model error                             | "Failed to generate content. Please try again." |
 
 ### Server-Side Errors
 
-| Error Code | Cause | Response |
-|------------|-------|----------|
-| 400 | Invalid request body | `{ "success": false, "error": "Validation message" }` |
-| 429 | Rate limit exceeded | `{ "success": false, "error": "Rate limit exceeded" }` |
-| 500 | Internal server error | `{ "success": false, "error": "Failed to generate content" }` |
+| Error Code | Cause                 | Response                                                      |
+| ---------- | --------------------- | ------------------------------------------------------------- |
+| 400        | Invalid request body  | `{ "success": false, "error": "Validation message" }`         |
+| 429        | Rate limit exceeded   | `{ "success": false, "error": "Rate limit exceeded" }`        |
+| 500        | Internal server error | `{ "success": false, "error": "Failed to generate content" }` |
 
 ### Validation Errors
 
@@ -563,7 +582,7 @@ if (!text) {
 // Example: Button variant validation
 const variant = ['filled', 'outlined', 'text'].includes(content.variant)
   ? content.variant
-  : 'filled';  // Fallback to safe default
+  : 'filled'; // Fallback to safe default
 ```
 
 ---
@@ -607,17 +626,21 @@ Always specify maximum character limits in prompts:
 Use JSON response format to ensure structured output:
 
 ```typescript
-response_format: { type: 'json_object' }
+response_format: {
+  type: 'json_object';
+}
 ```
 
 ### Example Effective Prompts
 
 **Good**:
+
 > "Main hero headline emphasizing our AI-powered web builder's speed and simplicity"
 
 **Why**: Specific, includes key benefits, clear intent
 
 **Bad**:
+
 > "Make a heading"
 
 **Why**: Too vague, no context or guidance
@@ -743,21 +766,25 @@ response_format: { type: 'json_object' }
 ### Common Issues
 
 #### Modal doesn't open
+
 - **Check**: Verify `useGenerateModal` hook is initialized
 - **Check**: Ensure `onGenerate` prop is passed to InlineComponentRenderer
 - **Solution**: Add modal integration to SectionNode
 
 #### Generation fails silently
+
 - **Check**: Browser console for errors
 - **Check**: Network tab for API response
 - **Solution**: Verify OPENAI_API_KEY is set in `.env.local`
 
 #### Content not updating
+
 - **Check**: Zustand DevTools for state changes
 - **Check**: updateComponent is being called
 - **Solution**: Ensure deep merge of content fields in store
 
 #### Rate limit errors
+
 - **Check**: Are you making too many requests?
 - **Solution**: Wait 60 seconds before retrying
 - **Solution**: Implement exponential backoff in production

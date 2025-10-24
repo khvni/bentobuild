@@ -63,6 +63,7 @@ Follow conventional commits format:
 - `chore:` - Maintenance tasks
 
 Example:
+
 ```
 feat: add new gallery block with image grid layout
 ```
@@ -100,6 +101,7 @@ bentoblocks/
 ## Questions?
 
 If you have questions or need help:
+
 - Open an issue for bugs or feature requests
 - Check existing documentation in `/docs`
 - Review the [CLAUDE.md](./CLAUDE.md) for architecture details

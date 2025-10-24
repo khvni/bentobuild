@@ -46,8 +46,8 @@ export function reactFlowToPage(nodes: Node[], currentPage: Page): Page {
   const sections: Section[] = [];
 
   // Group nodes by type
-  const sectionNodes = nodes.filter(n => n.type === 'section');
-  const componentNodes = nodes.filter(n => n.type === 'component');
+  const sectionNodes = nodes.filter((n) => n.type === 'section');
+  const componentNodes = nodes.filter((n) => n.type === 'component');
 
   sectionNodes.forEach((node) => {
     const section = node.data as unknown as Section;
@@ -57,8 +57,8 @@ export function reactFlowToPage(nodes: Node[], currentPage: Page): Page {
 
     // Find children components
     const children = componentNodes
-      .filter(cn => cn.parentId === node.id)
-      .map(cn => {
+      .filter((cn) => cn.parentId === node.id)
+      .map((cn) => {
         const component = cn.data as unknown as Component;
         // Update position
         if (component.position.type === 'absolute') {
@@ -96,15 +96,20 @@ export function calculateSectionPositions(sections: Section[]): Section[] {
 /**
  * Get viewport bounds for fitting all sections
  */
-export function getViewportBounds(sections: Section[]): { x: number; y: number; width: number; height: number } {
+export function getViewportBounds(sections: Section[]): {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+} {
   if (sections.length === 0) {
     return { x: 0, y: 0, width: 1000, height: 1000 };
   }
 
-  const minX = Math.min(...sections.map(s => s.position.x));
-  const minY = Math.min(...sections.map(s => s.position.y));
-  const maxX = Math.max(...sections.map(s => s.position.x + 800)); // Assume 800px width
-  const maxY = Math.max(...sections.map(s => s.position.y + 300)); // Assume 300px height
+  const minX = Math.min(...sections.map((s) => s.position.x));
+  const minY = Math.min(...sections.map((s) => s.position.y));
+  const maxX = Math.max(...sections.map((s) => s.position.x + 800)); // Assume 800px width
+  const maxY = Math.max(...sections.map((s) => s.position.y + 300)); // Assume 300px height
 
   return {
     x: minX,

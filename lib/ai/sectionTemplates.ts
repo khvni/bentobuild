@@ -180,7 +180,7 @@ export function getDefaultTemplate(variant: SectionVariant): SectionTemplate {
  * @returns Array of templates for that variant
  */
 export function getTemplatesForVariant(variant: SectionVariant): SectionTemplate[] {
-  return Object.values(sectionTemplates).filter(t => t.variant === variant);
+  return Object.values(sectionTemplates).filter((t) => t.variant === variant);
 }
 
 /**

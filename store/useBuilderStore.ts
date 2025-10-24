@@ -42,13 +42,12 @@ export const useBuilderStore = create<BuilderState>(
             blocks: [...state.blocks, block],
           })),
 
-        addBlocks: (blocks: Block[]) =>
-          set({ blocks }),
+        addBlocks: (blocks: Block[]) => set({ blocks }),
 
         updateBlock: (id: string, updates: Partial<Block>) =>
           set((state) => ({
             blocks: state.blocks.map((block) =>
-              block.id === id ? { ...block, ...updates } as Block : block
+              block.id === id ? ({ ...block, ...updates } as Block) : block
             ),
           })),
 
@@ -58,18 +57,14 @@ export const useBuilderStore = create<BuilderState>(
             selectedBlockId: state.selectedBlockId === id ? null : state.selectedBlockId,
           })),
 
-        setContextPrompt: (prompt: string) =>
-          set({ contextPrompt: prompt }),
+        setContextPrompt: (prompt: string) => set({ contextPrompt: prompt }),
 
-        selectBlock: (id: string | null) =>
-          set({ selectedBlockId: id }),
+        selectBlock: (id: string | null) => set({ selectedBlockId: id }),
 
-        reorderBlocks: (blocks: Block[]) =>
-          set({ blocks }),
+        reorderBlocks: (blocks: Block[]) => set({ blocks }),
 
         // Page-based architecture actions
-        setPage: (page: Page) =>
-          set({ page }),
+        setPage: (page: Page) => set({ page }),
 
         addSection: (section: Section) =>
           set((state) => {
@@ -115,9 +110,7 @@ export const useBuilderStore = create<BuilderState>(
             return {
               page: {
                 ...state.page,
-                sections: state.page.sections.map((s) =>
-                  s.id === id ? { ...s, ...updates } : s
-                ),
+                sections: state.page.sections.map((s) => (s.id === id ? { ...s, ...updates } : s)),
               },
             };
           }),
@@ -140,9 +133,7 @@ export const useBuilderStore = create<BuilderState>(
               page: {
                 ...state.page,
                 sections: state.page.sections.map((s) =>
-                  s.id === sectionId
-                    ? { ...s, children: [...s.children, component] }
-                    : s
+                  s.id === sectionId ? { ...s, children: [...s.children, component] } : s
                 ),
               },
             };
@@ -160,14 +151,14 @@ export const useBuilderStore = create<BuilderState>(
                         ...s,
                         children: s.children.map((c) =>
                           c.id === componentId
-                            ? {
+                            ? ({
                                 ...c,
                                 ...updates,
                                 // Deeply merge content if provided in updates
                                 content: updates.content
                                   ? { ...c.content, ...updates.content }
                                   : c.content,
-                              } as Component
+                              } as Component)
                             : c
                         ),
                       }

@@ -79,10 +79,7 @@ export default function LinkEditor({ component, sectionId }: Props) {
       {/* Text Color */}
       <div>
         <label className="block text-sm font-bold text-gray-900 mb-2 uppercase">Color</label>
-        <ColorPicker
-          value={component.style.textColor || '#0000FF'}
-          onChange={handleColorChange}
-        />
+        <ColorPicker value={component.style.textColor || '#0000FF'} onChange={handleColorChange} />
       </div>
 
       {/* Font Size */}
@@ -91,9 +88,11 @@ export default function LinkEditor({ component, sectionId }: Props) {
         <input
           type="text"
           value={component.style.fontSize || ''}
-          onChange={(e) => updateComponent(sectionId, component.id, {
-            style: { ...component.style, fontSize: e.target.value }
-          })}
+          onChange={(e) =>
+            updateComponent(sectionId, component.id, {
+              style: { ...component.style, fontSize: e.target.value },
+            })
+          }
           placeholder="e.g., 16px, 1rem"
           className="w-full px-3 py-2 border-2 border-black rounded-bauhaus-md text-sm"
         />
@@ -104,9 +103,11 @@ export default function LinkEditor({ component, sectionId }: Props) {
         <label className="block text-sm font-bold text-gray-900 mb-2 uppercase">Weight</label>
         <select
           value={component.style.fontWeight || 400}
-          onChange={(e) => updateComponent(sectionId, component.id, {
-            style: { ...component.style, fontWeight: parseInt(e.target.value) }
-          })}
+          onChange={(e) =>
+            updateComponent(sectionId, component.id, {
+              style: { ...component.style, fontWeight: parseInt(e.target.value) },
+            })
+          }
           className="w-full px-3 py-2 border-2 border-black rounded-bauhaus-md text-sm font-bold bg-white"
         >
           <option value={400}>Regular (400)</option>

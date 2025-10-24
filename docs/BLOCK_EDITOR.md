@@ -33,21 +33,24 @@ components/editor/
 The main panel component that determines what to display based on the current selection state.
 
 **Behavior**:
+
 - If nothing is selected → Shows "No Selection" placeholder
 - If a section is selected → Renders `SectionEditor`
 - If a component is selected → Renders `ComponentEditor`
 
 **Selection Logic**:
+
 1. Checks if `selectedBlockId` exists in `page.sections`
 2. If not found, iterates through all sections' children to find matching component
 3. Passes the appropriate editor with necessary props
 
 **Usage**:
+
 ```tsx
 import BlockEditorPanel from '@/components/editor/BlockEditorPanel';
 
 // In main layout
-<BlockEditorPanel />
+<BlockEditorPanel />;
 ```
 
 ### SectionEditor
@@ -57,6 +60,7 @@ import BlockEditorPanel from '@/components/editor/BlockEditorPanel';
 Provides editing controls for section-level properties.
 
 **Editable Properties**:
+
 - **Layout Type**: Stack, Grid, or Absolute positioning
 - **Stack Direction**: Vertical or Horizontal (for stack layout)
 - **Grid Columns**: 1-4 columns (for grid layout)
@@ -65,6 +69,7 @@ Provides editing controls for section-level properties.
 - **Component Count**: Read-only display of child components
 
 **Actions**:
+
 - Generate Content (AI integration placeholder)
 - Delete Section (with confirmation)
 
@@ -77,6 +82,7 @@ Provides editing controls for section-level properties.
 Wrapper component that routes to the appropriate type-specific editor.
 
 **Supported Component Types**:
+
 - `heading` → HeadingEditor
 - `text` → TextEditor
 - `button` → ButtonEditor
@@ -86,6 +92,7 @@ Wrapper component that routes to the appropriate type-specific editor.
 - `divider` → Simple message (no editable properties)
 
 **Common Actions** (all component types):
+
 - Generate with AI (placeholder)
 - Delete Component (with confirmation)
 
@@ -96,6 +103,7 @@ Wrapper component that routes to the appropriate type-specific editor.
 **Location**: `/components/editor/editors/types/HeadingEditor.tsx`
 
 **Editable Properties**:
+
 - Text content (textarea)
 - Heading level (H1-H6)
 - Font family (dropdown)
@@ -104,6 +112,7 @@ Wrapper component that routes to the appropriate type-specific editor.
 - Font weight (100-900)
 
 **Features**:
+
 - 6-button grid for quick heading level selection
 - Live preview of font family in dropdown
 - Granular weight control (9 options)
@@ -113,6 +122,7 @@ Wrapper component that routes to the appropriate type-specific editor.
 **Location**: `/components/editor/editors/types/TextEditor.tsx`
 
 **Editable Properties**:
+
 - Body content (textarea, supports HTML)
 - Font family
 - Text color
@@ -120,6 +130,7 @@ Wrapper component that routes to the appropriate type-specific editor.
 - Font weight
 
 **Features**:
+
 - Large textarea for longer content
 - Rich text HTML support (note displayed)
 - Same typography controls as HeadingEditor
@@ -129,6 +140,7 @@ Wrapper component that routes to the appropriate type-specific editor.
 **Location**: `/components/editor/editors/types/ButtonEditor.tsx`
 
 **Editable Properties**:
+
 - Button text
 - Target URL
 - Variant (filled, outlined, text)
@@ -137,6 +149,7 @@ Wrapper component that routes to the appropriate type-specific editor.
 - Padding
 
 **Features**:
+
 - 3-button grid for variant selection
 - Conditional background color picker (only for filled buttons)
 - CSS-based styling inputs
@@ -146,6 +159,7 @@ Wrapper component that routes to the appropriate type-specific editor.
 **Location**: `/components/editor/editors/types/ImageEditor.tsx`
 
 **Editable Properties**:
+
 - Image URL (source)
 - Alt text (accessibility)
 - Caption (optional)
@@ -153,6 +167,7 @@ Wrapper component that routes to the appropriate type-specific editor.
 - Border radius
 
 **Features**:
+
 - Live image preview (if URL is valid)
 - Accessibility reminder for alt text
 - 3-button grid for object-fit selection
@@ -162,6 +177,7 @@ Wrapper component that routes to the appropriate type-specific editor.
 **Location**: `/components/editor/editors/types/LinkEditor.tsx`
 
 **Editable Properties**:
+
 - Link text
 - Target URL
 - Description/tooltip (optional)
@@ -170,6 +186,7 @@ Wrapper component that routes to the appropriate type-specific editor.
 - Font weight
 
 **Features**:
+
 - Description shown on hover (noted in UI)
 - Typical link styling controls
 - Simplified weight options (400-700)
@@ -181,25 +198,25 @@ Wrapper component that routes to the appropriate type-specific editor.
 **Location**: `/components/editor/controls/ColorPicker.tsx`
 
 **Props**:
+
 ```tsx
 interface ColorPickerProps {
-  value: string;        // Hex color value
+  value: string; // Hex color value
   onChange: (color: string) => void;
 }
 ```
 
 **Features**:
+
 - Native HTML5 color input for visual selection
 - Text input for manual hex entry (uppercase, monospace)
 - Two-way sync between inputs
 - Validates hex format before updating
 
 **Usage**:
+
 ```tsx
-<ColorPicker
-  value="#FF0000"
-  onChange={(color) => console.log(color)}
-/>
+<ColorPicker value="#FF0000" onChange={(color) => console.log(color)} />
 ```
 
 ### LayoutPicker
@@ -207,29 +224,30 @@ interface ColorPickerProps {
 **Location**: `/components/editor/controls/LayoutPicker.tsx`
 
 **Props**:
+
 ```tsx
 interface LayoutPickerProps {
-  value: LayoutType;    // 'stack' | 'grid' | 'absolute'
+  value: LayoutType; // 'stack' | 'grid' | 'absolute'
   onChange: (type: LayoutType) => void;
 }
 ```
 
 **Features**:
+
 - 3-column grid of buttons
 - Icon + label for each layout type
 - Active state styling (bauhaus-blue background)
 
 **Icons**:
+
 - Stack: `Layers`
 - Grid: `Grid3x3`
 - Absolute: `Move`
 
 **Usage**:
+
 ```tsx
-<LayoutPicker
-  value="grid"
-  onChange={(type) => console.log(type)}
-/>
+<LayoutPicker value="grid" onChange={(type) => console.log(type)} />
 ```
 
 ### FontPicker
@@ -237,6 +255,7 @@ interface LayoutPickerProps {
 **Location**: `/components/editor/controls/FontPicker.tsx`
 
 **Props**:
+
 ```tsx
 interface FontPickerProps {
   value?: FontFamily;
@@ -245,11 +264,13 @@ interface FontPickerProps {
 ```
 
 **Features**:
+
 - Dropdown selector with all 12 supported fonts
 - Options rendered in their respective font families (live preview)
 - Defaults to 'Inter' if no value provided
 
 **Available Fonts**:
+
 - Inter
 - Instrument Serif
 - Noto Sans
@@ -264,11 +285,9 @@ interface FontPickerProps {
 - Poppins
 
 **Usage**:
+
 ```tsx
-<FontPicker
-  value="Inter"
-  onChange={(font) => console.log(font)}
-/>
+<FontPicker value="Inter" onChange={(font) => console.log(font)} />
 ```
 
 ## Design System
@@ -276,21 +295,25 @@ interface FontPickerProps {
 All components follow the Bauhaus design system:
 
 ### Colors
+
 - Primary Blue: `bg-bauhaus-blue` (active states)
 - Yellow: `bg-bauhaus-yellow` (AI generation button)
 - Red: `bg-red-500` (destructive actions)
 - Gray-50: `bg-gray-50` (panel background)
 
 ### Border Radii
+
 - Small: `rounded-bauhaus-sm`
 - Medium: `rounded-bauhaus-md`
 - Large: `rounded-bauhaus-lg`
 
 ### Borders
+
 - All inputs and buttons: `border-2 border-black`
 - Inactive controls: `border-gray-300`
 
 ### Typography
+
 - Headings: `bauhaus-h4` (uppercase)
 - Labels: `text-sm font-bold uppercase`
 - Inputs: `text-sm`
@@ -302,30 +325,27 @@ All editor components use Zustand store actions for updates:
 ### Store Actions Used
 
 ```tsx
-const {
-  updateSection,
-  deleteSection,
-  updateComponent,
-  deleteComponent,
-  selectBlock
-} = useBuilderStore();
+const { updateSection, deleteSection, updateComponent, deleteComponent, selectBlock } =
+  useBuilderStore();
 ```
 
 ### Update Pattern
 
 **Sections**:
+
 ```tsx
 updateSection(sectionId, {
   layout: { ...section.layout, type: 'grid' },
-  style: { ...section.style, backgroundColor: '#fff' }
+  style: { ...section.style, backgroundColor: '#fff' },
 });
 ```
 
 **Components**:
+
 ```tsx
 updateComponent(sectionId, componentId, {
   content: { ...component.content, text: 'New text' },
-  style: { ...component.style, textColor: '#000' }
+  style: { ...component.style, textColor: '#000' },
 });
 ```
 
@@ -334,6 +354,7 @@ updateComponent(sectionId, componentId, {
 ## Real-Time Updates
 
 All changes are applied immediately:
+
 - No "Save" button required
 - Changes propagate through Zustand store
 - Canvas updates automatically via reactive subscriptions
@@ -349,6 +370,7 @@ All changes are applied immediately:
 ## Testing Checklist
 
 ### Section Editor
+
 - [ ] Select section → editor appears
 - [ ] Change layout type → canvas updates
 - [ ] Toggle stack direction → layout changes
@@ -357,6 +379,7 @@ All changes are applied immediately:
 - [ ] Delete section → section and children removed
 
 ### Component Editors
+
 - [ ] Select heading → HeadingEditor appears
 - [ ] Change text → updates in real-time
 - [ ] Change heading level → h1-h6 applied
@@ -368,12 +391,14 @@ All changes are applied immediately:
 - [ ] All color pickers update in real-time
 
 ### Controls
+
 - [ ] ColorPicker: Click color input → picker opens
 - [ ] ColorPicker: Type hex → updates visual picker
 - [ ] LayoutPicker: Click layout → icon + label highlight
 - [ ] FontPicker: Select font → preview in dropdown
 
 ### General
+
 - [ ] No selection → "No Selection" placeholder shown
 - [ ] Close button (X) → deselects and closes panel
 - [ ] Delete confirmations → prompt before destructive actions
@@ -382,6 +407,7 @@ All changes are applied immediately:
 ## Future Enhancements
 
 ### Planned Features
+
 1. **AI Generation Integration**: Connect "Generate with AI" buttons to backend
 2. **Rich Text Editor**: Replace textarea with WYSIWYG for text components
 3. **Image Upload**: Direct file upload instead of URL-only
@@ -392,6 +418,7 @@ All changes are applied immediately:
 8. **Copy/Paste Styles**: Transfer styles between components
 
 ### Code Improvements
+
 1. Extract common form patterns into shared components
 2. Add TypeScript strict mode compliance checks
 3. Implement debouncing for rapid text input updates
@@ -401,21 +428,25 @@ All changes are applied immediately:
 ## Troubleshooting
 
 ### Panel doesn't show selected item
+
 - **Check**: `selectedBlockId` in Zustand store
 - **Verify**: ID exists in `page.sections` or as a child component
 - **Solution**: Use `selectBlock(id)` action to set selection
 
 ### Updates not applying
+
 - **Check**: Zustand store is receiving updates (React DevTools)
 - **Verify**: Correct `sectionId` and `componentId` passed
 - **Solution**: Ensure spreading existing properties in update calls
 
 ### Color picker not syncing
+
 - **Check**: Hex value format (must be 6-digit)
 - **Verify**: Value prop is controlled
 - **Solution**: Ensure parent component manages state correctly
 
 ### Font picker not showing fonts
+
 - **Check**: Google Fonts loaded in layout
 - **Verify**: Font names match exactly (case-sensitive)
 - **Solution**: Check `/app/layout.tsx` font imports
@@ -448,7 +479,9 @@ export default function Page() {
 ```tsx
 const [isPanelOpen, setIsPanelOpen] = useState(true);
 
-{isPanelOpen && <BlockEditorPanel />}
+{
+  isPanelOpen && <BlockEditorPanel />;
+}
 ```
 
 ## API Reference
@@ -483,7 +516,7 @@ interface Props {
 
 ```tsx
 interface Props {
-  component: SpecificComponentType;  // e.g., HeadingComponent
+  component: SpecificComponentType; // e.g., HeadingComponent
   sectionId: string;
 }
 ```
@@ -500,6 +533,7 @@ interface Props {
 The Block Editor Panel provides a professional, real-time editing experience for Bentoblocks. It follows the Bauhaus design system, integrates seamlessly with Zustand state management, and offers granular control over every aspect of sections and components.
 
 **Key Strengths**:
+
 - Immediate visual feedback
 - Type-safe TypeScript implementation
 - Consistent design system
@@ -507,6 +541,7 @@ The Block Editor Panel provides a professional, real-time editing experience for
 - Comprehensive property coverage
 
 **Next Steps**:
+
 1. Test all editors with real canvas content
 2. Integrate AI generation endpoints
 3. Add keyboard navigation support

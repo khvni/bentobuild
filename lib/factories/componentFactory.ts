@@ -112,12 +112,7 @@ export function createHeading(
     style?: Partial<StyleConfig>;
   }
 ): HeadingComponent {
-  const base = createBaseComponent(
-    'heading',
-    positionType,
-    options?.absolute,
-    options?.grid
-  );
+  const base = createBaseComponent('heading', positionType, options?.absolute, options?.grid);
 
   // Set default font size based on level
   const fontSizes: Record<number, string> = {
@@ -171,12 +166,7 @@ export function createText(
     style?: Partial<StyleConfig>;
   }
 ): TextComponent {
-  const base = createBaseComponent(
-    'text',
-    positionType,
-    options?.absolute,
-    options?.grid
-  );
+  const base = createBaseComponent('text', positionType, options?.absolute, options?.grid);
 
   return {
     ...base,
@@ -222,12 +212,7 @@ export function createButton(
     style?: Partial<StyleConfig>;
   }
 ): ButtonComponent {
-  const base = createBaseComponent(
-    'button',
-    positionType,
-    options?.absolute,
-    options?.grid
-  );
+  const base = createBaseComponent('button', positionType, options?.absolute, options?.grid);
 
   // Adjust styles based on variant
   let variantStyles: Partial<StyleConfig> = {};
@@ -301,12 +286,7 @@ export function createImage(
     style?: Partial<StyleConfig>;
   }
 ): ImageComponent {
-  const base = createBaseComponent(
-    'image',
-    positionType,
-    options?.absolute,
-    options?.grid
-  );
+  const base = createBaseComponent('image', positionType, options?.absolute, options?.grid);
 
   return {
     ...base,
@@ -359,12 +339,7 @@ export function createLink(
     style?: Partial<StyleConfig>;
   }
 ): LinkComponent {
-  const base = createBaseComponent(
-    'link',
-    positionType,
-    options?.absolute,
-    options?.grid
-  );
+  const base = createBaseComponent('link', positionType, options?.absolute, options?.grid);
 
   return {
     ...base,
@@ -408,12 +383,7 @@ export function createSpacer(
     style?: Partial<StyleConfig>;
   }
 ): SpacerComponent {
-  const base = createBaseComponent(
-    'spacer',
-    positionType,
-    options?.absolute,
-    options?.grid
-  );
+  const base = createBaseComponent('spacer', positionType, options?.absolute, options?.grid);
 
   return {
     ...base,
@@ -458,12 +428,7 @@ export function createDivider(
     style?: Partial<StyleConfig>;
   }
 ): DividerComponent {
-  const base = createBaseComponent(
-    'divider',
-    positionType,
-    options?.absolute,
-    options?.grid
-  );
+  const base = createBaseComponent('divider', positionType, options?.absolute, options?.grid);
 
   return {
     ...base,
@@ -490,10 +455,7 @@ export function createDivider(
  * @param overrides - Optional property overrides
  * @returns A new Component instance
  */
-export function cloneComponent<T extends Component>(
-  component: T,
-  overrides?: Partial<T>
-): T {
+export function cloneComponent<T extends Component>(component: T, overrides?: Partial<T>): T {
   return {
     ...component,
     id: uuid(),
@@ -514,10 +476,7 @@ export function cloneComponent<T extends Component>(
  * const spanPos = createGridPosition('span 2', 'span 1');
  * ```
  */
-export function createGridPosition(
-  column: string,
-  row: string
-): GridPosition {
+export function createGridPosition(column: string, row: string): GridPosition {
   return { column, row };
 }
 

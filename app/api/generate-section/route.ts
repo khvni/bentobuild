@@ -38,7 +38,16 @@ import { z } from 'zod';
  * Validation schema for section generation requests
  */
 const sectionGenerateSchema = z.object({
-  variant: z.enum(['navbar', 'hero', 'content', 'features', 'gallery', 'testimonials', 'cta', 'footer']),
+  variant: z.enum([
+    'navbar',
+    'hero',
+    'content',
+    'features',
+    'gallery',
+    'testimonials',
+    'cta',
+    'footer',
+  ]),
   contextPrompt: z.string().min(1).max(2000),
   specificRequest: z.string().max(500).optional(),
 });
@@ -93,7 +102,15 @@ interface FooterAIData {
   copyright?: string;
 }
 
-type SectionAIData = NavbarAIData | HeroAIData | ContentAIData | FeaturesAIData | GalleryAIData | TestimonialsAIData | CtaAIData | FooterAIData;
+type SectionAIData =
+  | NavbarAIData
+  | HeroAIData
+  | ContentAIData
+  | FeaturesAIData
+  | GalleryAIData
+  | TestimonialsAIData
+  | CtaAIData
+  | FooterAIData;
 
 /**
  * Builds a structured prompt for OpenAI based on section variant and context
@@ -200,7 +217,11 @@ ${variantPrompts[variant]}`;
 /**
  * Builds a complete Section with Components from AI-generated data
  */
-function buildSectionFromAI(variant: SectionVariant, aiData: SectionAIData, order: number): Section {
+function buildSectionFromAI(
+  variant: SectionVariant,
+  aiData: SectionAIData,
+  order: number
+): Section {
   const section = createSection(variant, order);
   const template = getDefaultTemplate(variant);
 
@@ -319,9 +340,11 @@ function buildFeaturesComponents(data: FeaturesAIData): Component[] {
 
   // Main section heading
   if (data.sectionHeading) {
-    components.push(createHeading(data.sectionHeading, 2, 'relative', {
-      grid: { column: '1 / -1', row: 'auto' }, // Span full width
-    }));
+    components.push(
+      createHeading(data.sectionHeading, 2, 'relative', {
+        grid: { column: '1 / -1', row: 'auto' }, // Span full width
+      })
+    );
   }
 
   // Feature items
@@ -340,9 +363,11 @@ function buildGalleryComponents(data: GalleryAIData): Component[] {
 
   // Optional section heading
   if (data.sectionHeading) {
-    components.push(createHeading(data.sectionHeading, 2, 'relative', {
-      grid: { column: '1 / -1', row: 'auto' },
-    }));
+    components.push(
+      createHeading(data.sectionHeading, 2, 'relative', {
+        grid: { column: '1 / -1', row: 'auto' },
+      })
+    );
   }
 
   // Gallery images
@@ -442,10 +467,7 @@ async function handlePOST(request: NextRequest) {
 
     const validation = validateInput(sectionGenerateSchema, body);
     if (!validation.success) {
-      return NextResponse.json(
-        { success: false, error: validation.error },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: validation.error }, { status: 400 });
     }
 
     const { variant, contextPrompt, specificRequest } = validation.data;
