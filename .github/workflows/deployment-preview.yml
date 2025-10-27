@@ -77,7 +77,7 @@ jobs:
           du -sh .next/* >> bundle-report.md || true
 
       - name: Upload bundle analysis
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: bundle-analysis
           path: bundle-report.md
