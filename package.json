@@ -38,7 +38,7 @@
     "@tiptap/starter-kit": "^3.6.6",
     "framer-motion": "^12.23.22",
     "lucide-react": "^0.545.0",
-    "next": "^15.5.4",
+    "next": "15.5.9",
     "openai": "^6.2.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
