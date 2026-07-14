@@ -1,7 +1,7 @@
 # Bentoblocks
 
-[![CI Pipeline](https://github.com/yourusername/bentoblocks/actions/workflows/ci.yml/badge.svg)](https://github.com/yourusername/bentoblocks/actions/workflows/ci.yml)
-[![Deployment Preview](https://github.com/yourusername/bentoblocks/actions/workflows/deployment-preview.yml/badge.svg)](https://github.com/yourusername/bentoblocks/actions/workflows/deployment-preview.yml)
+[![CI Pipeline](https://github.com/khvni/bentobuild/actions/workflows/ci.yml/badge.svg)](https://github.com/khvni/bentobuild/actions/workflows/ci.yml)
+[![Deployment Preview](https://github.com/khvni/bentobuild/actions/workflows/deployment-preview.yml/badge.svg)](https://github.com/khvni/bentobuild/actions/workflows/deployment-preview.yml)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 
 **_"Describe it once. Build visually. Let AI do the rest."_**
@@ -46,22 +46,26 @@ An AI-powered, drag-and-drop website builder that combines visual editing with i
 ### Installation
 
 1. **Clone the repository**:
+
 ```bash
-git clone https://github.com/yourusername/bentoblocks.git
-cd bentoblocks
+git clone https://github.com/khvni/bentobuild.git
+cd bentobuild
 ```
 
 2. **Install dependencies**:
+
 ```bash
 npm install
 ```
 
 3. **Set up environment variables**:
+
 ```bash
 cp .env.example .env.local
 ```
 
 Then edit `.env.local` and add your API keys:
+
 ```bash
 OPENAI_API_KEY=sk-...                    # Required for AI features
 UNSPLASH_ACCESS_KEY=...                  # Optional for images (falls back to placeholders)
@@ -70,12 +74,14 @@ DAYTONA_API_URL=...                      # Optional for deployment
 ```
 
 **About Unsplash (Optional)**:
+
 - Free tier: 50 requests/hour
 - Get your key at: https://unsplash.com/developers
 - If not set, the app will use placeholder images from Picsum Photos
 - Provides high-quality, contextually relevant images for your blocks
 
 4. **Run the development server**:
+
 ```bash
 npm run dev
 ```
@@ -97,7 +103,7 @@ npm run dev
 ### Project Structure
 
 ```
-bentoblocks/
+bentobuild/
 ├── app/                             # Next.js App Router
 │   ├── api/
 │   │   ├── bento-build/             # Full-site AI generation
@@ -224,6 +230,7 @@ State persists to localStorage and syncs across page reloads.
 Generate AI content for individual blocks.
 
 **Request**:
+
 ```json
 POST /api/generate-block-content
 {
@@ -234,6 +241,7 @@ POST /api/generate-block-content
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -251,6 +259,7 @@ POST /api/generate-block-content
 Generate a complete website layout with AI.
 
 **Request**:
+
 ```json
 POST /api/bento-build
 {
@@ -259,6 +268,7 @@ POST /api/bento-build
 ```
 
 **Response**:
+
 ```json
 {
   "success": true,
@@ -316,6 +326,7 @@ This project follows modern React/Next.js best practices with a clean separation
 - **`docs/`** - Detailed documentation (accessibility, state management, design system)
 
 Each folder includes an `index.ts` barrel export for clean imports:
+
 ```typescript
 import { BLOCK_TYPES, API_ENDPOINTS } from '@/constants';
 import { useBlockActions, useHistory } from '@/hooks';
@@ -325,6 +336,7 @@ import { checkContrast } from '@/utils';
 ## 📚 Documentation
 
 For detailed development guidance, see:
+
 - **[CLAUDE.md](./CLAUDE.md)** - Development guide for Claude Code (architecture, conventions, workflows)
 - **[docs/ACCESSIBILITY.md](./docs/ACCESSIBILITY.md)** - WCAG compliance and a11y best practices
 - **[docs/STATE_MANAGER.md](./docs/STATE_MANAGER.md)** - State architecture and undo/redo implementation
@@ -333,6 +345,7 @@ For detailed development guidance, see:
 ## 🤝 Contributing
 
 Contributions are welcome! This project follows a modular architecture with clear separation of concerns. Please ensure:
+
 - All new features include E2E tests
 - TypeScript strict mode compliance
 - ESLint passes without errors
