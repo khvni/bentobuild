@@ -38,10 +38,14 @@ export default function TextBlock({ block }: TextBlockProps) {
   const fontClass = getFontClassName(block.content.fontFamily || 'Instrument Serif');
   const getFontSize = (size?: string) => {
     switch (size) {
-      case 'small': return { heading: 'text-2xl', body: 'text-base' };
-      case 'large': return { heading: 'text-5xl', body: 'text-xl' };
-      case 'xlarge': return { heading: 'text-6xl', body: 'text-2xl' };
-      default: return { heading: 'text-3xl', body: 'text-lg' };
+      case 'small':
+        return { heading: 'text-2xl', body: 'text-base' };
+      case 'large':
+        return { heading: 'text-5xl', body: 'text-xl' };
+      case 'xlarge':
+        return { heading: 'text-6xl', body: 'text-2xl' };
+      default:
+        return { heading: 'text-3xl', body: 'text-lg' };
     }
   };
   const fontSize = getFontSize(block.content.fontSize);
@@ -96,19 +100,16 @@ export default function TextBlock({ block }: TextBlockProps) {
               strokeLinejoin="round"
               viewBox="0 0 24 24"
             >
-              <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
-              <line x1="16" y1="8" x2="2" y2="22"/>
-              <line x1="17.5" y1="15" x2="9" y2="15"/>
+              <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" />
+              <line x1="16" y1="8" x2="2" y2="22" />
+              <line x1="17.5" y1="15" x2="9" y2="15" />
             </svg>
           )}
         </button>
       )}
       <div className={`max-w-3xl mx-auto relative ${fontClass}`}>
         {/* Heading - WYSIWYG: Same styled container for edit and display */}
-        <div
-          className={`${fontSize.heading} font-bold mb-6`}
-          style={{ color: headingColor }}
-        >
+        <div className={`${fontSize.heading} font-bold mb-6`} style={{ color: headingColor }}>
           {isSelected ? (
             <TiptapEditor
               value={block.content.heading}
@@ -125,10 +126,7 @@ export default function TextBlock({ block }: TextBlockProps) {
         </div>
 
         {/* Body - WYSIWYG: Same styled container for edit and display */}
-        <div
-          className={`${fontSize.body} leading-relaxed`}
-          style={{ color: textColor }}
-        >
+        <div className={`${fontSize.body} leading-relaxed`} style={{ color: textColor }}>
           {isSelected ? (
             <TiptapEditor
               value={block.content.body}

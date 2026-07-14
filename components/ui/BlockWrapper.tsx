@@ -17,14 +17,9 @@ interface BlockWrapperProps {
 }
 
 export default function BlockWrapper({ block }: BlockWrapperProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: block.id });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: block.id,
+  });
 
   const { handleDelete, handleDuplicate, handleSelect, isSelected } = useBlockActions();
   const selected = isSelected(block.id);
@@ -83,12 +78,7 @@ export default function BlockWrapper({ block }: BlockWrapperProps) {
           stroke="currentColor"
           viewBox="0 0 24 24"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M8 9h8M8 15h8"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9h8M8 15h8" />
         </svg>
       </button>
 
@@ -109,12 +99,7 @@ export default function BlockWrapper({ block }: BlockWrapperProps) {
           aria-label={`Duplicate ${block.type} block`}
           title="Duplicate"
         >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -132,12 +117,7 @@ export default function BlockWrapper({ block }: BlockWrapperProps) {
           aria-label={`Delete ${block.type} block`}
           title="Delete"
         >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -149,9 +129,7 @@ export default function BlockWrapper({ block }: BlockWrapperProps) {
       </div>
 
       {/* Block Content */}
-      <div>
-        {renderBlock()}
-      </div>
+      <div>{renderBlock()}</div>
     </div>
   );
 }

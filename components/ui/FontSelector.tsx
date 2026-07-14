@@ -25,7 +25,11 @@ export const getFontClassName = (font: FontFamily): string => {
   return fontObject?.className || fontMap['Inter'].className;
 };
 
-export default function FontSelector({ value, onChange, label = 'Font Family' }: FontSelectorProps) {
+export default function FontSelector({
+  value,
+  onChange,
+  label = 'Font Family',
+}: FontSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -66,9 +70,7 @@ export default function FontSelector({ value, onChange, label = 'Font Family' }:
         onClick={() => setIsOpen(!isOpen)}
         className="w-full px-3 py-2 bg-white border-2 border-gray-300 rounded-bauhaus-sm hover:border-bauhaus-blue focus:border-bauhaus-blue focus:outline-none transition-colors text-left flex items-center justify-between"
       >
-        <span className={`${currentFontClass} font-medium text-gray-900`}>
-          {currentFont}
-        </span>
+        <span className={`${currentFontClass} font-medium text-gray-900`}>{currentFont}</span>
         <svg
           className={`w-4 h-4 text-gray-600 transition-transform ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
@@ -91,18 +93,18 @@ export default function FontSelector({ value, onChange, label = 'Font Family' }:
                 type="button"
                 onClick={() => handleSelect(font.name)}
                 className={`w-full px-4 py-3 text-left border-b border-gray-200 last:border-b-0 transition-colors ${
-                  isSelected
-                    ? 'bg-bauhaus-blue text-white'
-                    : 'hover:bg-gray-100 text-gray-900'
+                  isSelected ? 'bg-bauhaus-blue text-white' : 'hover:bg-gray-100 text-gray-900'
                 }`}
               >
-                <div className={`${fontClassName} text-base font-semibold mb-1`}>
-                  {font.name}
-                </div>
-                <div className={`text-xs ${isSelected ? 'text-white/90' : 'text-gray-500'} font-sans`}>
+                <div className={`${fontClassName} text-base font-semibold mb-1`}>{font.name}</div>
+                <div
+                  className={`text-xs ${isSelected ? 'text-white/90' : 'text-gray-500'} font-sans`}
+                >
                   {font.category}
                 </div>
-                <div className={`${fontClassName} text-sm mt-1 ${isSelected ? 'text-white/80' : 'text-gray-600'}`}>
+                <div
+                  className={`${fontClassName} text-sm mt-1 ${isSelected ? 'text-white/80' : 'text-gray-600'}`}
+                >
                   The quick brown fox jumps over the lazy dog
                 </div>
               </button>

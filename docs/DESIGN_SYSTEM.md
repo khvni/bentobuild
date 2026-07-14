@@ -21,46 +21,46 @@ The Bentoblocks design system is inspired by the **Bauhaus movement** — a mode
 
 ### Primary Bauhaus Colors
 
-| Color | Hex Code | Usage |
-|-------|----------|-------|
-| **Bauhaus Red** | `#E63946` | Hero blocks, primary CTAs, accent elements |
+| Color              | Hex Code  | Usage                                      |
+| ------------------ | --------- | ------------------------------------------ |
+| **Bauhaus Red**    | `#E63946` | Hero blocks, primary CTAs, accent elements |
 | **Bauhaus Yellow** | `#F1C40F` | Text blocks, secondary accents, highlights |
-| **Bauhaus Blue** | `#2563EB` | Image blocks, links, interactive elements |
-| **Bauhaus Black** | `#000000` | Borders, typography, strong contrast |
-| **Bauhaus White** | `#FFFFFF` | Backgrounds, negative space |
+| **Bauhaus Blue**   | `#2563EB` | Image blocks, links, interactive elements  |
+| **Bauhaus Black**  | `#000000` | Borders, typography, strong contrast       |
+| **Bauhaus White**  | `#FFFFFF` | Backgrounds, negative space                |
 
 ### Grayscale
 
-| Shade | Hex Code | Usage |
-|-------|----------|-------|
-| Gray 50 | `#F9FAFB` | Light backgrounds |
+| Shade    | Hex Code  | Usage             |
+| -------- | --------- | ----------------- |
+| Gray 50  | `#F9FAFB` | Light backgrounds |
 | Gray 100 | `#F3F4F6` | Canvas background |
 | Gray 200 | `#E5E7EB` | Borders, dividers |
 | Gray 300 | `#D1D5DB` | Secondary borders |
-| Gray 400 | `#9CA3AF` | Placeholder text |
-| Gray 500 | `#6B7280` | Secondary text |
-| Gray 600 | `#4B5563` | Body text |
-| Gray 700 | `#374151` | Dark text |
-| Gray 800 | `#1F2937` | Headings |
-| Gray 900 | `#111827` | Primary text |
+| Gray 400 | `#9CA3AF` | Placeholder text  |
+| Gray 500 | `#6B7280` | Secondary text    |
+| Gray 600 | `#4B5563` | Body text         |
+| Gray 700 | `#374151` | Dark text         |
+| Gray 800 | `#1F2937` | Headings          |
+| Gray 900 | `#111827` | Primary text      |
 
 ### CSS Custom Properties
 
 ```css
---bauhaus-red: #E63946;
---bauhaus-yellow: #F1C40F;
---bauhaus-blue: #2563EB;
+--bauhaus-red: #e63946;
+--bauhaus-yellow: #f1c40f;
+--bauhaus-blue: #2563eb;
 --bauhaus-black: #000000;
---bauhaus-white: #FFFFFF;
+--bauhaus-white: #ffffff;
 ```
 
 ### Tailwind Classes
 
 ```js
 // Bauhaus primary colors
-bg-bauhaus-red
-text-bauhaus-yellow
-border-bauhaus-blue
+bg - bauhaus - red;
+text - bauhaus - yellow;
+border - bauhaus - blue;
 ```
 
 ---
@@ -74,24 +74,34 @@ border-bauhaus-blue
 
 ### Type Scale
 
-| Level | Size | Weight | Line Height | Usage |
-|-------|------|--------|-------------|-------|
-| Display | 64px | 700 (Bold) | 1.1 | Extra large hero text |
-| H1 | 48px | 700 (Bold) | 1.2 | Page titles, hero headings |
-| H2 | 32px | 700 (Bold) | 1.3 | Section headings |
-| H3 | 24px | 600 (Semibold) | 1.4 | Subsection headings |
-| Body | 16px | 400 (Regular) | 1.6 | Paragraph text |
-| Small | 14px | 400 (Regular) | 1.5 | Captions, labels |
-| Tiny | 12px | 400 (Regular) | 1.4 | Meta text |
+| Level   | Size | Weight         | Line Height | Usage                      |
+| ------- | ---- | -------------- | ----------- | -------------------------- |
+| Display | 64px | 700 (Bold)     | 1.1         | Extra large hero text      |
+| H1      | 48px | 700 (Bold)     | 1.2         | Page titles, hero headings |
+| H2      | 32px | 700 (Bold)     | 1.3         | Section headings           |
+| H3      | 24px | 600 (Semibold) | 1.4         | Subsection headings        |
+| Body    | 16px | 400 (Regular)  | 1.6         | Paragraph text             |
+| Small   | 14px | 400 (Regular)  | 1.5         | Captions, labels           |
+| Tiny    | 12px | 400 (Regular)  | 1.4         | Meta text                  |
 
 ### CSS Classes
 
 ```css
-.bauhaus-display { /* 64px, bold, serif */ }
-.bauhaus-h1 { /* 48px, bold, serif */ }
-.bauhaus-h2 { /* 32px, bold, serif */ }
-.bauhaus-h3 { /* 24px, semibold, serif */ }
-.bauhaus-body { /* 16px, regular, sans-serif */ }
+.bauhaus-display {
+  /* 64px, bold, serif */
+}
+.bauhaus-h1 {
+  /* 48px, bold, serif */
+}
+.bauhaus-h2 {
+  /* 32px, bold, serif */
+}
+.bauhaus-h3 {
+  /* 24px, semibold, serif */
+}
+.bauhaus-body {
+  /* 16px, regular, sans-serif */
+}
 ```
 
 ### Typography Patterns
@@ -106,15 +116,15 @@ border-bauhaus-blue
 
 Based on an **8px grid**:
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| `bauhaus-1` | 8px | Tight spacing, small gaps |
-| `bauhaus-2` | 16px | Default spacing between elements |
-| `bauhaus-3` | 24px | Medium spacing, section padding |
-| `bauhaus-4` | 32px | Large spacing, block padding |
-| `bauhaus-5` | 40px | Extra large spacing |
-| `bauhaus-6` | 48px | Section margins |
-| `bauhaus-8` | 64px | Page-level spacing |
+| Token       | Value | Usage                            |
+| ----------- | ----- | -------------------------------- |
+| `bauhaus-1` | 8px   | Tight spacing, small gaps        |
+| `bauhaus-2` | 16px  | Default spacing between elements |
+| `bauhaus-3` | 24px  | Medium spacing, section padding  |
+| `bauhaus-4` | 32px  | Large spacing, block padding     |
+| `bauhaus-5` | 40px  | Extra large spacing              |
+| `bauhaus-6` | 48px  | Section margins                  |
+| `bauhaus-8` | 64px  | Page-level spacing               |
 
 ---
 
@@ -122,12 +132,12 @@ Based on an **8px grid**:
 
 Bauhaus design favors **sharp, geometric shapes** with minimal rounding:
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| `bauhaus-sm` | 2px | Subtle rounding on small elements |
-| `bauhaus-md` | 4px | Standard rounding for blocks |
-| `bauhaus-lg` | 6px | Large blocks and containers |
-| Sharp (0px) | 0px | Completely square corners |
+| Token        | Value | Usage                             |
+| ------------ | ----- | --------------------------------- |
+| `bauhaus-sm` | 2px   | Subtle rounding on small elements |
+| `bauhaus-md` | 4px   | Standard rounding for blocks      |
+| `bauhaus-lg` | 6px   | Large blocks and containers       |
+| Sharp (0px)  | 0px   | Completely square corners         |
 
 ---
 
@@ -135,12 +145,12 @@ Bauhaus design favors **sharp, geometric shapes** with minimal rounding:
 
 Bauhaus shadows are **hard-edged and offset** (not soft blur):
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| `bauhaus-sm` | `2px 2px 0px rgba(0,0,0,0.1)` | Small elements |
-| `bauhaus-md` | `4px 4px 0px rgba(0,0,0,0.15)` | Cards, blocks |
-| `bauhaus-lg` | `8px 8px 0px rgba(0,0,0,0.2)` | Elevated blocks |
-| `bauhaus-xl` | `12px 12px 0px rgba(0,0,0,0.25)` | Hero sections |
+| Token        | Value                            | Usage           |
+| ------------ | -------------------------------- | --------------- |
+| `bauhaus-sm` | `2px 2px 0px rgba(0,0,0,0.1)`    | Small elements  |
+| `bauhaus-md` | `4px 4px 0px rgba(0,0,0,0.15)`   | Cards, blocks   |
+| `bauhaus-lg` | `8px 8px 0px rgba(0,0,0,0.2)`    | Elevated blocks |
+| `bauhaus-xl` | `12px 12px 0px rgba(0,0,0,0.25)` | Hero sections   |
 
 ### CSS Classes
 
@@ -169,15 +179,11 @@ The design system includes decorative geometric shapes:
 Use the `GeometricDecoration` component:
 
 ```tsx
-<GeometricDecoration
-  position="top-left"
-  variant="circle"
-  color="red"
-  size="md"
-/>
+<GeometricDecoration position="top-left" variant="circle" color="red" size="md" />
 ```
 
 **Props:**
+
 - `position`: `'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'`
 - `variant`: `'circle' | 'square' | 'triangle' | 'rectangle'`
 - `color`: `'red' | 'yellow' | 'blue' | 'black'`
@@ -220,11 +226,11 @@ Bauhaus buttons are **bold, uppercase, and geometric**:
 
 ### Button Variants
 
-| Variant | Description | Example |
-|---------|-------------|---------|
-| **Filled** | Solid background, bold border | Primary actions |
+| Variant      | Description                          | Example           |
+| ------------ | ------------------------------------ | ----------------- |
+| **Filled**   | Solid background, bold border        | Primary actions   |
 | **Outlined** | Transparent background, thick border | Secondary actions |
-| **Text** | No background or border | Tertiary actions |
+| **Text**     | No background or border              | Tertiary actions  |
 
 ### Color Combinations
 
@@ -312,14 +318,14 @@ All blocks follow this pattern:
 
 ### Color-Coded Blocks
 
-| Block Type | Accent Color | Border |
-|------------|--------------|--------|
-| Hero | Red | Left 4px border + accent bar at bottom |
-| Text | Yellow | Left 8px border |
-| Image | Blue | Left 8px border |
-| Button | Red | Left 8px border |
-| Link | Yellow | Left 8px border |
-| Navbar | Black | Bottom 4px border + top accent bar |
+| Block Type | Accent Color | Border                                 |
+| ---------- | ------------ | -------------------------------------- |
+| Hero       | Red          | Left 4px border + accent bar at bottom |
+| Text       | Yellow       | Left 8px border                        |
+| Image      | Blue         | Left 8px border                        |
+| Button     | Red          | Left 8px border                        |
+| Link       | Yellow       | Left 8px border                        |
+| Navbar     | Black        | Bottom 4px border + top accent bar     |
 
 ### Border Styles
 
@@ -343,6 +349,7 @@ background: linear-gradient(
 ```
 
 **Usage:**
+
 - Header bottom edge
 - Hero block bottom edge
 - Context bar top edge
@@ -383,6 +390,7 @@ focus:outline-none
 ### Empty States
 
 Empty states include:
+
 - Geometric decorations
 - Bold heading (bauhaus-h3)
 - Descriptive subtext (uppercase, small)
@@ -460,7 +468,7 @@ const colors = {
     blue: '#2563EB',
     black: '#000000',
     white: '#FFFFFF',
-  }
+  },
 };
 
 // Spacing tokens (px)

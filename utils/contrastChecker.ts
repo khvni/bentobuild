@@ -38,12 +38,9 @@ function getLuminance(hex: string): number {
   const bsRGB = b / 255;
 
   // Apply gamma correction
-  const rLinear =
-    rsRGB <= 0.03928 ? rsRGB / 12.92 : Math.pow((rsRGB + 0.055) / 1.055, 2.4);
-  const gLinear =
-    gsRGB <= 0.03928 ? gsRGB / 12.92 : Math.pow((gsRGB + 0.055) / 1.055, 2.4);
-  const bLinear =
-    bsRGB <= 0.03928 ? bsRGB / 12.92 : Math.pow((bsRGB + 0.055) / 1.055, 2.4);
+  const rLinear = rsRGB <= 0.03928 ? rsRGB / 12.92 : Math.pow((rsRGB + 0.055) / 1.055, 2.4);
+  const gLinear = gsRGB <= 0.03928 ? gsRGB / 12.92 : Math.pow((gsRGB + 0.055) / 1.055, 2.4);
+  const bLinear = bsRGB <= 0.03928 ? bsRGB / 12.92 : Math.pow((bsRGB + 0.055) / 1.055, 2.4);
 
   // Calculate relative luminance
   return 0.2126 * rLinear + 0.7152 * gLinear + 0.0722 * bLinear;
@@ -75,10 +72,7 @@ export interface ContrastCheck {
   passAAALarge: boolean;
 }
 
-export function checkContrast(
-  foreground: string,
-  background: string
-): ContrastCheck {
+export function checkContrast(foreground: string, background: string): ContrastCheck {
   const ratio = getContrastRatio(foreground, background);
 
   return {

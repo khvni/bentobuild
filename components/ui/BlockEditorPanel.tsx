@@ -10,7 +10,8 @@ import RichTextEditor from './RichTextEditor';
 import { useState } from 'react';
 
 export default function BlockEditorPanel() {
-  const { blocks, selectedBlockId, selectBlock, updateBlock, deleteBlock, contextPrompt } = useBuilderStore();
+  const { blocks, selectedBlockId, selectBlock, updateBlock, deleteBlock, contextPrompt } =
+    useBuilderStore();
   const { loading, error, success, generateContent, resetStatus } = useBlockEditor();
   const [colorsExpanded, setColorsExpanded] = useState(true);
   const [typographyExpanded, setTypographyExpanded] = useState(true);
@@ -62,7 +63,11 @@ export default function BlockEditorPanel() {
 
   const handleGenerateContent = () => {
     if (!selectedBlock) return;
-    generateContent(selectedBlock.id, selectedBlock.type, selectedBlock.content as Record<string, unknown>);
+    generateContent(
+      selectedBlock.id,
+      selectedBlock.type,
+      selectedBlock.content as Record<string, unknown>
+    );
   };
 
   const handleDelete = () => {
@@ -91,7 +96,10 @@ export default function BlockEditorPanel() {
               minHeight="80px"
             />
             <div>
-              <label htmlFor="hero-cta-text" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="hero-cta-text"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 CTA Text
               </label>
               <input
@@ -104,7 +112,10 @@ export default function BlockEditorPanel() {
               />
             </div>
             <div>
-              <label htmlFor="hero-cta-link" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="hero-cta-link"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 CTA Link
               </label>
               <input
@@ -116,7 +127,9 @@ export default function BlockEditorPanel() {
                 placeholder="https://..."
                 aria-describedby="cta-link-help"
               />
-              <p id="cta-link-help" className="sr-only">Enter the URL for the call to action button</p>
+              <p id="cta-link-help" className="sr-only">
+                Enter the URL for the call to action button
+              </p>
             </div>
 
             {/* Typography Section */}
@@ -133,7 +146,12 @@ export default function BlockEditorPanel() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
               {typographyExpanded && (
@@ -175,7 +193,12 @@ export default function BlockEditorPanel() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
               {colorsExpanded && (
@@ -239,7 +262,12 @@ export default function BlockEditorPanel() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
               {typographyExpanded && (
@@ -281,7 +309,12 @@ export default function BlockEditorPanel() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
               {colorsExpanded && (
@@ -324,7 +357,9 @@ export default function BlockEditorPanel() {
                 aria-required="true"
                 aria-describedby="image-src-help"
               />
-              <p id="image-src-help" className="sr-only">Enter the URL of the image to display</p>
+              <p id="image-src-help" className="sr-only">
+                Enter the URL of the image to display
+              </p>
             </div>
             <div>
               <label htmlFor="image-alt" className="block text-sm font-medium text-gray-700 mb-1">
@@ -344,7 +379,7 @@ export default function BlockEditorPanel() {
                 Describe the image for screen readers (required for accessibility)
               </p>
             </div>
-              <RichTextEditor
+            <RichTextEditor
               value={block.content.caption}
               onChange={(html) => handleFieldChange('caption', html)}
               placeholder="Optional caption"
@@ -366,7 +401,12 @@ export default function BlockEditorPanel() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
               {typographyExpanded && (
@@ -393,7 +433,12 @@ export default function BlockEditorPanel() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
               {colorsExpanded && (
@@ -446,14 +491,19 @@ export default function BlockEditorPanel() {
               />
             </div>
             <div>
-              <label htmlFor="button-style" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="button-style"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Button Style
               </label>
               <select
                 id="button-style"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
                 value={block.content.style}
-                onChange={(e) => handleFieldChange('style', e.target.value as 'filled' | 'outlined' | 'text')}
+                onChange={(e) =>
+                  handleFieldChange('style', e.target.value as 'filled' | 'outlined' | 'text')
+                }
               >
                 <option value="filled">Filled</option>
                 <option value="outlined">Outlined</option>
@@ -475,7 +525,12 @@ export default function BlockEditorPanel() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
               {typographyExpanded && (
@@ -502,7 +557,12 @@ export default function BlockEditorPanel() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
               {colorsExpanded && (
@@ -562,7 +622,10 @@ export default function BlockEditorPanel() {
               />
             </div>
             <div>
-              <label htmlFor="link-description" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="link-description"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Description
               </label>
               <textarea
@@ -589,7 +652,12 @@ export default function BlockEditorPanel() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
               {typographyExpanded && (
@@ -616,7 +684,12 @@ export default function BlockEditorPanel() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
               {colorsExpanded && (
@@ -646,7 +719,10 @@ export default function BlockEditorPanel() {
         return (
           <>
             <div>
-              <label htmlFor="navbar-brand" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="navbar-brand"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Brand Name
               </label>
               <input
@@ -673,9 +749,7 @@ export default function BlockEditorPanel() {
               />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-700 mb-2">
-                Navigation Links
-              </p>
+              <p className="text-sm font-medium text-gray-700 mb-2">Navigation Links</p>
               <p className="text-xs text-gray-600 mb-1">
                 Edit links directly in the navbar block on the canvas
               </p>
@@ -695,7 +769,12 @@ export default function BlockEditorPanel() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
               {typographyExpanded && (
@@ -736,7 +815,12 @@ export default function BlockEditorPanel() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
               {colorsExpanded && (
@@ -771,7 +855,10 @@ export default function BlockEditorPanel() {
         return (
           <>
             <div>
-              <label htmlFor="footer-company" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="footer-company"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Company Name
               </label>
               <input
@@ -785,7 +872,10 @@ export default function BlockEditorPanel() {
               />
             </div>
             <div>
-              <label htmlFor="footer-copyright" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="footer-copyright"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Copyright Text
               </label>
               <input
@@ -798,7 +888,10 @@ export default function BlockEditorPanel() {
               />
             </div>
             <div>
-              <label htmlFor="footer-email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="footer-email"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Contact Email
               </label>
               <input
@@ -811,9 +904,7 @@ export default function BlockEditorPanel() {
               />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-700 mb-2">
-                Social Links
-              </p>
+              <p className="text-sm font-medium text-gray-700 mb-2">Social Links</p>
               <p className="text-xs text-gray-600 mb-1">
                 Edit social links directly in the footer block on the canvas
               </p>
@@ -833,7 +924,12 @@ export default function BlockEditorPanel() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
               {typographyExpanded && (
@@ -874,7 +970,12 @@ export default function BlockEditorPanel() {
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </button>
               {colorsExpanded && (
@@ -939,17 +1040,35 @@ export default function BlockEditorPanel() {
         aria-label="Block editor panel"
       >
         {/* Geometric decorations */}
-        <div className="absolute top-8 right-8 w-8 h-8 bg-bauhaus-blue rounded-full opacity-20" aria-hidden="true"></div>
-        <div className="absolute bottom-16 left-6 w-12 h-12 bg-bauhaus-yellow rounded-bauhaus-sm opacity-20" aria-hidden="true"></div>
+        <div
+          className="absolute top-8 right-8 w-8 h-8 bg-bauhaus-blue rounded-full opacity-20"
+          aria-hidden="true"
+        ></div>
+        <div
+          className="absolute bottom-16 left-6 w-12 h-12 bg-bauhaus-yellow rounded-bauhaus-sm opacity-20"
+          aria-hidden="true"
+        ></div>
 
         <div className="text-center">
           <div className="w-24 h-24 mx-auto mb-6 bg-white rounded-bauhaus-md flex items-center justify-center shadow-bauhaus-md border-2 border-gray-300">
-            <svg className="w-12 h-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            <svg
+              className="w-12 h-12 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
             </svg>
           </div>
           <p className="bauhaus-h3 text-gray-900 mb-2">Editor</p>
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Select a block to edit</p>
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            Select a block to edit
+          </p>
         </div>
       </aside>
     );
@@ -967,7 +1086,10 @@ export default function BlockEditorPanel() {
       {/* Header */}
       <div className="p-6 border-b-2 border-gray-300 flex-shrink-0 bg-white relative">
         {/* Colored accent bar */}
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-bauhaus-red via-bauhaus-yellow to-bauhaus-blue" aria-hidden="true"></div>
+        <div
+          className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-bauhaus-red via-bauhaus-yellow to-bauhaus-blue"
+          aria-hidden="true"
+        ></div>
 
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
@@ -975,7 +1097,9 @@ export default function BlockEditorPanel() {
               <span className="text-2xl">{getBlockTypeIcon(selectedBlock.type)}</span>
             </div>
             <div>
-              <h3 className="bauhaus-h3 text-black uppercase">{getBlockTypeLabel(selectedBlock.type)}</h3>
+              <h3 className="bauhaus-h3 text-black uppercase">
+                {getBlockTypeLabel(selectedBlock.type)}
+              </h3>
               <p className="text-xs text-gray-500 font-mono">{selectedBlock.id.split('-')[0]}</p>
             </div>
           </div>
@@ -985,7 +1109,14 @@ export default function BlockEditorPanel() {
             aria-label="Close editor panel"
             title="Close (Escape)"
           >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5} aria-hidden="true">
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2.5}
+              aria-hidden="true"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
@@ -1004,7 +1135,11 @@ export default function BlockEditorPanel() {
             <div className="flex items-start">
               <div className="flex-shrink-0">
                 <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </div>
               <div className="ml-3">
@@ -1015,7 +1150,11 @@ export default function BlockEditorPanel() {
                 className="ml-auto flex-shrink-0 text-red-400 hover:text-red-600"
               >
                 <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </button>
             </div>
@@ -1066,8 +1205,18 @@ export default function BlockEditorPanel() {
                   transition={{ type: 'spring', stiffness: 200, damping: 15 }}
                   className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center"
                 >
-                  <svg className="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                  <svg
+                    className="w-10 h-10 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={3}
+                      d="M5 13l4 4L19 7"
+                    />
                   </svg>
                 </motion.div>
                 <p className="mt-3 text-sm text-gray-700 font-medium">Content generated!</p>
@@ -1089,7 +1238,13 @@ export default function BlockEditorPanel() {
           className="bauhaus-button w-full bg-bauhaus-blue text-white rounded-bauhaus-md font-bold shadow-bauhaus-md hover:shadow-bauhaus-lg disabled:bg-gray-300 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2 border-2 border-black focus:outline-none focus:ring-2 focus:ring-bauhaus-blue focus:ring-offset-2"
           aria-label="Generate content with AI"
         >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2.5}
+          >
             <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
           Generate AI
@@ -1100,8 +1255,18 @@ export default function BlockEditorPanel() {
           className="bauhaus-button w-full bg-white text-bauhaus-red border-2 border-bauhaus-red rounded-bauhaus-md font-bold hover:bg-bauhaus-red hover:text-white shadow-bauhaus-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-bauhaus-red focus:ring-offset-2"
           aria-label={`Delete ${getBlockTypeLabel(selectedBlock.type)}`}
         >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2.5}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            />
           </svg>
           Delete
         </button>

@@ -81,9 +81,7 @@ export default function ContextBar() {
                 This context powers AI content generation for all blocks.
               </p>
               {buildError && (
-                <p className="text-xs text-red-600 font-bold animate-pulse">
-                  {buildError}
-                </p>
+                <p className="text-xs text-red-600 font-bold animate-pulse">{buildError}</p>
               )}
             </div>
           </div>

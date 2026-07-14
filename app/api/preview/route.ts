@@ -14,7 +14,10 @@ export async function POST(request: NextRequest) {
     console.log('Request payload:');
     console.log('  - Number of blocks:', Array.isArray(blocks) ? blocks.length : 'N/A');
     console.log('  - Context prompt length:', contextPrompt ? contextPrompt.length : 0);
-    console.log('  - Block types:', Array.isArray(blocks) ? blocks.map((b: Block) => b.type).join(', ') : 'N/A');
+    console.log(
+      '  - Block types:',
+      Array.isArray(blocks) ? blocks.map((b: Block) => b.type).join(', ') : 'N/A'
+    );
 
     const host = request.headers.get('host') || 'localhost:3000';
     const protocol = host.includes('localhost') || host.startsWith('127.') ? 'http' : 'https';
@@ -24,10 +27,7 @@ export async function POST(request: NextRequest) {
     // Validate request
     if (!Array.isArray(blocks)) {
       console.error('❌ Invalid request: blocks is not an array');
-      return NextResponse.json(
-        { success: false, error: 'Invalid blocks array' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'Invalid blocks array' }, { status: 400 });
     }
 
     console.log('✓ Request validated, creating preview...');
@@ -59,10 +59,7 @@ export async function POST(request: NextRequest) {
       });
     } else {
       console.error('❌ Preview creation failed:', result.error);
-      return NextResponse.json(
-        { success: false, error: result.error },
-        { status: 500 }
-      );
+      return NextResponse.json({ success: false, error: result.error }, { status: 500 });
     }
   } catch (error) {
     console.error('=== Preview API Error ===');

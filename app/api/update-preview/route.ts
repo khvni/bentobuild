@@ -26,30 +26,24 @@ export async function POST(request: NextRequest) {
 
     // Validation
     if (!sandboxId || typeof sandboxId !== 'string') {
-      return NextResponse.json(
-        { success: false, error: 'Invalid sandboxId' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'Invalid sandboxId' }, { status: 400 });
     }
 
     if (!Array.isArray(blocks)) {
-      return NextResponse.json(
-        { success: false, error: 'Invalid blocks array' },
-        { status: 400 }
-      );
+      return NextResponse.json({ success: false, error: 'Invalid blocks array' }, { status: 400 });
     }
 
     // Rate limiting check
     const now = Date.now();
     const lastUpdate = lastUpdateTime.get(sandboxId);
 
-    if (lastUpdate && (now - lastUpdate) < MIN_UPDATE_INTERVAL) {
+    if (lastUpdate && now - lastUpdate < MIN_UPDATE_INTERVAL) {
       const remainingTime = MIN_UPDATE_INTERVAL - (now - lastUpdate);
       return NextResponse.json(
         {
           success: false,
           error: `Rate limit: Please wait ${Math.ceil(remainingTime / 1000)} seconds`,
-          retryAfter: remainingTime
+          retryAfter: remainingTime,
         },
         { status: 429 }
       );
@@ -72,7 +66,7 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error: 'DAYTONA_API_KEY not configured',
-          isMock: true
+          isMock: true,
         },
         { status: 503 }
       );
@@ -99,7 +93,7 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error: 'Sandbox not found or no longer exists',
-          sandboxGone: true
+          sandboxGone: true,
         },
         { status: 404 }
       );
@@ -107,17 +101,14 @@ export async function POST(request: NextRequest) {
 
     // Update the index.html file
     try {
-      await sandbox.fs.uploadFile(
-        Buffer.from(html, 'utf-8'),
-        'public/index.html'
-      );
+      await sandbox.fs.uploadFile(Buffer.from(html, 'utf-8'), 'public/index.html');
       console.log('✓ Updated index.html successfully');
     } catch (uploadError) {
       console.error('❌ Failed to upload HTML:', uploadError);
       return NextResponse.json(
         {
           success: false,
-          error: uploadError instanceof Error ? uploadError.message : 'Failed to update file'
+          error: uploadError instanceof Error ? uploadError.message : 'Failed to update file',
         },
         { status: 500 }
       );
@@ -131,13 +122,12 @@ export async function POST(request: NextRequest) {
       timestamp,
       blocksCount: blocks.length,
     });
-
   } catch (error) {
     console.error('❌ Update preview error:', error);
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : 'Failed to update preview'
+        error: error instanceof Error ? error.message : 'Failed to update preview',
       },
       { status: 500 }
     );

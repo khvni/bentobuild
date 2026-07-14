@@ -13,7 +13,7 @@ export interface PersistenceConfig {
 type PersistenceMiddleware = <
   T extends object,
   Mps extends [StoreMutatorIdentifier, unknown][] = [],
-  Mcs extends [StoreMutatorIdentifier, unknown][] = []
+  Mcs extends [StoreMutatorIdentifier, unknown][] = [],
 >(
   config: StateCreator<T, Mps, Mcs>,
   options?: PersistenceConfig
@@ -33,7 +33,16 @@ function createPersistableState<T extends object>(state: T, excludeKeys: string[
   }
 
   const persistable: Partial<T> = {};
-  const defaultExclude = ['hydrate', 'past', 'future', 'undo', 'redo', 'canUndo', 'canRedo', 'clearHistory'];
+  const defaultExclude = [
+    'hydrate',
+    'past',
+    'future',
+    'undo',
+    'redo',
+    'canUndo',
+    'canRedo',
+    'clearHistory',
+  ];
   const allExcludeKeys = [...defaultExclude, ...excludeKeys];
 
   Object.keys(state).forEach((key) => {
@@ -48,58 +57,56 @@ function createPersistableState<T extends object>(state: T, excludeKeys: string[
 /**
  * Middleware that persists state to localStorage
  */
-const persistenceMiddlewareImpl: PersistenceMiddlewareImpl = (config, options = {}) => (set, get, api) => {
-  const {
-    key = BUILDER_STATE_KEY,
-    excludeKeys = [],
-    debounceMs = 500,
-  } = options;
+const persistenceMiddlewareImpl: PersistenceMiddlewareImpl =
+  (config, options = {}) =>
+  (set, get, api) => {
+    const { key = BUILDER_STATE_KEY, excludeKeys = [], debounceMs = 500 } = options;
 
-  type TState = ReturnType<typeof config>;
-  type TStateWithHydrate = TState & { hydrate: () => void };
+    type TState = ReturnType<typeof config>;
+    type TStateWithHydrate = TState & { hydrate: () => void };
 
-  let saveTimeout: NodeJS.Timeout | null = null;
+    let saveTimeout: NodeJS.Timeout | null = null;
 
-  // Debounced save function
-  const debouncedSave = () => {
-    // Only run in browser environment
-    if (typeof window === 'undefined') return;
+    // Debounced save function
+    const debouncedSave = () => {
+      // Only run in browser environment
+      if (typeof window === 'undefined') return;
 
-    if (saveTimeout) {
-      clearTimeout(saveTimeout);
-    }
-
-    saveTimeout = setTimeout(() => {
-      const state = get() as TStateWithHydrate;
-      const persistableState = createPersistableState(state, excludeKeys);
-      saveToLocalStorage(key, persistableState);
-    }, debounceMs);
-  };
-
-  // Initialize state with config
-  const initialState = config(set, get, api);
-
-  // Create enhanced state with hydrate function
-  const stateWithHydrate: TStateWithHydrate = {
-    ...initialState,
-
-    hydrate: () => {
-      const savedState = loadFromLocalStorage<Partial<TState>>(key);
-      if (savedState) {
-        set(savedState as Partial<TStateWithHydrate>, false);
+      if (saveTimeout) {
+        clearTimeout(saveTimeout);
       }
-    },
+
+      saveTimeout = setTimeout(() => {
+        const state = get() as TStateWithHydrate;
+        const persistableState = createPersistableState(state, excludeKeys);
+        saveToLocalStorage(key, persistableState);
+      }, debounceMs);
+    };
+
+    // Initialize state with config
+    const initialState = config(set, get, api);
+
+    // Create enhanced state with hydrate function
+    const stateWithHydrate: TStateWithHydrate = {
+      ...initialState,
+
+      hydrate: () => {
+        const savedState = loadFromLocalStorage<Partial<TState>>(key);
+        if (savedState) {
+          set(savedState as Partial<TStateWithHydrate>, false);
+        }
+      },
+    };
+
+    // Subscribe to state changes and persist
+    api.subscribe(() => {
+      debouncedSave();
+    });
+
+    // Set initial state
+    set(stateWithHydrate as any, true);
+
+    return stateWithHydrate;
   };
-
-  // Subscribe to state changes and persist
-  api.subscribe(() => {
-    debouncedSave();
-  });
-
-  // Set initial state
-  set(stateWithHydrate as any, true);
-
-  return stateWithHydrate;
-};
 
 export const persistenceMiddleware = persistenceMiddlewareImpl as unknown as PersistenceMiddleware;

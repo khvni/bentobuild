@@ -37,11 +37,7 @@ const PRESET_COLORS = {
   ],
 };
 
-export default function ColorPicker({
-  label,
-  value,
-  onChange,
-}: ColorPickerProps) {
+export default function ColorPicker({ label, value, onChange }: ColorPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [customColor, setCustomColor] = useState(value || '#3B82F6');
 
@@ -81,19 +77,12 @@ export default function ColorPicker({
           />
           <span className="text-sm font-mono">{value || 'None'}</span>
           <svg
-            className={`w-4 h-4 text-gray-500 transition-transform ${
-              isOpen ? 'rotate-180' : ''
-            }`}
+            className={`w-4 h-4 text-gray-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
         </button>
 
@@ -112,11 +101,7 @@ export default function ColorPicker({
       {isOpen && (
         <>
           {/* Backdrop */}
-          <div
-            className="fixed inset-0 z-10"
-            onClick={() => setIsOpen(false)}
-            aria-hidden="true"
-          />
+          <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} aria-hidden="true" />
 
           {/* Color Palette */}
           <div
@@ -128,7 +113,11 @@ export default function ColorPicker({
               <h4 className="text-xs font-semibold text-gray-700 mb-2" id="primary-colors-heading">
                 Primary Colors
               </h4>
-              <div className="grid grid-cols-5 gap-2" role="group" aria-labelledby="primary-colors-heading">
+              <div
+                className="grid grid-cols-5 gap-2"
+                role="group"
+                aria-labelledby="primary-colors-heading"
+              >
                 {PRESET_COLORS.primary.map((color) => (
                   <button
                     key={color.value}
@@ -152,7 +141,11 @@ export default function ColorPicker({
               <h4 className="text-xs font-semibold text-gray-700 mb-2" id="neutrals-heading">
                 Neutrals
               </h4>
-              <div className="grid grid-cols-6 gap-2" role="group" aria-labelledby="neutrals-heading">
+              <div
+                className="grid grid-cols-6 gap-2"
+                role="group"
+                aria-labelledby="neutrals-heading"
+              >
                 {PRESET_COLORS.neutrals.map((color) => (
                   <button
                     key={color.value}
@@ -173,7 +166,10 @@ export default function ColorPicker({
             </div>
 
             <div className="mt-4 pt-4 border-t border-gray-200">
-              <label htmlFor={`custom-hex-${label.replace(/\s+/g, '-').toLowerCase()}`} className="block text-xs font-semibold text-gray-700 mb-2">
+              <label
+                htmlFor={`custom-hex-${label.replace(/\s+/g, '-').toLowerCase()}`}
+                className="block text-xs font-semibold text-gray-700 mb-2"
+              >
                 Custom Color (Hex)
               </label>
               <input
@@ -190,7 +186,10 @@ export default function ColorPicker({
                 className="w-full px-3 py-2 text-sm font-mono border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none"
                 aria-describedby={`custom-hex-help-${label.replace(/\s+/g, '-').toLowerCase()}`}
               />
-              <p id={`custom-hex-help-${label.replace(/\s+/g, '-').toLowerCase()}`} className="sr-only">
+              <p
+                id={`custom-hex-help-${label.replace(/\s+/g, '-').toLowerCase()}`}
+                className="sr-only"
+              >
                 Enter a hex color code like #3B82F6
               </p>
             </div>

@@ -99,14 +99,15 @@ The Live Preview Sync feature enables real-time synchronization between the Bent
 
 The hook uses a sophisticated debouncing approach:
 
-| Scenario | Debounce Time | Behavior |
-|----------|---------------|----------|
-| Normal editing | 2.5 seconds | Resets on each change |
-| Rapid changes | 2.5 seconds | Keeps resetting |
-| Max wait time | 10 seconds | Forces sync even if still changing |
-| No actual change | 0 seconds | Skip sync entirely |
+| Scenario         | Debounce Time | Behavior                           |
+| ---------------- | ------------- | ---------------------------------- |
+| Normal editing   | 2.5 seconds   | Resets on each change              |
+| Rapid changes    | 2.5 seconds   | Keeps resetting                    |
+| Max wait time    | 10 seconds    | Forces sync even if still changing |
+| No actual change | 0 seconds     | Skip sync entirely                 |
 
 This ensures:
+
 - Responsive feedback (not too slow)
 - Efficient API usage (not too many requests)
 - Guaranteed sync (max 10 seconds)
@@ -117,6 +118,7 @@ This ensures:
 ### POST /api/update-preview
 
 **Request:**
+
 ```json
 {
   "sandboxId": "string (required)",
@@ -126,6 +128,7 @@ This ensures:
 ```
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -137,6 +140,7 @@ This ensures:
 **Error Responses:**
 
 **400 Bad Request:**
+
 ```json
 {
   "success": false,
@@ -145,6 +149,7 @@ This ensures:
 ```
 
 **404 Not Found (sandbox deleted):**
+
 ```json
 {
   "success": false,
@@ -154,6 +159,7 @@ This ensures:
 ```
 
 **429 Too Many Requests:**
+
 ```json
 {
   "success": false,
@@ -163,6 +169,7 @@ This ensures:
 ```
 
 **503 Service Unavailable:**
+
 ```json
 {
   "success": false,
@@ -174,11 +181,13 @@ This ensures:
 ## Rate Limiting
 
 ### Server-Side
+
 - Minimum 2 seconds between updates per sandbox
 - Tracked in-memory with Map<sandboxId, lastUpdateTime>
 - Automatic cleanup of old entries (>1 hour)
 
 ### Client-Side
+
 - Debounce: 2.5 seconds default
 - Max wait: 10 seconds
 - Retry delays: 1s, 2s, 4s (exponential backoff)
@@ -186,6 +195,7 @@ This ensures:
 ## State Management
 
 ### Hook State
+
 ```typescript
 {
   sandboxId: string | null,        // Current sandbox ID
@@ -197,6 +207,7 @@ This ensures:
 ```
 
 ### Hook Methods
+
 ```typescript
 {
   enableSync: (sandboxId: string) => void,  // Start syncing
@@ -208,23 +219,27 @@ This ensures:
 ## UI Elements
 
 ### Sync Status Indicators
+
 - 🟢 Green: Synced and up to date
 - 🟡 Yellow: Syncing in progress (with pulse animation)
 - 🔴 Red: Sync error
 - ⚪ Gray: Sync disabled
 
 ### Toggle Switch
+
 - ON (blue): Live sync active
 - OFF (gray): Live sync inactive
 - Disabled for mock previews (no sandboxId)
 
 ### Status Display
+
 ```
 Status: [Up to date / Syncing... / Error]
 Last synced: [Just now / 5s ago / 2m ago / Never]
 ```
 
 ### Manual Sync Button
+
 - Always available when preview is open
 - Disabled during active sync
 - Bypasses debounce timer
@@ -233,16 +248,19 @@ Last synced: [Just now / 5s ago / 2m ago / Never]
 ## Performance Characteristics
 
 ### Network Usage
+
 - Average sync: ~1-50 KB (depends on block count)
 - Typical frequency: Every 2-10 seconds while editing
 - Smart caching: Skips sync if no changes detected
 
 ### CPU Usage
+
 - Debounce timers: Negligible
 - Deep equality check: O(n) where n = block count
 - JSON serialization: Standard browser performance
 
 ### Memory Usage
+
 - Rate limit cache: ~100 bytes per sandbox
 - Hook state: ~1 KB
 - No memory leaks (proper cleanup on unmount)
@@ -250,16 +268,19 @@ Last synced: [Just now / 5s ago / 2m ago / Never]
 ## Error Recovery
 
 ### Automatic Recovery
+
 1. **Network errors**: 3 retries with exponential backoff
 2. **Rate limiting**: Wait and retry automatically
 3. **Temporary failures**: Continue trying
 
 ### Manual Recovery
+
 1. **Manual sync button**: Force immediate sync
 2. **Toggle sync off/on**: Reset sync state
 3. **Create new preview**: Fresh start
 
 ### Graceful Degradation
+
 - Sync errors don't break the builder
 - Preview still works without sync
 - Clear error messages guide users
@@ -268,17 +289,20 @@ Last synced: [Just now / 5s ago / 2m ago / Never]
 ## Limitations
 
 ### Current Limitations
+
 1. **Mock mode**: No live sync (requires DAYTONA_API_KEY)
 2. **Single preview**: One active preview per session
 3. **Browser-only**: No cross-device sync
 4. **No offline queue**: Changes while offline are lost
 
 ### Known Issues
+
 1. **Sandbox lifecycle**: Preview sandbox may timeout after inactivity
 2. **Large sites**: Sync time increases with block count
 3. **Network dependency**: Requires stable connection
 
 ### Browser Compatibility
+
 - Modern browsers only (ES2020+)
 - Requires fetch API
 - Requires AbortController
@@ -287,6 +311,7 @@ Last synced: [Just now / 5s ago / 2m ago / Never]
 ## Testing Scenarios
 
 ### Manual Testing Checklist
+
 - [ ] Enable sync, make change, verify preview updates
 - [ ] Make rapid changes, verify debouncing works
 - [ ] Close and reopen modal, verify sync resumes
@@ -297,6 +322,7 @@ Last synced: [Just now / 5s ago / 2m ago / Never]
 - [ ] Time ago updates in real-time
 
 ### Edge Cases
+
 - [ ] Sandbox no longer exists (deleted externally)
 - [ ] Network timeout during sync
 - [ ] Rate limit exceeded
@@ -307,6 +333,7 @@ Last synced: [Just now / 5s ago / 2m ago / Never]
 ## Future Enhancements
 
 ### Potential Improvements
+
 1. **Iframe preview**: Embed preview in builder for instant visual feedback
 2. **Diff detection**: Only send changed blocks, not full HTML
 3. **Offline queue**: Save changes and sync when connection restored
@@ -316,6 +343,7 @@ Last synced: [Just now / 5s ago / 2m ago / Never]
 7. **Sync analytics**: Track sync frequency and performance
 
 ### Performance Optimizations
+
 1. **Incremental updates**: Update only changed sections
 2. **Better caching**: Browser-side HTML cache
 3. **Compressed payloads**: Gzip API requests
@@ -324,6 +352,7 @@ Last synced: [Just now / 5s ago / 2m ago / Never]
 ## Troubleshooting
 
 ### Sync Not Working
+
 1. Check DAYTONA_API_KEY is configured
 2. Verify preview was created successfully (not mock)
 3. Check browser console for errors
@@ -332,6 +361,7 @@ Last synced: [Just now / 5s ago / 2m ago / Never]
 6. Create a new preview
 
 ### Slow Sync
+
 1. Reduce block count (split into pages)
 2. Check network connection speed
 3. Verify Daytona API status
@@ -340,20 +370,25 @@ Last synced: [Just now / 5s ago / 2m ago / Never]
 ### Error Messages
 
 **"No preview active"**
+
 - Solution: Create a preview first, then enable sync
 
 **"Preview closed - please create a new preview"**
+
 - Solution: Sandbox was deleted, create new preview
 
 **"Rate limit: Please wait X seconds"**
+
 - Solution: Wait indicated time, sync will retry automatically
 
 **"DAYTONA_API_KEY not configured"**
+
 - Solution: Add API key to environment variables
 
 ## Development Guide
 
 ### Adding New Sync Triggers
+
 ```typescript
 // In usePreviewSync.ts, modify the subscription:
 useEffect(() => {
@@ -369,6 +404,7 @@ useEffect(() => {
 ```
 
 ### Customizing Debounce Timing
+
 ```typescript
 // In usePreviewSync.ts:
 const DEBOUNCE_DELAY = 3000; // 3 seconds (increase for slower sync)
@@ -376,6 +412,7 @@ const MAX_WAIT_TIME = 15000; // 15 seconds (increase max wait)
 ```
 
 ### Adding Sync Callbacks
+
 ```typescript
 // In PreviewButton.tsx:
 const { enableSync } = usePreviewSync({
@@ -388,17 +425,20 @@ const { enableSync } = usePreviewSync({
 ## Security Considerations
 
 ### API Security
+
 - Sandbox ID validation (format check)
 - Rate limiting prevents abuse
 - No authentication required (sandboxes are public)
 - HTML sanitization in generateStaticHTML
 
 ### XSS Prevention
+
 - All user content is escaped in HTML generation
 - No inline script execution
 - Content Security Policy on preview
 
 ### Rate Limiting
+
 - Per-sandbox rate limiting
 - Memory-efficient tracking
 - Automatic cleanup of old entries
@@ -408,6 +448,7 @@ const { enableSync } = usePreviewSync({
 The Live Preview Sync feature provides a seamless, real-time editing experience for Bentoblocks users. It intelligently balances responsiveness with API efficiency, provides robust error handling, and degrades gracefully when issues occur.
 
 **Key Benefits:**
+
 - Instant visual feedback on changes
 - Efficient API usage (smart debouncing)
 - Robust error recovery
@@ -415,6 +456,7 @@ The Live Preview Sync feature provides a seamless, real-time editing experience 
 - Performance-optimized
 
 **Production Ready:**
+
 - TypeScript strict mode
 - Comprehensive error handling
 - Memory leak prevention

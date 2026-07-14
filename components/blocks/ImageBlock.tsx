@@ -124,9 +124,9 @@ export default function ImageBlock({ block }: ImageBlockProps) {
               strokeLinejoin="round"
               viewBox="0 0 24 24"
             >
-              <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
-              <line x1="16" y1="8" x2="2" y2="22"/>
-              <line x1="17.5" y1="15" x2="9" y2="15"/>
+              <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" />
+              <line x1="16" y1="8" x2="2" y2="22" />
+              <line x1="17.5" y1="15" x2="9" y2="15" />
             </svg>
           )}
         </button>
@@ -221,9 +221,7 @@ export default function ImageBlock({ block }: ImageBlockProps) {
                 <p className="text-sm font-bold uppercase tracking-wider text-gray-600 mb-2">
                   Drag image here or click to browse
                 </p>
-                <p className="text-xs text-gray-500">
-                  Accepts PNG, JPEG, GIF, WebP (max 5MB)
-                </p>
+                <p className="text-xs text-gray-500">Accepts PNG, JPEG, GIF, WebP (max 5MB)</p>
               </div>
             </Dropzone>
           )}
@@ -245,9 +243,7 @@ export default function ImageBlock({ block }: ImageBlockProps) {
                     d="M5 13l4 4L19 7"
                   />
                 </svg>
-                <span className="text-sm font-semibold text-green-800">
-                  {uploadedFileName}
-                </span>
+                <span className="text-sm font-semibold text-green-800">{uploadedFileName}</span>
               </div>
               <button
                 onClick={(e) => {

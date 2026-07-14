@@ -39,10 +39,14 @@ export default function HeroBlock({ block }: HeroBlockProps) {
   const fontClass = getFontClassName(block.content.fontFamily || 'Instrument Serif');
   const getFontSize = (size?: string) => {
     switch (size) {
-      case 'small': return { heading: 'text-3xl', subheading: 'text-lg' };
-      case 'large': return { heading: 'text-7xl', subheading: 'text-3xl' };
-      case 'xlarge': return { heading: 'text-8xl', subheading: 'text-4xl' };
-      default: return { heading: 'text-5xl', subheading: 'text-2xl' };
+      case 'small':
+        return { heading: 'text-3xl', subheading: 'text-lg' };
+      case 'large':
+        return { heading: 'text-7xl', subheading: 'text-3xl' };
+      case 'xlarge':
+        return { heading: 'text-8xl', subheading: 'text-4xl' };
+      default:
+        return { heading: 'text-5xl', subheading: 'text-2xl' };
     }
   };
   const fontSize = getFontSize(block.content.fontSize);
@@ -101,19 +105,16 @@ export default function HeroBlock({ block }: HeroBlockProps) {
               strokeLinejoin="round"
               viewBox="0 0 24 24"
             >
-              <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
-              <line x1="16" y1="8" x2="2" y2="22"/>
-              <line x1="17.5" y1="15" x2="9" y2="15"/>
+              <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z" />
+              <line x1="16" y1="8" x2="2" y2="22" />
+              <line x1="17.5" y1="15" x2="9" y2="15" />
             </svg>
           )}
         </button>
       )}
       <div className={`max-w-3xl mx-auto text-center relative z-10 ${fontClass}`}>
         {/* Heading - WYSIWYG: Same styled container for edit and display */}
-        <div
-          className={`${fontSize.heading} font-bold mb-6`}
-          style={{ color: textColor }}
-        >
+        <div className={`${fontSize.heading} font-bold mb-6`} style={{ color: textColor }}>
           {isSelected ? (
             <TiptapEditor
               value={block.content.heading}
@@ -130,10 +131,7 @@ export default function HeroBlock({ block }: HeroBlockProps) {
         </div>
 
         {/* Subheading - WYSIWYG: Same styled container for edit and display */}
-        <div
-          className={`${fontSize.subheading} font-semibold mb-10`}
-          style={{ color: textColor }}
-        >
+        <div className={`${fontSize.subheading} font-semibold mb-10`} style={{ color: textColor }}>
           {isSelected ? (
             <TiptapEditor
               value={block.content.subheading}

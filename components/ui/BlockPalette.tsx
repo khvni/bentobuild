@@ -199,7 +199,9 @@ function DraggableBlockTemplate({ blockType, template }: DraggableBlockTemplateP
           <p className="font-bold text-gray-900 uppercase text-xs tracking-wide mb-0.5">
             {template.label}
           </p>
-          <p className="text-xs text-gray-500 font-medium" aria-hidden="true">+ ADD</p>
+          <p className="text-xs text-gray-500 font-medium" aria-hidden="true">
+            + ADD
+          </p>
         </div>
       </div>
     </button>
@@ -218,26 +220,31 @@ export default function BlockPalette() {
       {/* Header */}
       <div className="mb-6">
         <h2 className="bauhaus-h3 uppercase tracking-wider text-black mb-1">Blocks</h2>
-        <div className="h-1 w-16 bg-gradient-to-r from-bauhaus-red to-bauhaus-yellow rounded-full" aria-hidden="true"></div>
+        <div
+          className="h-1 w-16 bg-gradient-to-r from-bauhaus-red to-bauhaus-yellow rounded-full"
+          aria-hidden="true"
+        ></div>
       </div>
 
       {/* Block Templates */}
       <div className="space-y-3" role="menu" aria-label="Available block types">
         {Object.entries(blockTemplates).map(([key, template]) => (
-          <DraggableBlockTemplate
-            key={key}
-            blockType={template.type}
-            template={template}
-          />
+          <DraggableBlockTemplate key={key} blockType={template.type} template={template} />
         ))}
       </div>
 
       {/* Stats Section */}
-      <div className="mt-8 pt-6 border-t-2 border-gray-300" role="status" aria-label="Canvas statistics">
+      <div
+        className="mt-8 pt-6 border-t-2 border-gray-300"
+        role="status"
+        aria-label="Canvas statistics"
+      >
         <div className="bg-white rounded-bauhaus-md p-4 shadow-bauhaus-sm border-2 border-black">
           <p className="text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Canvas</p>
           <div className="flex items-baseline gap-2">
-            <p className="text-4xl font-bold text-black" aria-label={`${blocks.length} blocks`}>{blocks.length}</p>
+            <p className="text-4xl font-bold text-black" aria-label={`${blocks.length} blocks`}>
+              {blocks.length}
+            </p>
             <p className="text-sm font-semibold text-gray-500 uppercase">Blocks</p>
           </div>
         </div>

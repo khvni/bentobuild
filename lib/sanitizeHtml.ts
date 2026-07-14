@@ -6,19 +6,41 @@
  */
 
 const ALLOWED_TAGS = [
-  'p', 'br', 'strong', 'b', 'em', 'i', 'u', 'span', 'div',
-  'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-  'ul', 'ol', 'li',
-  'a', 'blockquote', 'code', 'pre'
+  'p',
+  'br',
+  'strong',
+  'b',
+  'em',
+  'i',
+  'u',
+  'span',
+  'div',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'ul',
+  'ol',
+  'li',
+  'a',
+  'blockquote',
+  'code',
+  'pre',
 ];
 
-const ALLOWED_ATTRIBUTES = [
-  'style', 'class', 'href', 'target', 'rel'
-];
+const ALLOWED_ATTRIBUTES = ['style', 'class', 'href', 'target', 'rel'];
 
 const ALLOWED_STYLES = [
-  'color', 'background-color', 'font-size', 'font-family', 'font-weight',
-  'font-style', 'text-decoration', 'text-align'
+  'color',
+  'background-color',
+  'font-size',
+  'font-family',
+  'font-weight',
+  'font-style',
+  'text-decoration',
+  'text-align',
 ];
 
 /**
@@ -40,8 +62,8 @@ export function plainTextToHtml(text: string): string {
   // Convert newlines to <br> tags and wrap in paragraph
   const htmlText = text
     .split('\n')
-    .map(line => line.trim())
-    .filter(line => line.length > 0)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0)
     .join('<br>');
 
   return `<p>${htmlText}</p>`;
@@ -101,7 +123,8 @@ function sanitizeNode(node: HTMLElement): HTMLElement {
   const nodeName = node.nodeName.toLowerCase();
 
   // Remove the node if it's not allowed
-  if (node.nodeType === 1) { // Element node
+  if (node.nodeType === 1) {
+    // Element node
     if (!ALLOWED_TAGS.includes(nodeName)) {
       // Replace with text content
       const textNode = document.createTextNode(node.textContent || '');
@@ -158,11 +181,14 @@ function sanitizeStyle(element: HTMLElement): void {
   const style = element.getAttribute('style');
   if (!style) return;
 
-  const styles = style.split(';').map(s => s.trim()).filter(s => s);
+  const styles = style
+    .split(';')
+    .map((s) => s.trim())
+    .filter((s) => s);
   const allowedStyles: string[] = [];
 
   for (const styleRule of styles) {
-    const [property] = styleRule.split(':').map(s => s.trim());
+    const [property] = styleRule.split(':').map((s) => s.trim());
     if (ALLOWED_STYLES.includes(property)) {
       allowedStyles.push(styleRule);
     }

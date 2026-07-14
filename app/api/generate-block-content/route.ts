@@ -71,17 +71,23 @@ function buildPrompt(
   contextPrompt: string,
   existingFields?: Record<string, unknown>
 ): string {
-  const hasExistingContent = existingFields && Object.keys(existingFields).length > 0
-    && Object.values(existingFields).some(val => val && String(val).trim().length > 0);
+  const hasExistingContent =
+    existingFields &&
+    Object.keys(existingFields).length > 0 &&
+    Object.values(existingFields).some((val) => val && String(val).trim().length > 0);
 
   // Extract existing heading/title to use as primary context
   const existingHeading = existingFields?.heading
-    ? String(existingFields.heading).replace(/<[^>]*>/g, '').trim()
+    ? String(existingFields.heading)
+        .replace(/<[^>]*>/g, '')
+        .trim()
     : existingFields?.text
-    ? String(existingFields.text).replace(/<[^>]*>/g, '').trim()
-    : existingFields?.brandName
-    ? String(existingFields.brandName).trim()
-    : '';
+      ? String(existingFields.text)
+          .replace(/<[^>]*>/g, '')
+          .trim()
+      : existingFields?.brandName
+        ? String(existingFields.brandName).trim()
+        : '';
 
   // Block-specific instructions with strict copywriting rules
   let blockSpecificInstructions = '';
@@ -298,7 +304,29 @@ function validateAndSanitizeResponse(data: unknown): BlockContent {
   // Include any other string fields that might be present (with conservative limit)
   for (const [key, value] of Object.entries(record)) {
     if (
-      !['heading', 'title', 'body', 'subheading', 'cta', 'ctaText', 'ctaLink', 'text', 'description', 'url', 'imageUrl', 'brandName', 'companyName', 'src', 'alt', 'caption', 'copyright', 'contactEmail', 'links', 'socialLinks', 'style'].includes(key) &&
+      ![
+        'heading',
+        'title',
+        'body',
+        'subheading',
+        'cta',
+        'ctaText',
+        'ctaLink',
+        'text',
+        'description',
+        'url',
+        'imageUrl',
+        'brandName',
+        'companyName',
+        'src',
+        'alt',
+        'caption',
+        'copyright',
+        'contactEmail',
+        'links',
+        'socialLinks',
+        'style',
+      ].includes(key) &&
       typeof value === 'string'
     ) {
       sanitized[key] = value.trim().slice(0, 200);
@@ -399,7 +427,8 @@ export async function POST(request: NextRequest) {
       } catch (error) {
         console.error('Failed to fetch image from Unsplash:', error);
         // Use placeholder as fallback
-        sanitizedContent.src = 'https://picsum.photos/seed/' + encodeURIComponent(contextPrompt) + '/1200/800';
+        sanitizedContent.src =
+          'https://picsum.photos/seed/' + encodeURIComponent(contextPrompt) + '/1200/800';
       }
     }
 

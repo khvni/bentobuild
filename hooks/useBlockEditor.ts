@@ -8,7 +8,11 @@ interface UseBlockEditorReturn {
   loading: boolean;
   error: string | null;
   success: boolean;
-  generateContent: (blockId: string, blockType: BlockType, existingContent: Record<string, unknown>) => Promise<void>;
+  generateContent: (
+    blockId: string,
+    blockType: BlockType,
+    existingContent: Record<string, unknown>
+  ) => Promise<void>;
   resetStatus: () => void;
 }
 

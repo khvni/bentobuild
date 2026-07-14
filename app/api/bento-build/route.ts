@@ -171,18 +171,6 @@ function validateBlock(block: unknown, index: number, timestamp: number): Block 
  */
 export async function POST(request: NextRequest): Promise<NextResponse<BentoBuildResponse>> {
   try {
-    // Validate API key
-    if (!process.env.OPENAI_API_KEY) {
-      console.error('OPENAI_API_KEY is not configured');
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'AI service is not configured. Please set OPENAI_API_KEY environment variable.',
-        },
-        { status: 500 }
-      );
-    }
-
     // Parse and validate request
     const body = await request.json();
     const { contextPrompt } = body as BentoBuildRequest;
@@ -194,6 +182,18 @@ export async function POST(request: NextRequest): Promise<NextResponse<BentoBuil
           error: 'Invalid request: "contextPrompt" is required and must be a non-empty string',
         },
         { status: 400 }
+      );
+    }
+
+    // Validate API key
+    if (!process.env.OPENAI_API_KEY) {
+      console.error('OPENAI_API_KEY is not configured');
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'AI service is not configured. Please set OPENAI_API_KEY environment variable.',
+        },
+        { status: 500 }
       );
     }
 
@@ -250,7 +250,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<BentoBuil
     } else {
       // Try to find any array in the response
       const values = Object.values(parsedContent);
-      const arrayValue = values.find(val => Array.isArray(val));
+      const arrayValue = values.find((val) => Array.isArray(val));
       if (arrayValue && Array.isArray(arrayValue)) {
         blocksArray = arrayValue;
       } else {
@@ -277,7 +277,10 @@ export async function POST(request: NextRequest): Promise<NextResponse<BentoBuil
     // Fetch images for image blocks using Unsplash
     const blocksWithImages = await Promise.all(
       validatedBlocks.map(async (block) => {
-        if (block.type === 'image' && (!block.content.src || block.content.src.includes('placeholder'))) {
+        if (
+          block.type === 'image' &&
+          (!block.content.src || block.content.src.includes('placeholder'))
+        ) {
           try {
             const keywords = extractImageKeywords(contextPrompt, 'image');
             const imageUrl = await getContextualImageUrl(keywords);

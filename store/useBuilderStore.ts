@@ -30,13 +30,12 @@ export const useBuilderStore = create<BuilderState>(
             blocks: [...state.blocks, block],
           })),
 
-        addBlocks: (blocks: Block[]) =>
-          set({ blocks }),
+        addBlocks: (blocks: Block[]) => set({ blocks }),
 
         updateBlock: (id: string, updates: Partial<Block>) =>
           set((state) => ({
             blocks: state.blocks.map((block) =>
-              block.id === id ? { ...block, ...updates } as Block : block
+              block.id === id ? ({ ...block, ...updates } as Block) : block
             ),
           })),
 
@@ -46,14 +45,11 @@ export const useBuilderStore = create<BuilderState>(
             selectedBlockId: state.selectedBlockId === id ? null : state.selectedBlockId,
           })),
 
-        setContextPrompt: (prompt: string) =>
-          set({ contextPrompt: prompt }),
+        setContextPrompt: (prompt: string) => set({ contextPrompt: prompt }),
 
-        selectBlock: (id: string | null) =>
-          set({ selectedBlockId: id }),
+        selectBlock: (id: string | null) => set({ selectedBlockId: id }),
 
-        reorderBlocks: (blocks: Block[]) =>
-          set({ blocks }),
+        reorderBlocks: (blocks: Block[]) => set({ blocks }),
       }),
       { excludeKeys: ['selectedBlockId'] } // Don't persist selected block
     ),

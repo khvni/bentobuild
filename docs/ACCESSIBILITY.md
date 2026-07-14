@@ -85,40 +85,40 @@ Enhanced focus states meeting WCAG 2.1:
 
 ### Level A Criteria (Required)
 
-| Criterion | Status | Implementation |
-|-----------|--------|----------------|
-| 1.1.1 Non-text Content | ✅ | All images have alt text; decorative elements use `aria-hidden` |
-| 2.1.1 Keyboard | ✅ | Full keyboard navigation via Tab, Arrow keys, Enter, Escape |
-| 2.1.2 No Keyboard Trap | ✅ | Users can navigate out of all components |
-| 2.4.1 Bypass Blocks | ✅ | Skip link implemented at page top |
-| 2.4.2 Page Titled | ✅ | Page title set in metadata |
-| 3.1.1 Language of Page | ✅ | `lang="en"` set on HTML element |
-| 3.3.2 Labels or Instructions | ✅ | All form inputs have associated labels |
-| 4.1.1 Parsing | ✅ | Valid HTML5 semantics |
-| 4.1.2 Name, Role, Value | ✅ | ARIA roles and labels on all components |
+| Criterion                    | Status | Implementation                                                  |
+| ---------------------------- | ------ | --------------------------------------------------------------- |
+| 1.1.1 Non-text Content       | ✅     | All images have alt text; decorative elements use `aria-hidden` |
+| 2.1.1 Keyboard               | ✅     | Full keyboard navigation via Tab, Arrow keys, Enter, Escape     |
+| 2.1.2 No Keyboard Trap       | ✅     | Users can navigate out of all components                        |
+| 2.4.1 Bypass Blocks          | ✅     | Skip link implemented at page top                               |
+| 2.4.2 Page Titled            | ✅     | Page title set in metadata                                      |
+| 3.1.1 Language of Page       | ✅     | `lang="en"` set on HTML element                                 |
+| 3.3.2 Labels or Instructions | ✅     | All form inputs have associated labels                          |
+| 4.1.1 Parsing                | ✅     | Valid HTML5 semantics                                           |
+| 4.1.2 Name, Role, Value      | ✅     | ARIA roles and labels on all components                         |
 
 ### Level AA Criteria (Target)
 
-| Criterion | Status | Implementation |
-|-----------|--------|----------------|
-| 1.4.3 Contrast (Minimum) | ✅ | 4.5:1 for normal text, 3:1 for large text |
-| 1.4.11 Non-text Contrast | ✅ | 3:1 for UI components and graphical objects |
-| 2.4.6 Headings and Labels | ✅ | Descriptive labels on all controls |
-| 2.4.7 Focus Visible | ✅ | 3px blue outline on all focused elements |
-| 3.2.3 Consistent Navigation | ✅ | Consistent layout and navigation patterns |
-| 3.2.4 Consistent Identification | ✅ | Icons and buttons identified consistently |
-| 3.3.3 Error Suggestion | ✅ | Error messages with guidance (AI generation) |
-| 3.3.4 Error Prevention | ✅ | No destructive actions without confirmation |
-| 4.1.3 Status Messages | ✅ | ARIA live regions for status updates |
+| Criterion                       | Status | Implementation                               |
+| ------------------------------- | ------ | -------------------------------------------- |
+| 1.4.3 Contrast (Minimum)        | ✅     | 4.5:1 for normal text, 3:1 for large text    |
+| 1.4.11 Non-text Contrast        | ✅     | 3:1 for UI components and graphical objects  |
+| 2.4.6 Headings and Labels       | ✅     | Descriptive labels on all controls           |
+| 2.4.7 Focus Visible             | ✅     | 3px blue outline on all focused elements     |
+| 3.2.3 Consistent Navigation     | ✅     | Consistent layout and navigation patterns    |
+| 3.2.4 Consistent Identification | ✅     | Icons and buttons identified consistently    |
+| 3.3.3 Error Suggestion          | ✅     | Error messages with guidance (AI generation) |
+| 3.3.4 Error Prevention          | ✅     | No destructive actions without confirmation  |
+| 4.1.3 Status Messages           | ✅     | ARIA live regions for status updates         |
 
 ### Level AAA Criteria (Stretch)
 
-| Criterion | Status | Implementation |
-|-----------|--------|----------------|
-| 1.4.6 Contrast (Enhanced) | 🟡 | 7:1 achieved for most text; some exceptions |
-| 2.4.8 Location | ✅ | Block count indicator; clear context |
-| 2.5.5 Target Size | ✅ | All buttons minimum 44x44px |
-| 3.3.5 Help | ✅ | Contextual help via tooltips and placeholders |
+| Criterion                 | Status | Implementation                                |
+| ------------------------- | ------ | --------------------------------------------- |
+| 1.4.6 Contrast (Enhanced) | 🟡     | 7:1 achieved for most text; some exceptions   |
+| 2.4.8 Location            | ✅     | Block count indicator; clear context          |
+| 2.5.5 Target Size         | ✅     | All buttons minimum 44x44px                   |
+| 3.3.5 Help                | ✅     | Contextual help via tooltips and placeholders |
 
 ---
 
@@ -130,22 +130,22 @@ The Bauhaus design system uses bold primary colors. All colors have been tested 
 
 #### Primary Colors
 
-| Color | Hex | Name | Usage | Contrast Ratio (on White) | WCAG AA | WCAG AAA |
-|-------|-----|------|-------|---------------------------|---------|----------|
-| Red | `#E63946` | Bauhaus Red | Accents, CTAs | 4.6:1 | ✅ Pass | 🟡 Large text only |
-| Yellow | `#F1C40F` | Bauhaus Yellow | Accents, Highlights | 1.9:1 | ❌ Fail (decorative only) | ❌ Fail |
-| Blue | `#2563EB` | Bauhaus Blue | Primary, Links | 6.7:1 | ✅ Pass | 🟡 Large text only |
-| Black | `#000000` | Black | Text, Borders | 21:1 | ✅ Pass | ✅ Pass |
+| Color  | Hex       | Name           | Usage               | Contrast Ratio (on White) | WCAG AA                   | WCAG AAA           |
+| ------ | --------- | -------------- | ------------------- | ------------------------- | ------------------------- | ------------------ |
+| Red    | `#E63946` | Bauhaus Red    | Accents, CTAs       | 4.6:1                     | ✅ Pass                   | 🟡 Large text only |
+| Yellow | `#F1C40F` | Bauhaus Yellow | Accents, Highlights | 1.9:1                     | ❌ Fail (decorative only) | ❌ Fail            |
+| Blue   | `#2563EB` | Bauhaus Blue   | Primary, Links      | 6.7:1                     | ✅ Pass                   | 🟡 Large text only |
+| Black  | `#000000` | Black          | Text, Borders       | 21:1                      | ✅ Pass                   | ✅ Pass            |
 
 #### Grayscale
 
-| Color | Hex | Contrast on White | WCAG AA | WCAG AAA |
-|-------|-----|-------------------|---------|----------|
-| Gray 900 | `#111827` | 18.4:1 | ✅ Pass | ✅ Pass |
-| Gray 800 | `#1F2937` | 15.5:1 | ✅ Pass | ✅ Pass |
-| Gray 700 | `#374151` | 12.6:1 | ✅ Pass | ✅ Pass |
-| Gray 600 | `#4B5563` | 9.1:1 | ✅ Pass | ✅ Pass |
-| Gray 500 | `#6B7280` | 5.9:1 | ✅ Pass | 🟡 Large text |
+| Color    | Hex       | Contrast on White | WCAG AA | WCAG AAA      |
+| -------- | --------- | ----------------- | ------- | ------------- |
+| Gray 900 | `#111827` | 18.4:1            | ✅ Pass | ✅ Pass       |
+| Gray 800 | `#1F2937` | 15.5:1            | ✅ Pass | ✅ Pass       |
+| Gray 700 | `#374151` | 12.6:1            | ✅ Pass | ✅ Pass       |
+| Gray 600 | `#4B5563` | 9.1:1             | ✅ Pass | ✅ Pass       |
+| Gray 500 | `#6B7280` | 5.9:1             | ✅ Pass | 🟡 Large text |
 
 ### Component-Specific Contrast
 
@@ -196,46 +196,46 @@ To maintain accessibility:
 
 ### Global Shortcuts
 
-| Key | Action |
-|-----|--------|
-| Tab | Navigate to next focusable element |
+| Key       | Action                                 |
+| --------- | -------------------------------------- |
+| Tab       | Navigate to next focusable element     |
 | Shift+Tab | Navigate to previous focusable element |
-| Escape | Close modal or panel (if open) |
-| Enter | Activate focused button or link |
-| Space | Activate focused button |
+| Escape    | Close modal or panel (if open)         |
+| Enter     | Activate focused button or link        |
+| Space     | Activate focused button                |
 
 ### Block Palette
 
-| Key | Action |
-|-----|--------|
-| Tab | Navigate between block templates |
-| Enter/Space | Add focused block to canvas |
+| Key            | Action                            |
+| -------------- | --------------------------------- |
+| Tab            | Navigate between block templates  |
+| Enter/Space    | Add focused block to canvas       |
 | Drag initiator | Click and drag, or use arrow keys |
 
 ### Canvas (Block Reordering)
 
-| Key | Action |
-|-----|--------|
-| Tab | Navigate between blocks |
-| Arrow Up | Move focused block up (when drag handle focused) |
+| Key        | Action                                             |
+| ---------- | -------------------------------------------------- |
+| Tab        | Navigate between blocks                            |
+| Arrow Up   | Move focused block up (when drag handle focused)   |
 | Arrow Down | Move focused block down (when drag handle focused) |
-| Enter | Select block for editing |
+| Enter      | Select block for editing                           |
 
 ### Block Editor Panel
 
-| Key | Action |
-|-----|--------|
-| Tab | Navigate between form fields |
-| Escape | Close editor panel |
-| Enter | Submit on buttons |
+| Key    | Action                       |
+| ------ | ---------------------------- |
+| Tab    | Navigate between form fields |
+| Escape | Close editor panel           |
+| Enter  | Submit on buttons            |
 
 ### ColorPicker
 
-| Key | Action |
-|-----|--------|
-| Tab | Navigate between preset colors |
-| Enter/Space | Select focused color |
-| Tab (in hex input) | Edit custom hex value |
+| Key                | Action                         |
+| ------------------ | ------------------------------ |
+| Tab                | Navigate between preset colors |
+| Enter/Space        | Select focused color           |
+| Tab (in hex input) | Edit custom hex value          |
 
 ---
 
@@ -328,19 +328,13 @@ Dynamic content updates announced to screen readers:
 
 ```html
 <!-- Canvas empty state -->
-<div role="status" aria-live="polite">
-  Empty Canvas - Drag blocks to start building
-</div>
+<div role="status" aria-live="polite">Empty Canvas - Drag blocks to start building</div>
 
 <!-- Block count -->
-<div role="status" aria-label="Canvas statistics">
-  3 Blocks
-</div>
+<div role="status" aria-label="Canvas statistics">3 Blocks</div>
 
 <!-- AI generation status -->
-<p role="status" aria-live="polite">
-  Add context to enable AI
-</p>
+<p role="status" aria-live="polite">Add context to enable AI</p>
 ```
 
 ### Form Controls
@@ -349,15 +343,8 @@ All form inputs properly labeled:
 
 ```html
 <label htmlFor="hero-heading">Heading</label>
-<input
-  id="hero-heading"
-  type="text"
-  aria-required="true"
-  aria-describedby="heading-help"
-/>
-<p id="heading-help" className="sr-only">
-  Enter the main heading for your hero section
-</p>
+<input id="hero-heading" type="text" aria-required="true" aria-describedby="heading-help" />
+<p id="heading-help" className="sr-only">Enter the main heading for your hero section</p>
 ```
 
 ### Custom Components
@@ -470,9 +457,7 @@ Hides content visually while keeping it accessible to screen readers:
 ```tsx
 import { VisuallyHidden } from '@/components/accessibility/VisuallyHidden';
 
-<VisuallyHidden>
-  Enter a hex color code like #3B82F6
-</VisuallyHidden>
+<VisuallyHidden>Enter a hex color code like #3B82F6</VisuallyHidden>;
 ```
 
 **Location**: `/components/accessibility/VisuallyHidden.tsx`
@@ -490,6 +475,7 @@ useFocusTrap(modalRef, isModalOpen);
 
 **Location**: `/hooks/useFocusTrap.ts`
 **Features**:
+
 - Cycles through focusable elements with Tab
 - Reverses with Shift+Tab
 - Auto-focuses first element on activation
@@ -508,6 +494,7 @@ announce('Block added successfully');
 
 **Location**: `/hooks/useAnnouncer.ts`
 **Parameters**:
+
 - `'polite'`: Waits for user to finish current action (default)
 - `'assertive'`: Interrupts immediately (use sparingly)
 
@@ -533,6 +520,7 @@ const description = getContrastDescription(check);
 
 **Location**: `/utils/contrastChecker.ts`
 **Functions**:
+
 - `getContrastRatio(color1, color2)`: Returns contrast ratio
 - `checkContrast(fg, bg)`: Returns WCAG compliance object
 - `getContrastDescription(check)`: Human-readable description
@@ -607,6 +595,7 @@ const description = getContrastDescription(check);
    - Target: 90+ score
 
 4. **pa11y** (Command Line)
+
    ```bash
    npm install -g pa11y
    pa11y http://localhost:3000
@@ -822,6 +811,7 @@ test.describe('Accessibility', () => {
 ### October 9, 2025 - Initial Accessibility Audit
 
 **Added**:
+
 - Skip to main content link
 - Semantic HTML landmarks (header, nav, main, aside)
 - ARIA labels on all interactive elements
@@ -838,6 +828,7 @@ test.describe('Accessibility', () => {
 - `aria-hidden` on decorative elements
 
 **Updated**:
+
 - BlockPalette: Added ARIA labels and semantic menu structure
 - Canvas: Added region role and live status indicators
 - BlockEditorPanel: Form accessibility with required/describedby
@@ -850,6 +841,7 @@ test.describe('Accessibility', () => {
 - HeroBlock: Added accessibility attributes to inputs
 
 **Fixed**:
+
 - Color contrast issues in UI components
 - Missing alt text on decorative SVGs
 - Missing form labels
@@ -857,6 +849,7 @@ test.describe('Accessibility', () => {
 - Tab order issues
 
 **Documentation**:
+
 - Created ACCESSIBILITY.md with full compliance report
 - Documented all accessibility utilities
 - Provided testing checklist
@@ -879,6 +872,7 @@ For accessibility issues or questions:
 Bentoblocks is committed to providing an accessible experience for all users, regardless of ability. We continuously work to improve accessibility and welcome feedback.
 
 **Our Goals**:
+
 - ✅ WCAG 2.1 Level AA compliance (achieved)
 - 🎯 WCAG 2.1 Level AAA where feasible (partial)
 - 🎯 Regular accessibility audits (quarterly)

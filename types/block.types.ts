@@ -126,7 +126,14 @@ export interface FooterBlock extends BaseBlock {
   };
 }
 
-export type Block = HeroBlock | TextBlock | ImageBlock | ButtonBlock | LinkBlock | NavbarBlock | FooterBlock;
+export type Block =
+  | HeroBlock
+  | TextBlock
+  | ImageBlock
+  | ButtonBlock
+  | LinkBlock
+  | NavbarBlock
+  | FooterBlock;
 
 export interface BuilderState {
   blocks: Block[];

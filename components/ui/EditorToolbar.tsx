@@ -28,8 +28,8 @@ function ToolbarButton({ onClick, active, disabled, children, title }: ToolbarBu
         active
           ? 'bg-black text-white border-black'
           : disabled
-          ? 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed'
-          : 'bg-white text-black border-gray-300 hover:border-black hover:bg-gray-50'
+            ? 'bg-gray-200 text-gray-400 border-gray-300 cursor-not-allowed'
+            : 'bg-white text-black border-gray-300 hover:border-black hover:bg-gray-50'
       }`}
     >
       {children}
